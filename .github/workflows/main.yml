@@ -59,7 +59,7 @@ jobs:
             # 포트 80을 사용 중인 프로세스가 있다면 해당 프로세스 종료
             if sudo lsof -i :80; then
               echo "Port 80 is already in use. Terminating the process."
-              sudo fuser -k 80/tcp
+              sudo fuser -k 80/tcp || true  # 포트 80을 사용 중인 프로세스를 강제로 종료
             fi
 
             # 새 컨테이너 실행
