@@ -55,4 +55,4 @@ jobs:
             docker stop frontend-container || true
             docker rm frontend-container || true
             # 새 컨테이너 실행
-            docker run -d --name frontend-container -p 80:80 ${{ secrets.DOCKER_HUB_USERNAME }}/review-frontend:latest
+            docker run -d --name frontend-container -v /etc/letsencrypt:/etc/letsencrypt -p 80:80 ${{ secrets.DOCKER_HUB_USERNAME }}/review-frontend:latest
