@@ -56,11 +56,11 @@ jobs:
             docker ps -a | grep app-container && docker stop app-container || true
             docker ps -a | grep app-container && docker rm app-container || true
 
-            # 포트 80을 점유하는 프로세스 종료
-            if sudo lsof -i :80; then
+            # 포트 80을 점유하는 프로세스 종료 (nginx, apache 등 포함)
+            if sudo lsof -t -i :80; then
               echo "Port 80 is already in use. Terminating the process."
               sudo kill -9 $(sudo lsof -t -i :80) || true  # 포트 80을 점유하는 프로세스를 강제로 종료
             fi
 
-            # 새 컨테이너 실행
-            docker run -d --name app-container -p 80:80 ${{ secrets.DOCKER_HUB_USERNAME }}/your-app:latest
+            # 새 컨테이너 실행 (강제로 재시작 옵션 추가)
+            docker run -d --name app-container -p 80:80 --force-recreate ${{ secrets.DOCKER_HUB_USERNAME }}/your-app:latest
