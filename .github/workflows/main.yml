@@ -62,5 +62,5 @@ jobs:
               sudo kill -9 $(sudo lsof -t -i :80) || true  # 포트 80을 점유하는 프로세스를 강제로 종료
             fi
 
-            # 새 컨테이너 실행 (강제로 재시작 옵션 추가)
-            docker run -d --name app-container -p 80:80 --force-recreate ${{ secrets.DOCKER_HUB_USERNAME }}/your-app:latest
+            # 새 컨테이너 실행
+            docker run -d --name app-container -p 80:80 ${{ secrets.DOCKER_HUB_USERNAME }}/your-app:latest
