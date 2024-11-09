@@ -1,5 +1,12 @@
+import { RouterProvider } from 'react-router-dom'
+
 function App() {
-  return <>ci/cd 테스트 진행중</>;
+  return (
+    <>
+      setting
+      {/* <RouterProvider router={root}></RouterProvider> */}
+    </>
+  )
 }
 
-export default App;
+export default App
