@@ -20,15 +20,15 @@ function StoryList() {
         effect={'coverflow'}
         centeredSlides={true}
         slidesPerView={5}
-        initialSlide={1}
+        initialSlide={2}
         onSlideChange={handleSlideChange}
         coverflowEffect={{
           rotate: 0,
-          stretch: 60, // 슬라이드 사이의 거리를 조절
+          stretch: -100, // 슬라이드 사이의 거리를 조절
           depth: 100, // 슬라이드의 앞뒤 거리감
           modifier: 1,
           slideShadows: false,
-          scale: 0.8, // 비활성 슬라이드의 크기를 조절
+          scale: 0.9, // 비활성 슬라이드의 크기를 조절
         }}
       >
         {reviewData.map((review, index) => (
@@ -47,12 +47,11 @@ function StoryList() {
 export default StoryList
 
 const SwiperContainer = styled.div`
-  width: 100%;
   height: 100%;
+  width: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
-  /* margin: 0 auto; */
 
   /* width: 362px;
   height: 100%;

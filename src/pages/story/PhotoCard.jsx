@@ -17,7 +17,7 @@ function PhotoCard({ reviewInfo }) {
           <Tab>
             <CommentWrap>
               <COMMENT />
-              <p>{reviewInfo.rating}</p>
+              <span>{reviewInfo.rating}</span>
             </CommentWrap>
             <HEART />
           </Tab>
@@ -55,10 +55,11 @@ const ImgWrap = styled.div`
 const ContentWrap = styled.div`
   display: flex;
   flex-direction: column;
-  margin: 15px;
-  p {
-    color: var(--gray-400, #a1a1aa);
+  padding: 15px;
 
+  p {
+    height: 120px;
+    color: var(--gray-400, #a1a1aa);
     /* regular/md */
     font-family: Pretendard;
     font-size: 16px;
@@ -70,15 +71,17 @@ const ContentWrap = styled.div`
     overflow: hidden;
     text-overflow: ellipsis;
     display: -webkit-box;
-    -webkit-line-clamp: 6; // 원하는 줄 수
+    -webkit-line-clamp: 5; // 원하는 줄 수
     -webkit-box-orient: vertical;
     word-break: break-word;
   }
 `
+
 const Tab = styled.div`
-  margin-top: 50px;
+  margin-top: 10px;
   padding: 0 10px;
-  width: 324px;
+  /* width: 324px; */
+  width: 100%;
   height: 40px;
   flex-shrink: 0;
 
@@ -89,8 +92,13 @@ const Tab = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
+`
+const CommentWrap = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
-  p {
+  span {
     padding-left: 5px;
     color: var(--gray-50, #fafafa);
 
@@ -101,8 +109,4 @@ const Tab = styled.div`
     font-weight: 400;
     line-height: 21px; /* 150% */
   }
-`
-const CommentWrap = styled.div`
-  display: flex;
-  align-items: center;
 `
