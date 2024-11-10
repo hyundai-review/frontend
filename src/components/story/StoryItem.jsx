@@ -28,7 +28,7 @@ const ImgFrame = styled.div`
   img {
     width: 200px;
     height: 200px;
-    /* flex-shrink: 0; */
+    flex-shrink: 0;
     object-fit: cover;
 
     border-radius: 5px;

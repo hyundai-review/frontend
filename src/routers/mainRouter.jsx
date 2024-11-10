@@ -7,7 +7,7 @@ const StoryPage = lazy(() => import('@/pages/story/Index'))
 const mainRouter = () => {
   return [
     {
-      path: 'story',
+      path: 'story/:reviewId',
       element: (
         <Suspense fallback={loading}>
           <StoryPage />

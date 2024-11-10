@@ -4,7 +4,6 @@ import { useNavigate } from 'react-router-dom'
 import styled from 'styled-components'
 
 function MainPage() {
-  const navigate = useNavigate()
   return (
     <div>
       MainPage
