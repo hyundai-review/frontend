@@ -24,12 +24,13 @@ function StoryList() {
         onSlideChange={handleSlideChange}
         coverflowEffect={{
           rotate: 0,
-          stretch: -100, // 슬라이드 사이의 거리를 조절
-          depth: 100, // 슬라이드의 앞뒤 거리감
+          stretch: -140, // 음수에서 양수로 변경
+          depth: 100,
           modifier: 1,
           slideShadows: false,
-          scale: 0.9, // 비활성 슬라이드의 크기를 조절
+          scale: 0.9,
         }}
+        spaceBetween={0} // 슬라이드 사이 간격 추가
       >
         {reviewData.map((review, index) => (
           <SwiperSlide
@@ -53,21 +54,7 @@ const SwiperContainer = styled.div`
   justify-content: center;
   align-items: center;
 
-  /* width: 362px;
-  height: 100%;
-  overflow: hidden;
-
   .swiper {
-    width: 482px;
-    margin-left: -30px;
-    left: 50%;
-    transform: translateX(-50%); // 중앙 정렬
+    margin-left: -50px;
   }
-
-  .swiper-wrapper {
-    align-items: center;
-  }
-
-  .swiper-slide {
-  } */
 `
