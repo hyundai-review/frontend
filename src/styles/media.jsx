@@ -6,9 +6,9 @@ import { css } from 'styled-components'
 //   `}
 
 const breakpoints = {
-  small: '@media (max-width: 480px)',
-  medium: '@media (max-width: 1024px)',
-  large: '@media (min-width: 1025px)',
+  small: '@media (max-width: 402px)',
+  medium: '@media (max-width: 768px)',
+  large: '@media (min-width: 1440px)',
 }
 
 const media = Object.entries(breakpoints).reduce((acc, [key, value]) => {
