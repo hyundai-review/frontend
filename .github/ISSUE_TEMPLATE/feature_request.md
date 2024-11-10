@@ -8,7 +8,7 @@ assignees: ''
 ---
 
 ## 깃 브랜치 네이밍 컨벤션
-- `feature/badge#1`
+- `1-feat-OAuth`
 
 ## Title Convention
     - ✨feat: 새로운 기능 추가, 기존의 기능을 요구 사항에 맞추어 수정
