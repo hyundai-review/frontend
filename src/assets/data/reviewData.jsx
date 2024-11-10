@@ -4,7 +4,7 @@ export const reviewData = [
     movieId: 1,
     memberId: 1,
     photocard: '/assets/images/story/story1.png',
-    content: '아 진짜 재밌네 ㅋㅋ',
+    content: '아 진짜 재밌네 ㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋ 진짜 미친거 아냐 존잼 그잡채',
     rating: 1,
     is_spoil: false,
   },
@@ -13,7 +13,8 @@ export const reviewData = [
     movieId: 2,
     memberId: 2,
     photocard: '/assets/images/story/story2.png',
-    content: '아 진짜 재밌네 ㅋㅋ',
+    content:
+      '아 진짜 재밌네 ㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋ 진짜 미친거 아냐 존잼 그잡채아 진짜 재밌네 ㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋ 진짜 미친거 아냐 존잼 그잡채아 진짜 재밌네 ㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋ 진짜 미친거 아냐 존잼 그잡채아 진짜 재밌네 ㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋ 진짜 미친거 아냐 존잼 그잡채아 진짜 재밌네 ㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋ 진짜 미친거 아냐 존잼 그잡채아 진짜 재밌네 ㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋ 진짜 미친거 아냐 존잼 그잡채',
     rating: 1,
     is_spoil: false,
   },
