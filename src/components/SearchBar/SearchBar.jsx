@@ -11,7 +11,7 @@ function SearchBar({ handleSearch }) {
   }
   return (
     <div>
-      <S.StyledSearchBarContainer isFocused={inputFieldFocus}>
+      <S.StyledSearchBarContainer isfocused={inputFieldFocus}>
         <form onSubmit={handleSubmit} style={{ width: '100%', display: 'flex', height: '100%' }}>
           <S.StyledSearchBarIconButton type='submit'>
             <img
