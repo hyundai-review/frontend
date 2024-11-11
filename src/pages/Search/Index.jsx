@@ -1,5 +1,5 @@
 import React from 'react'
-import MoviePosterBox from '@/components/MoviePosterCard/MoviePosterCard.jsx'
+import MoviePosterBox from '@/components/MoviePosterBox/MoviePosterBox'
 import * as S from './style.js'
 import SearchBar from '@/components/SearchBar/SearchBar.jsx'
 

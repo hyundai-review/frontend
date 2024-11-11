@@ -1,7 +1,7 @@
 import media from '@/styles/media'
 import styled from 'styled-components'
 
-export const StyledMoviePosterCardContainer = styled.div`
+export const StyledMoviePosterBoxContainer = styled.div`
   width: 165px;
   height: 230px;
   box-sizing: content-box;
@@ -19,7 +19,7 @@ export const StyledMoviePosterCardContainer = styled.div`
     height:161px;
     padding:5px`}
 `
-export const StyledMoviePosterCardImageWrapper = styled.div`
+export const StyledMoviePosterBoxImageWrapper = styled.div`
   width: 154px;
   height: 220px;
   ${media.small`
@@ -28,7 +28,7 @@ export const StyledMoviePosterCardImageWrapper = styled.div`
   `}
 `
 
-export const StyledMoviePosterCardImage = styled.img`
+export const StyledMoviePosterBoxImage = styled.img`
   width: 100%;
   height: 100%;
   object-fit: cover;
