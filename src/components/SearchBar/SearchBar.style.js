@@ -15,7 +15,7 @@ export const StyledSearchBarContainer = styled.div`
     width:362px;
   `}
   ${(props) =>
-    props.isFocused &&
+    props.isfocused &&
     `
     border: 1px solid rgba(255, 255, 255, 0.6);
     box-shadow: 0 0 15px 5px rgba(255, 255, 255, 0.3);
