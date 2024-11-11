@@ -1,4 +1,6 @@
 import styled from 'styled-components'
+import star from '@/assets/icon/star.svg'
+import star2 from '@/assets/icon/star2.svg'
 const StarRating = ({ rating }) => {
   const totalStars = 5
 
@@ -9,7 +11,7 @@ const StarRating = ({ rating }) => {
         return (
           <StarIcon
             key={index}
-            src={isFilledStar ? '/icon/star.svg' : '/icon/star2.svg'}
+            src={isFilledStar ? star : star2}
             hasFilter={isFilledStar} // star2.svg에는 filter를 제외
           />
         )

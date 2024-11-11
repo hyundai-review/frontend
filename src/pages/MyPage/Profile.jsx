@@ -1,6 +1,7 @@
 import Button from '@/components/common/Button'
 import React from 'react'
 import styled from 'styled-components'
+import edit from '@/assets/icon/edit.svg'
 function Profile() {
   //temp data
   const nickname = '아보카도파김치'
@@ -20,7 +21,7 @@ function Profile() {
       <ProfileNicknameWrap>
         <ProfileNickname>{nickname}</ProfileNickname>
         <ProfileSuffix>님</ProfileSuffix>
-        <Icon onClick={handleEditNickname} src='/icon/edit.svg' alt='아이콘' />
+        <Icon onClick={handleEditNickname} src={edit} alt='아이콘' />
       </ProfileNicknameWrap>
       <Button text='로그아웃' onClick={handleLogout} />
     </ProfileContainer>

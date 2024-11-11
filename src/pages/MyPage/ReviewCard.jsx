@@ -2,6 +2,8 @@ import React, { useState } from 'react'
 import StarRating from './StarRating'
 import styled from 'styled-components'
 import ReviewComment from './ReviewComment'
+import commentWhite from '@/assets/icon/commentWhite.svg'
+import comment from '@/assets/icon/comment.svg'
 function ReviewCard() {
   // temp data
   const reviewContent =
@@ -27,7 +29,7 @@ function ReviewCard() {
         <CardCommentWrap>
           <CardCommentLeft>
             <CardCommentIcon
-              src={isCommentOpen ? '/icon/commentWhite.svg' : '/icon/comment.svg'}
+              src={isCommentOpen ? commentWhite : comment}
               isCommentOpen={isCommentOpen}
               onClick={handleIconClick}
             />
