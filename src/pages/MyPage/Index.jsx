@@ -1,5 +1,5 @@
 import BackgroundContainer from '@/components/common/BackgroundContainer'
-import * as S from '@/styles/MyPage/MyPage'
+import * as S from '@/styles/MyPage/MyPage.style'
 import Profile from './Profile'
 import ReviewCard from './ReviewCard'
 
