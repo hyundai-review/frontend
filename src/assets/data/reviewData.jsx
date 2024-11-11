@@ -15,7 +15,7 @@ export const reviewData = [
     photocard: '/assets/images/story/story2.png',
     content:
       '아 진짜 재밌네 ㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋ 진짜 미친거 아냐 존잼 그잡채아 진짜 재밌네 ㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋ 진짜 미친거 아냐 존잼 그잡채아 진짜 재밌네 ㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋ 진짜 미친거 아냐 존잼 그잡채아 진짜 재밌네 ㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋ 진짜 미친거 아냐 존잼 그잡채아 진짜 재밌네 ㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋ 진짜 미친거 아냐 존잼 그잡채아 진짜 재밌네 ㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋ 진짜 미친거 아냐 존잼 그잡채',
-    rating: 1,
+    rating: 2,
     is_spoil: false,
   },
   {
@@ -24,7 +24,7 @@ export const reviewData = [
     memberId: 3,
     photocard: '/assets/images/story/story3.png',
     content: '아 진짜 재밌네 ㅋㅋ',
-    rating: 1,
+    rating: 3,
     is_spoil: false,
   },
   {
@@ -33,7 +33,7 @@ export const reviewData = [
     memberId: 4,
     photocard: '/assets/images/story/story3.png',
     content: '아 진짜 재밌네 ㅋㅋ',
-    rating: 1,
+    rating: 4,
     is_spoil: false,
   },
   {
@@ -42,7 +42,7 @@ export const reviewData = [
     memberId: 5,
     photocard: '/assets/images/story/story4.webp',
     content: '아 진짜 재밌네 ㅋㅋ',
-    rating: 1,
+    rating: 5,
     is_spoil: false,
   },
   {

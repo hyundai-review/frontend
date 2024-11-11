@@ -2,11 +2,16 @@ import React from 'react'
 import styled from 'styled-components'
 import HEART from '@/assets/icons/heart.svg?react'
 import COMMENT from '@/assets/icons/comment.svg?react'
-
+import StarRating from '@/components/common/StarRating'
+import StoryRating from '@/components/story/StoryStarRating'
 function PhotoCard({ reviewInfo }) {
   return (
     <Wrap>
       {/* 별점 */}
+      <div style={{ marginBottom: '10px' }}>
+        <StoryRating max={reviewInfo.rating} />
+      </div>
+      {/* <StarRating type='readonly' initialValue={reviewInfo.rating} max={reviewInfo.rating} /> */}
       <CardWrap>
         <ImgWrap>
           <img src={reviewInfo.photocard} alt='' />
