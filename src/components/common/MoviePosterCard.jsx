@@ -10,6 +10,7 @@ function MoviePosterCard({ moviePosterUrl, movieId }) {
         onClick={() => {
           console.log(movieId, '여기에 movie detailpage로 이동')
         }}
+        className='hoverBright'
       >
         <MoviePosterCardImageWrapper>
           <MoviePosterCardImage src={`${moviePosterUrl}`} alt='moviePoster' />

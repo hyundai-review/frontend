@@ -11,6 +11,7 @@ function BoxOfficePosterCard({ movieInfo }) {
         onClick={() => {
           console.log(movieInfo.id, '여기에 movie detailpage로 이동')
         }}
+        className='hoverBright'
       >
         <BoxOfficePosterCardImageWrapper>
           <BoxOfficePosterCardImage src={`${movieInfo.imageUrl}`} />
@@ -43,12 +44,6 @@ const BoxOfficePosterCardContainer = styled.div`
     width:114px;
     height:161px;
     padding:5px`}
-  &:hover {
-    background: rgba(255, 255, 255, 0.2);
-    border: 1px solid rgba(255, 255, 255, 0.6);
-    backdrop-filter: blur(10px);
-    box-shadow: 0 0 15px 5px rgba(255, 255, 255, 0.3);
-  }
 `
 
 const BoxOfficePosterCardImageWrapper = styled.div`

@@ -78,7 +78,7 @@ const MainPageTopContainer = styled.div`
 const MainPageTitle = styled.div`
   width: fit-content;
   height: 48px;
-  color: white;
+  color: var(--color-gray-50);
   line-height: 48px;
   font-size: 32px;
 `
