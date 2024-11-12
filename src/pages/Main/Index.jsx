@@ -6,6 +6,7 @@ import styled from 'styled-components'
 import { useNavigate } from 'react-router-dom'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import 'swiper/css'
+import Stories from '@/components/story/Stories'
 
 /*boxOfficeMovieData - url, rank, date
 suggestMovieData - moviePosterUrl, movieID 
@@ -28,6 +29,9 @@ function MainPage() {
   const genreData = ['전체', '액션', '모험']
   return (
     <div>
+      <Wrap>
+        <Stories />
+      </Wrap>
       <MainPageTopContainer>
         <MainPageTitle>
           {isLogin === false ? '로그인이 필요합니다.' : `${userName}님,`}
@@ -121,3 +125,8 @@ const MainPageSuggestMovieWrapper = styled.div`
 const MainPageButtonWrapper = styled.div``
 
 export default MainPage
+
+const Wrap = styled.div`
+  display: flex;
+  justify-content: center;
+`
