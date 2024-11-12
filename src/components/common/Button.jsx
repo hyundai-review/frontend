@@ -21,6 +21,7 @@ export const ButtonContainer = styled.div`
   border-radius: 94px;
   border: 1px solid #b6b5ff;
   backdrop-filter: blur(10px);
+  height: fit-content;
 `
 export const ButtonText = styled.div`
   color: #b6b5ff;

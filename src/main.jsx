@@ -4,6 +4,7 @@ import App from './App.jsx'
 import GlobalStyle from './styles/globalStyle.jsx'
 import styled from 'styled-components'
 import bg from '@/assets/DummyBackgroundImage.png'
+import Header from './components/common/Header.jsx'
 
 function Root() {
   const [width, setWidth] = useState(window.innerWidth)
@@ -27,6 +28,7 @@ function Root() {
     <StrictMode>
       <GlobalStyle />
       <AppWrapper width={width}>
+        <Header isLogin={true} userName={'테스트'} profileImage={''} />
         <App />
       </AppWrapper>
     </StrictMode>
