@@ -21,7 +21,7 @@ function ReviewComment() {
 
 export default ReviewComment
 
-export const CommentContainer = styled.div`
+const CommentContainer = styled.div`
   padding: 10px 12px;
   border-radius: 10px;
   border: 1px solid rgba(255, 255, 255, 0.1);
@@ -29,7 +29,7 @@ export const CommentContainer = styled.div`
   margin-bottom: 10px;
 `
 
-export const CommentContent = styled.div`
+const CommentContent = styled.div`
   // color: var(--gray-400, #a1a1aa);
   color: #fafafa;
   font-family: Pretendard;
@@ -39,18 +39,18 @@ export const CommentContent = styled.div`
   line-height: 24px;
   margin-bottom: 10px;
 `
-export const CommentFooter = styled.div`
+const CommentFooter = styled.div`
   display: flex;
   align-items: center;
   margin-top: 10px;
 `
-export const CommentProfileImage = styled.img`
+const CommentProfileImage = styled.img`
   width: 20px;
   height: 20px;
   border-radius: 16px;
   margin-right: 10px;
 `
-export const CommentNickname = styled.span`
+const CommentNickname = styled.span`
   color: var(--gray-400, #a1a1aa);
   text-align: right;
   /* regular/xs */
@@ -61,7 +61,7 @@ export const CommentNickname = styled.span`
   line-height: 18px; /* 150% */
   margin-right: 4px;
 `
-export const CommentDate = styled.span`
+const CommentDate = styled.span`
   color: var(--gray-400, #a1a1aa);
   text-align: right;
   /* regular/xs */

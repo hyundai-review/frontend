@@ -32,11 +32,11 @@ function MyPage() {
 
 export default MyPage
 import styled from 'styled-components'
-export const ReviewTitleWrap = styled.div`
+const ReviewTitleWrap = styled.div`
   margin-top: 20px;
   padding-left: 20px;
 `
-export const ReviewTitle = styled.div`
+const ReviewTitle = styled.div`
   color: var(--gray-200, #e4e4e7);
   font-family: Pretendard;
   font-size: 20px;
@@ -44,18 +44,18 @@ export const ReviewTitle = styled.div`
   font-weight: 200;
   line-height: 30px;
 `
-export const GalleryContainer = styled.div`
+const GalleryContainer = styled.div`
   display: flex;
   justify-content: center;
   margin-top: 20px;
 `
-export const ImageSlideWrap = styled.div`
+const ImageSlideWrap = styled.div`
   padding: 20px;
   border-radius: 10px;
   border: 1px solid rgba(255, 255, 255, 0.1);
   background: rgba(0, 0, 0, 0.25);
 `
-export const ImageSlide = styled.div`
+const ImageSlide = styled.div`
   position: relative;
   border-radius: 5px;
   width: 200px;
@@ -63,7 +63,7 @@ export const ImageSlide = styled.div`
   background: url(${(props) => props.imageUrl}) lightgray 50% / cover no-repeat;
 `
 
-export const ImageText = styled.div`
+const ImageText = styled.div`
   position: absolute;
   bottom: 12px;
   left: 50%;
@@ -81,7 +81,7 @@ export const ImageText = styled.div`
   line-height: 15px;
 `
 
-export const ReviewContainer = styled.div`
+const ReviewContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;

@@ -21,11 +21,11 @@ const StarRating = ({ rating }) => {
 }
 
 export default StarRating
-export const StarWrap = styled.div`
+const StarWrap = styled.div`
   display: flex;
 `
 
-export const StarIcon = styled.img`
+const StarIcon = styled.img`
   width: 16px;
   height: 16px;
   ${({ hasFilter }) =>
