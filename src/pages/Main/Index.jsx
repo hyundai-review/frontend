@@ -1,15 +1,16 @@
 import BoxOfficePosterCard from '@/components/common/BoxOfficePosterCard'
-import MoviePosterCard from '@/components/common/MoviePosterCard'
 import SearchBar from '@/components/common/SearchBar'
 import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { useNavigate } from 'react-router-dom'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import 'swiper/css'
+import SuggestMovieBox from './SuggestMovieBox'
+import MainPageSubTitle from './MainPageSubTitle'
+import media from '@/styles/media'
 
 /*boxOfficeMovieData - url, rank, date
-suggestMovieData - moviePosterUrl, movieID 
-global color 수정시 font color 수정 */
+suggestMovieData - moviePosterUrl, movieID */
 
 function MainPage() {
   const navigate = useNavigate()
@@ -29,38 +30,49 @@ function MainPage() {
   return (
     <div>
       <MainPageTopContainer>
-        <MainPageTitle>
-          {isLogin === false ? '로그인이 필요합니다.' : `${userName}님,`}
-        </MainPageTitle>
+        <div
+          style={{
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            flexDirection: 'column',
+          }}
+        >
+          <MainPageTitle>
+            {isLogin === false ? '로그인이 필요합니다.' : `${userName}님,`}
+          </MainPageTitle>
+          <MainPageSubTitle time={nowDate.getHours()} />
+        </div>
         <SearchBar />
       </MainPageTopContainer>
-      <MainPageContainer>
-        <p
-          style={{ color: 'white' }}
-        >{`${nowDate.getMonth() + 1}월 ${nowDate.getDate()}일 박스오피스 순위`}</p>
-        <MainPageSwiperWrapper>
-          <Swiper slidesPerView={3.5}>
-            {boxOfficeMovieData.map((item, index) => (
-              <SwiperSlide>
-                <BoxOfficePosterCard movieInfo={item} key={index} />
-              </SwiperSlide>
-            ))}
-          </Swiper>
-        </MainPageSwiperWrapper>
-        <MainPageBodyWrapper>
-          <p style={{ color: 'white' }}>추천영화</p>
-          <MainPageButtonWrapper>
-            {genreData.map((item, index) => (
-              <button>item</button>
-            ))}
-          </MainPageButtonWrapper>
-          <MainPageSuggestMovieWrapper>
-            {suggestMovieData.map((item, index) => (
-              <MoviePosterCard moviePosterUrl={item.moviePosterUrl} movieId={index} key={index} />
-            ))}
-          </MainPageSuggestMovieWrapper>
-        </MainPageBodyWrapper>
-      </MainPageContainer>
+      <MainPageBodyContainer>
+        <div style={{ display: 'flex' }}>
+          <MainPageSliderWrapper>
+            <MainPageWrapperTitle>{'최신 스토리'}</MainPageWrapperTitle>
+            <div style={{ width: '362px', height: '240px' }}></div>
+          </MainPageSliderWrapper>
+          <MainPageSliderWrapper>
+            <MainPageWrapperTitle>{`${nowDate.getMonth() + 1}월 ${nowDate.getDate()}일 박스오피스 순위`}</MainPageWrapperTitle>
+            <MainPageBoxOfficeSwiperWrapper>
+              <Swiper slidesPerView={3.5}>
+                {boxOfficeMovieData.map((item, index) => (
+                  <SwiperSlide key={index}>
+                    <BoxOfficePosterCard movieInfo={item} />
+                  </SwiperSlide>
+                ))}
+              </Swiper>
+            </MainPageBoxOfficeSwiperWrapper>
+          </MainPageSliderWrapper>
+        </div>
+        <MainPageSliderWrapper>
+          <MainPageWrapperTitle>{'추천영화'}</MainPageWrapperTitle>
+          <SuggestMovieBox
+            isLogin={isLogin}
+            genreData={genreData}
+            suggestMovieData={suggestMovieData}
+          />
+        </MainPageSliderWrapper>
+      </MainPageBodyContainer>
     </div>
   )
 }
@@ -72,22 +84,29 @@ const MainPageTopContainer = styled.div`
   flex-direction: column;
   padding-top: 110px;
   gap: 40px;
+  padding-bottom: 110px;
 `
-
-//global color 설정시 추가
 const MainPageTitle = styled.div`
   width: fit-content;
   height: 48px;
   color: var(--color-gray-50);
+  text-shadow: 0px 0px 10px rgba(199, 125, 181, 0.5);
   line-height: 48px;
   font-size: 32px;
 `
-const MainPageContainer = styled.div`
+const MainPageBodyContainer = styled.div`
   display: flex;
   justify-content: start;
   flex-direction: column;
 `
-const MainPageSwiperWrapper = styled.div`
+const MainPageWrapperTitle = styled.p`
+  color: var(--color-gray-200);
+  line-height: 30px;
+  font-size: 20px;
+  font-weight: 200;
+`
+
+const MainPageBoxOfficeSwiperWrapper = styled.div`
   width: 800px;
   position: relative;
   height: fit-content;
@@ -102,22 +121,12 @@ const MainPageSwiperWrapper = styled.div`
     z-index: 1;
   }
 `
-const MainPageBodyWrapper = styled.div`
+const MainPageSliderWrapper = styled.div`
   width: 100%;
   display: flex;
   height: fit-content;
   flex-direction: column;
+  gap: 10px;
 `
-
-const MainPageSuggestMovieWrapper = styled.div`
-  display: 'grid';
-  grid-template-columns: repeat(6, 1fr);
-  width: 100%;
-  gap: 40px;
-  justify-content: start;
-  flex-direction: row;
-`
-
-const MainPageButtonWrapper = styled.div``
 
 export default MainPage
