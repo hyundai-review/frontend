@@ -5,7 +5,7 @@ import ReviewComment from './ReviewComment'
 import commentWhite from '@/assets/icons/commentWhite.svg'
 import comment from '@/assets/icons/comment.svg'
 import StarRating from '@/components/common/StarRating'
-import StarRating2 from './StarRating'
+import ReviewStarRating from './ReviewStarRating'
 function ReviewCard() {
   // temp data
   const reviewContent =
@@ -20,11 +20,22 @@ function ReviewCard() {
     console.log('댓글 열려라 참깨')
     setIsCommentOpen((prev) => !prev)
   }
+  const [initrating, setRating] = useState(3) // 별점 초기값을 3으로 설정
+
+  const handleRatingChange = (newRating) => {
+    setRating(newRating) // 별점 변경 시 상태 업데이트
+  }
   return (
     <ReviewCardContainer>
       <CardHeader>
-        <StarRating type='readonly' initialValue={rating} max={5} />
-        <StarRating2 rating={rating} />
+        <StarRating type='readonly' initialValue={rating} max={5} size={16} />
+        <StarRating
+          type='controlled' // 'controlled' 모드로 설정
+          initialValue={initrating} // 초기 별점 값으로 상태 값 전달
+          onChange={handleRatingChange} // 별점이 변경될 때 실행할 함수
+          size={16} // 아이콘 크기를 24px로 설정
+          max={5} // 최대 별점 5개 설정
+        />
         <CardMovie>{movie}</CardMovie>
       </CardHeader>
       <CardContent>{reviewContent}</CardContent>

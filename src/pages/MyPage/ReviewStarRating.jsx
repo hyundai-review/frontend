@@ -1,7 +1,8 @@
+// todo delete
 import styled from 'styled-components'
 import star from '@/assets/icons/star-white.svg'
 import star2 from '@/assets/icons/star-gray.svg'
-const StarRating2 = ({ rating }) => {
+const ReviewStarRating = ({ rating }) => {
   const totalStars = 5
 
   return (
@@ -20,9 +21,9 @@ const StarRating2 = ({ rating }) => {
   )
 }
 
-export default StarRating2
+export default ReviewStarRating
 const StarWrap = styled.div`
-  display: flex;
+  /* display: flex; */
 `
 
 const StarIcon = styled.img`
