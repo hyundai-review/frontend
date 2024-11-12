@@ -13,7 +13,7 @@ function Root() {
     max-width: ${({ width }) => Math.min(1440, width)}px;
     margin: 0 auto;
     min-height: 100dvh;
-    background-color: black;
+    // background-color: black;
   `
 
   useEffect(() => {
