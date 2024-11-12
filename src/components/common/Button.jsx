@@ -11,7 +11,7 @@ function Button({ text, onClick }) {
 
 export default Button
 
-export const ButtonContainer = styled.div`
+const ButtonContainer = styled.div`
   position: relative;
   display: inline-flex; /* 내용에 따라 크기 조절 */
   align-items: center;
@@ -30,7 +30,7 @@ export const ButtonContainer = styled.div`
     transform: scale(1.05);
   }
 `
-export const ButtonText = styled.div`
+const ButtonText = styled.div`
   color: #b6b5ff;
   font-size: 14px;
   font-family: 'Pretendard', sans-serif;
