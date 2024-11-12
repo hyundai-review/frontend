@@ -12,6 +12,7 @@ function Root() {
     margin: 0 auto;
     min-height: 100dvh;
     //background-color: #0E111C;
+    width: 100%;
   `
 
   useEffect(() => {
@@ -23,7 +24,7 @@ function Root() {
   return (
     <StrictMode>
       <GlobalStyle />
-      <AppWrapper width={width}>
+      <AppWrapper>
         <App />
       </AppWrapper>
     </StrictMode>
