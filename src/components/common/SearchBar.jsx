@@ -12,7 +12,7 @@ function SearchBar({ handleSearch }) {
   }
   return (
     <div>
-      <SearchBarContainer isfocused={inputFieldFocus}>
+      <SearchBarContainer $isfocused={inputFieldFocus} className='hoverBright'>
         <form onSubmit={handleSubmit} style={{ width: '100%', display: 'flex', height: '100%' }}>
           <SearchBarIconButton type='submit'>
             <img
@@ -49,17 +49,11 @@ const SearchBarContainer = styled.div`
     width:362px;
   `}
   ${(props) =>
-    props.isfocused &&
+    props.$isfocused &&
     `
     border: 1px solid rgba(255, 255, 255, 0.6);
     box-shadow: 0 0 15px 5px rgba(255, 255, 255, 0.3);
   `}
-  &:hover {
-    background: rgba(255, 255, 255, 0.2);
-    border: 1px solid rgba(255, 255, 255, 0.6);
-    backdrop-filter: blur(10px);
-    box-shadow: 0 0 15px 5px rgba(255, 255, 255, 0.3);
-  }
 `
 const SearchBarIconButton = styled.button`
   cursor: pointer;
