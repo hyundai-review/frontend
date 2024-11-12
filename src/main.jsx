@@ -3,6 +3,7 @@ import { createRoot } from 'react-dom/client'
 import App from './App.jsx'
 import GlobalStyle from './styles/globalStyle.jsx'
 import styled from 'styled-components'
+import bg from '@/assets/DummyBackgroundImage.png'
 
 function Root() {
   const [width, setWidth] = useState(window.innerWidth)
@@ -11,7 +12,9 @@ function Root() {
     max-width: ${({ width }) => Math.min(1440, width)}px;
     margin: 0 auto;
     min-height: 100dvh;
-    background-color: black;
+    background-image: url(${bg});
+    width: ${({ width }) => width}px;
+    box-sizing: border-box;
   `
 
   useEffect(() => {
