@@ -22,9 +22,19 @@ export const ProgressBar = () => {
   }, [])
 
   return (
-    <Box sx={{ width: '100%' }}>
-      {/* // <Box sx={{ width: '30%' }}> */}
-      <LinearProgress variant='determinate' value={progress} />
+    <Box>
+      <LinearProgress
+        variant='determinate'
+        value={progress}
+        sx={{
+          bgcolor: '#333333', // 프로그레스 바의 배경색
+          '& .MuiLinearProgress-bar': {
+            background: 'rgba(255, 255, 255, 0.50)',
+          },
+          height: 10, // 높이
+          borderRadius: 5, // 둥근 모서리
+        }}
+      />
     </Box>
   )
 }

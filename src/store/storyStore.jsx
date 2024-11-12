@@ -21,7 +21,7 @@ const useStoryStore = create((set) => ({
   updateFocusReview: (reviewId) =>
     set((state) => {
       const foundReview = state.reviewList.find((review) => review.id === reviewId)
-      console.log('focustReview:', reviewId)
+      console.log('focusReview:', reviewId)
 
       return {
         focusReview: foundReview,

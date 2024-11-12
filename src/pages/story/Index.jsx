@@ -31,6 +31,7 @@ const Wrap = styled.div`
 
 const BlurOverlay = styled.div`
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   align-content: center;

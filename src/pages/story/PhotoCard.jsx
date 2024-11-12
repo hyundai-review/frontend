@@ -4,10 +4,15 @@ import HEART from '@/assets/icons/heart.svg?react'
 import COMMENT from '@/assets/icons/comment.svg?react'
 import StarRating from '@/components/common/StarRating'
 import StoryStarRating from '@/components/story/StoryStarRating'
+import { ProgressBar } from '@/components/story/ProgressBar'
+import useStoryStore from '@/store/storyStore'
+import CLOSE from '@/assets/icons/close.svg?react'
+
 function PhotoCard({ reviewInfo }) {
+  const focusReview = useStoryStore((state) => state.focusReview)
+
   return (
     <Container>
-      {reviewInfo.id}
       <div style={{ marginBottom: '10px' }}>
         <StoryStarRating max={reviewInfo.rating} />
       </div>
@@ -27,7 +32,16 @@ function PhotoCard({ reviewInfo }) {
           </Tab>
         </ContentWrap>
       </CardWrap>
+
       {/* 초 */}
+      {focusReview.id === reviewInfo.id ? (
+        <BottomWrap>
+          <ProgressBar />
+          <CloseWrap>
+            <CLOSE />
+          </CloseWrap>
+        </BottomWrap>
+      ) : null}
     </Container>
   )
 }
@@ -115,4 +129,16 @@ const CommentWrap = styled.div`
     font-weight: 400;
     line-height: 21px; /* 150% */
   }
+`
+
+const BottomWrap = styled.div`
+  margin-top: 30px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 10px;
+`
+const CloseWrap = styled.div`
+  display: flex;
+  justify-content: center;
 `
