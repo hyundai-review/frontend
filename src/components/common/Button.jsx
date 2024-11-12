@@ -24,6 +24,7 @@ const ButtonContainer = styled.div`
   border: 1px solid #b6b5ff;
   backdrop-filter: blur(10px);
   transition: all 0.8s ease;
+  height: fit-content;
   &:hover {
     background: rgba(0, 0, 0, 0.4);
     box-shadow: 0px 0px 15px rgba(199, 125, 181, 1);
