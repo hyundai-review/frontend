@@ -7,11 +7,11 @@ import StoryStarRating from '@/components/story/StoryStarRating'
 import { ProgressBar } from '@/components/story/ProgressBar'
 import useStoryStore from '@/store/storyStore'
 import CLOSE from '@/assets/icons/close.svg?react'
-import { useCarousel } from '@/libs/useCarousel'
+import { useNavigate } from 'react-router-dom'
 
 function PhotoCard({ reviewInfo, slideNext }) {
   const focusReview = useStoryStore((state) => state.focusReview)
-
+  const navigate = useNavigate()
   return (
     <Container>
       <div style={{ marginBottom: '10px' }}>
@@ -37,7 +37,7 @@ function PhotoCard({ reviewInfo, slideNext }) {
       {focusReview.id === reviewInfo.id ? (
         <BottomWrap>
           <ProgressBar slideNext={slideNext} />
-          <CloseWrap>
+          <CloseWrap onClick={() => navigate('/', { replace: true })}>
             <CLOSE />
           </CloseWrap>
         </BottomWrap>

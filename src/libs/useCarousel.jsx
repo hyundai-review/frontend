@@ -14,6 +14,10 @@ export const useCarousel = (initialIndex = 1) => {
       // swiper.slideNext()
       swiper.slideTo(activeIndex + 1)
       // updateFocusReview(currentReview.id)
+      console.log('reviewList:', reviewList.length)
+    } else if (activeIndex === reviewList.length - 1) {
+      console.log('activeIndex', activeIndex)
+      navigate('/')
     }
   }
 
