@@ -1,11 +1,13 @@
 import { lazy, Suspense } from 'react'
 import { createBrowserRouter } from 'react-router-dom'
 import userRouter from './userRouter'
-
+import mainRouter from './mainRouter'
+import movieRouter from './movieRouter'
 const loading = <div>loading</div>
 const MainPage = lazy(() => import('@/pages/Main/Index'))
 const MyPage = lazy(() => import('@/pages/MyPage/Index'))
 const SearchPage = lazy(() => import('@/pages/Search/Index'))
+
 
 const root = createBrowserRouter([
   {
@@ -16,6 +18,10 @@ const root = createBrowserRouter([
       </Suspense>
     ),
   },
+  {
+    path: '/main',
+    children: mainRouter(),
+  },                               
   {
     path: '/mypage',
     element: (
@@ -34,7 +40,11 @@ const root = createBrowserRouter([
   },
   {
     path: '/user',
-    children: userRouter,
+    children: userRouter(),
+  },
+  {
+    path: '/movie',
+    children: movieRouter,
   },
 ])
 

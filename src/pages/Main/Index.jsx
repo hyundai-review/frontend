@@ -8,6 +8,7 @@ import 'swiper/css'
 import SuggestMovieBox from './SuggestMovieBox'
 import MainPageSubTitle from './MainPageSubTitle'
 import media from '@/styles/media'
+import Stories from '@/components/story/Stories'
 
 /*boxOfficeMovieData - url, rank, date
 suggestMovieData - moviePosterUrl, movieID */
@@ -29,6 +30,9 @@ function MainPage() {
   const genreData = ['전체', '액션', '모험']
   return (
     <div>
+      <Wrap>
+        <Stories />
+      </Wrap>
       <MainPageTopContainer>
         <div
           style={{
@@ -130,3 +134,8 @@ const MainPageSliderWrapper = styled.div`
 `
 
 export default MainPage
+
+const Wrap = styled.div`
+  display: flex;
+  justify-content: center;
+`

@@ -4,7 +4,14 @@ import reset from 'styled-reset'
 const globalStyle = createGlobalStyle`
 	${reset}
 
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
     :root {
+        background-color: #0E111C;
         /* Colors */
         --color-gray-50 :#FAFAFA;
         --color-gray-100 : #F4F4F5;

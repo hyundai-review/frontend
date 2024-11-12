@@ -13,9 +13,7 @@ function Root() {
     max-width: ${({ width }) => Math.min(1440, width)}px;
     margin: 0 auto;
     min-height: 100dvh;
-    background-image: url(${bg});
-    width: 100%;
-    box-sizing: border-box;
+    background-color: black;
   `
 
   useEffect(() => {
@@ -28,7 +26,6 @@ function Root() {
     <StrictMode>
       <GlobalStyle />
       <AppWrapper width={width}>
-        <Header isLogin={true} userName={'테스트'} profileImage={''} />
         <App />
       </AppWrapper>
     </StrictMode>

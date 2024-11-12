@@ -50,21 +50,21 @@ function ReviewCard() {
 
 export default ReviewCard
 
-export const ReviewCardContainer = styled.div`
+const ReviewCardContainer = styled.div`
   width: 100%;
   padding: 19px;
   border-radius: 10px;
   border: 1px solid rgba(255, 255, 255, 0.1);
   background: rgba(0, 0, 0, 0.25);
 `
-export const CardHeader = styled.div`
+const CardHeader = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
   margin-bottom: 8px;
 `
 
-export const CardMovie = styled.span`
+const CardMovie = styled.span`
   color: var(--gray-50, #fafafa);
   text-align: right;
   font-family: Pretendard;
@@ -73,7 +73,7 @@ export const CardMovie = styled.span`
   font-weight: 700;
   line-height: 21px; /* 150% */
 `
-export const CardContent = styled.div`
+const CardContent = styled.div`
   color: var(--gray-400, #a1a1aa);
   font-family: Pretendard;
   font-size: 16px;
@@ -82,13 +82,13 @@ export const CardContent = styled.div`
   line-height: 24px;
   margin-bottom: 10px;
 `
-export const CardFooter = styled.div`
+const CardFooter = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
   margin-top: 10px;
 `
-export const CardCommentWrap = styled.div`
+const CardCommentWrap = styled.div`
   width: 100%;
   display: flex;
   align-items: center;
@@ -99,17 +99,17 @@ export const CardCommentWrap = styled.div`
   padding: 10px;
   margin-bottom: 10px;
 `
-export const CardCommentLeft = styled.div`
+const CardCommentLeft = styled.div`
   display: flex;
   align-items: center;
 `
-export const CardComment = styled.span`
+const CardComment = styled.span`
   font-size: 14px;
   font-weight: 400;
   color: #fafafa;
   margin-right: 10px;
 `
-export const CardDate = styled.span`
+const CardDate = styled.span`
   color: var(--gray-400, #a1a1aa);
   text-align: right;
   /* regular/xs */
@@ -119,7 +119,7 @@ export const CardDate = styled.span`
   font-weight: 400;
   line-height: 18px; /* 150% */
 `
-export const CardCommentIcon = styled.img`
+const CardCommentIcon = styled.img`
   width: 24px;
   height: 24px;
   margin-right: 5px;
@@ -127,7 +127,7 @@ export const CardCommentIcon = styled.img`
   ${({ isCommentOpen }) =>
     isCommentOpen && 'filter: drop-shadow(0px 0px 10px var(--primary-light-red, #ffd7d7));'}
 `
-export const CardCommentCount = styled.span`
+const CardCommentCount = styled.span`
   color: var(--gray-50, #fafafa);
   /* regular/sm */
   font-family: Pretendard;

@@ -30,14 +30,14 @@ function Profile() {
 
 export default Profile
 
-export const ProfileContainer = styled.div`
+const ProfileContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   padding-top: 71px;
 `
-export const ProfileImage = styled.img`
+const ProfileImage = styled.img`
   width: 128px;
   height: 128px;
   object-fit: cover;
@@ -46,16 +46,16 @@ export const ProfileImage = styled.img`
   border-radius: 50%;
   margin-bottom: 20px;
 `
-export const ProfileNicknameWrap = styled.div`
+const ProfileNicknameWrap = styled.div`
   margin-bottom: 10px;
 `
-export const ProfileNickname = styled.span`
+const ProfileNickname = styled.span`
   color: #fafafa;
   font-size: 24px;
   font-weight: 700;
   line-height: 36px;
 `
-export const ProfileSuffix = styled.span`
+const ProfileSuffix = styled.span`
   font-size: 24px;
   font-weight: 200;
   color: #fafafa;
@@ -63,7 +63,7 @@ export const ProfileSuffix = styled.span`
   margin-right: 10px;
 `
 
-export const Icon = styled.img`
+const Icon = styled.img`
   cursor: pointer;
   margin-top: 3px;
   width: 24px;
