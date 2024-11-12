@@ -1,4 +1,3 @@
-import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { Swiper, SwiperSlide, useSwiper } from 'swiper/react'
 import { EffectCoverflow } from 'swiper/modules'
@@ -9,9 +8,12 @@ import 'swiper/css/effect-coverflow'
 import { useCarousel } from '@/libs/useCarousel'
 import PhotoCard from './PhotoCard'
 import { useWindowSize } from '@/utils/useWindowSize'
+import useStoryStore from '@/store/storyStore'
 
-function StoryList({ reviewData }) {
-  const { handleSlideChange, handleSlideClick } = useCarousel(1)
+function StoryList() {
+  const reviewList = useStoryStore((state) => state.reviewList)
+
+  const { handleSlideChange, handleSlideClick } = useCarousel(2)
   const { width } = useWindowSize()
   const isMobile = width < 780
 
@@ -63,10 +65,11 @@ function StoryList({ reviewData }) {
           },
         }}
       >
-        {reviewData.map((review, index) => (
+        {reviewList.map((review, index) => (
           <StyledSwiperSlide
             key={review.id}
-            onClick={() => handleSlideClick(index, '/main/story', review)}
+            //TODO 나중에 영화 상세페이지로 이동하게 할 것
+            onClick={() => handleSlideClick(index, '#', review)}
           >
             <PhotoCard reviewInfo={review} />
           </StyledSwiperSlide>
@@ -83,11 +86,8 @@ const SwiperContainer = styled.div`
   justify-content: center;
   align-content: center;
 
-  height: 100%;
+  /* height: 100%; */
   width: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
 
   .swiper {
     margin-left: -50px;

@@ -7,6 +7,7 @@ import StoryStarRating from '@/components/story/StoryStarRating'
 function PhotoCard({ reviewInfo }) {
   return (
     <Container>
+      {reviewInfo.id}
       <div style={{ marginBottom: '10px' }}>
         <StoryStarRating max={reviewInfo.rating} />
       </div>
