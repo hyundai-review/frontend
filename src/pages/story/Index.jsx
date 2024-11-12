@@ -2,11 +2,13 @@ import media from '@/styles/media'
 import React from 'react'
 import styled from 'styled-components'
 import StoryList from './StoryList'
+import { reviewData } from '@/assets/data/reviewData'
+
 function StoryPage() {
   return (
     <Wrap>
       <BlurOverlay>
-        <StoryList />
+        <StoryList reviewData={reviewData} />
       </BlurOverlay>
     </Wrap>
   )

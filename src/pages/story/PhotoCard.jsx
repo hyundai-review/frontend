@@ -3,15 +3,13 @@ import styled from 'styled-components'
 import HEART from '@/assets/icons/heart.svg?react'
 import COMMENT from '@/assets/icons/comment.svg?react'
 import StarRating from '@/components/common/StarRating'
-import StoryRating from '@/components/story/StoryStarRating'
+import StoryStarRating from '@/components/story/StoryStarRating'
 function PhotoCard({ reviewInfo }) {
   return (
-    <Wrap>
-      {/* 별점 */}
+    <Container>
       <div style={{ marginBottom: '10px' }}>
-        <StoryRating max={reviewInfo.rating} />
+        <StoryStarRating max={reviewInfo.rating} />
       </div>
-      {/* <StarRating type='readonly' initialValue={reviewInfo.rating} max={reviewInfo.rating} /> */}
       <CardWrap>
         <ImgWrap>
           <img src={reviewInfo.photocard} alt='' />
@@ -29,15 +27,18 @@ function PhotoCard({ reviewInfo }) {
         </ContentWrap>
       </CardWrap>
       {/* 초 */}
-    </Wrap>
+    </Container>
   )
 }
 
 export default PhotoCard
 
-const Wrap = styled.div``
-const CardWrap = styled.div`
+const Container = styled.div`
+  background-color: red;
   width: 362px;
+`
+const CardWrap = styled.div`
+  width: 100%;
   /* height: 710px; */
   flex-shrink: 0;
 
