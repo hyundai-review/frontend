@@ -33,9 +33,9 @@ export const StyledMoviePosterWrapper = styled.div`
   gap: 40px;
   grid-template-columns: repeat(6, 180px);
   //더 부드러운 반응형
-  /* @media (max-width: 1280px) {
+  @media (max-width: 1280px) {
     grid-template-columns: repeat(auto-fill, 180px);
-  } */
+  }
   ${media.medium`
     grid-template-columns : repeat(3, 180px)
   `}
