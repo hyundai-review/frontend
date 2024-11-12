@@ -1,6 +1,7 @@
 import React from 'react'
 import * as S from './MoviePosterCard.style'
 
+/*moviePosterUrl, movieID */
 function MoviePosterCard({ moviePosterUrl, movieId }) {
   return (
     <div>

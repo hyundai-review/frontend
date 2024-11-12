@@ -3,7 +3,7 @@ import { createBrowserRouter } from 'react-router-dom'
 import userRouter from './userRouter'
 
 const loading = <div>loading</div>
-const MainPage = lazy(() => import('@/pages/Main/Index'))
+const MainPage = lazy(() => import('@/pages/Search/Index'))
 
 const root = createBrowserRouter([
   {
