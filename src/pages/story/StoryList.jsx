@@ -13,19 +13,21 @@ import useStoryStore from '@/store/storyStore'
 function StoryList() {
   const reviewList = useStoryStore((state) => state.reviewList)
 
-  const { handleSlideChange, handleSlideClick } = useCarousel(2)
+  const { handleSlideChange, handleSlideClick, setSwiper, slideNext } = useCarousel(2)
   const { width } = useWindowSize()
   const isMobile = width < 780
 
   return (
     <SwiperContainer>
       <Swiper
+        onSwiper={setSwiper}
         modules={isMobile ? [Navigation] : [EffectCoverflow]}
         effect={isMobile ? undefined : 'coverflow'}
         centeredSlides={true}
         slidesPerView={5}
         initialSlide={2}
         onSlideChange={handleSlideChange}
+        slidesPerGroup={1}
         coverflowEffect={{
           rotate: 0,
           stretch: -140,
@@ -71,7 +73,7 @@ function StoryList() {
             //TODO 나중에 영화 상세페이지로 이동하게 할 것
             onClick={() => handleSlideClick(index, '#', review)}
           >
-            <PhotoCard reviewInfo={review} />
+            <PhotoCard reviewInfo={review} slideNext={slideNext} />
           </StyledSwiperSlide>
         ))}
       </Swiper>

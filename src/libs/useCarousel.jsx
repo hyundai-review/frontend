@@ -1,11 +1,21 @@
 import useStoryStore from '@/store/storyStore'
-import React, { useState } from 'react'
+import React, { useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
 export const useCarousel = (initialIndex = 1) => {
   const navigate = useNavigate()
   const [activeIndex, setActiveIndex] = useState(initialIndex)
   const { updateFocusReview, reviewList } = useStoryStore()
+  const [swiper, setSwiper] = useState(null)
+
+  /** 다음 슬라이드로 이동하는 함수 */
+  const slideNext = () => {
+    if (swiper && !swiper.isEnd) {
+      // swiper.slideNext()
+      swiper.slideTo(activeIndex + 1)
+      // updateFocusReview(currentReview.id)
+    }
+  }
 
   /** 슬라이드 index 바꾸는 함수 */
   const handleSlideChange = (swiper) => {
@@ -37,5 +47,7 @@ export const useCarousel = (initialIndex = 1) => {
   return {
     handleSlideChange,
     handleSlideClick,
+    slideNext,
+    setSwiper,
   }
 }

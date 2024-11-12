@@ -7,8 +7,9 @@ import StoryStarRating from '@/components/story/StoryStarRating'
 import { ProgressBar } from '@/components/story/ProgressBar'
 import useStoryStore from '@/store/storyStore'
 import CLOSE from '@/assets/icons/close.svg?react'
+import { useCarousel } from '@/libs/useCarousel'
 
-function PhotoCard({ reviewInfo }) {
+function PhotoCard({ reviewInfo, slideNext }) {
   const focusReview = useStoryStore((state) => state.focusReview)
 
   return (
@@ -33,10 +34,9 @@ function PhotoCard({ reviewInfo }) {
         </ContentWrap>
       </CardWrap>
 
-      {/* 초 */}
       {focusReview.id === reviewInfo.id ? (
         <BottomWrap>
-          <ProgressBar />
+          <ProgressBar slideNext={slideNext} />
           <CloseWrap>
             <CLOSE />
           </CloseWrap>

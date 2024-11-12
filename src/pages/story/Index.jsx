@@ -12,7 +12,6 @@ function StoryPage() {
     <Wrap image={focusReview.photocard}>
       <BlurOverlay>
         <StoryList />
-        {/* <ProgressBar /> */}
       </BlurOverlay>
     </Wrap>
   )
