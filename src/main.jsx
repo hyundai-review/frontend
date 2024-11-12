@@ -13,7 +13,7 @@ function Root() {
     margin: 0 auto;
     min-height: 100dvh;
     background-image: url(${bg});
-    width: ${({ width }) => width}px;
+    width: 100%;
     box-sizing: border-box;
   `
 
