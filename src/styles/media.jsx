@@ -7,7 +7,8 @@ import { css } from 'styled-components'
 
 const breakpoints = {
   small: '@media (max-width: 402px)',
-  medium: '@media (max-width: 768px)',
+  // medium: '@media (max-width: 768px)',
+  medium: '@media (min-width: 403px) and (max-width: 768px)',
   large: '@media (min-width: 1440px)',
 }
 

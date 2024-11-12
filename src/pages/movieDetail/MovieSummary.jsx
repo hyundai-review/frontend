@@ -10,6 +10,7 @@ function MovieSummary() {
   const rating = 'all'
   const releaseDate = '2024.11.09'
   const runningTime = '1시간 50분'
+  const status = '상영 중'
   return (
     <MovieSummaryContainer>
       <LeftSection>
@@ -23,20 +24,26 @@ function MovieSummary() {
           </RightTitleWrap>
           <RightRating>{rating}</RightRating>
         </RightHeader>
-        <MovieInfo>
-          <InfoWrap>
-            <CalendarIcon src={calendar}></CalendarIcon>
-            <ReleaseDate>{releaseDate}</ReleaseDate>
-          </InfoWrap>
-          <InfoWrap>
-            <ClockIcon src={clock}></ClockIcon>
-            <RunningTime>{runningTime}</RunningTime>
-          </InfoWrap>
-        </MovieInfo>
-        <MovieGenreWrap>
-          <GenreButton category='로맨스' />
-          <GenreButton category='드라마' />
-        </MovieGenreWrap>
+        <Wrap>
+          <MovieInfo>
+            <InfoWrap>
+              <CalendarIcon src={calendar}></CalendarIcon>
+              <ReleaseDate>{releaseDate}</ReleaseDate>
+            </InfoWrap>
+            <InfoWrap>
+              <ClockIcon src={clock}></ClockIcon>
+              <RunningTime>{runningTime}</RunningTime>
+            </InfoWrap>
+          </MovieInfo>
+          <MovieGenreWrap>
+            <GenreButton category='로맨스' />
+            <GenreButton category='드라마' />
+          </MovieGenreWrap>
+          <MovieStatusWrap>
+            <StatusCircle />
+            <StatusText>{status}</StatusText>
+          </MovieStatusWrap>
+        </Wrap>
       </RightSection>
     </MovieSummaryContainer>
   )
@@ -44,27 +51,37 @@ function MovieSummary() {
 
 export default MovieSummary
 import styled from 'styled-components'
+import media from '@/styles/media'
 const MovieSummaryContainer = styled.div`
   padding: 10px;
   border-radius: 10px;
   border: 1px solid rgba(255, 255, 255, 0.1);
   background: rgba(0, 0, 0, 0.25);
   display: flex;
-  gap: 10px;
+  width: 100%;
 `
-const LeftSection = styled.div``
+const LeftSection = styled.div`
+  background-color: black;
+  width: auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+`
 
 const Poster = styled.div`
   position: relative;
   border-radius: 5px;
-  // todo
-  width: 94px;
-  height: 141px;
+  aspect-ratio: 94 / 141; /* 비율을 94:141로 고정 */
   background: url(${(props) => props.imageUrl}) lightgray 50% / cover no-repeat;
+  /* 너비를 뷰포트 너비에 따라 서서히 변경 */
+  width: clamp(94px, 20vw, 160px);
 `
 
 const RightSection = styled.div`
+  background-color: #fff;
   width: 100%;
+  display: flex;
+  flex-direction: column;
 `
 
 const RightHeader = styled.div`
@@ -73,7 +90,12 @@ const RightHeader = styled.div`
   justify-content: space-between;
   margin-bottom: 15px;
 `
-
+const Wrap = styled.div`
+  flex: 1; /* 남은 공간을 차지하도록 설정 */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+`
 const RightTitleWrap = styled.div`
   display: flex;
   align-items: center;
@@ -116,7 +138,7 @@ const MovieInfo = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 12px;
+  /* margin-bottom: 12px; */
 `
 const InfoWrap = styled.div`
   display: flex;
@@ -157,4 +179,29 @@ const RunningTime = styled.div`
 const MovieGenreWrap = styled.div`
   display: flex;
   gap: 10px;
+`
+const MovieStatusWrap = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 10px;
+`
+
+const StatusCircle = styled.div`
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: var(--semantic-success, #7ed6a0);
+  // TODO(k) status에 따라 색 변경
+  box-shadow: 0px 0px 10px var(--semantic-success, #7ed6a0);
+`
+const StatusText = styled.div`
+  color: var(--gray-200, #e4e4e7);
+  text-align: right;
+  /* regular/sm */
+  font-family: Pretendard;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 21px; /* 150% */
 `
