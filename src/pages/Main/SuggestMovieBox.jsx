@@ -2,10 +2,22 @@ import BoxOfficePosterCard from '@/components/common/BoxOfficePosterCard'
 import Button from '@/components/common/Button'
 import MoviePosterCard from '@/components/common/MoviePosterCard'
 import media from '@/styles/media'
-import React from 'react'
+import React, { useState } from 'react'
 import styled from 'styled-components'
+import MainGenreButton from './MainGenreButton'
+import { useNavigate } from 'react-router-dom'
+import { genres } from '@/assets/data/genresData'
 
-function SuggestMovieBox({ isLogin, genreData, suggestMovieData }) {
+function SuggestMovieBox({ isLogin, suggestMovieData }) {
+  const [selectedGenre, setSelectedGenre] = useState('all')
+  const navigate = useNavigate()
+
+  const handleGenreClick = (id) => {
+    setSelectedGenre(id)
+    console.log(id)
+    // navigate(`/movie/category/${id}`)
+    // NOTE(k) 스크롤 유지 처리
+  }
   return (
     <div>
       {isLogin === false ? (
@@ -19,8 +31,17 @@ function SuggestMovieBox({ isLogin, genreData, suggestMovieData }) {
             {/*
               장르 데이터 개수 나오면 한줄에 보여줄 button개수 지정
             */}
-            {genreData.map((item, index) => (
-              <Button text={`${item}`} key={index}></Button>
+            {/* {genreData.map((item, index) => (
+              // <Button text={`${item}`} key={index}></Button>
+              <MainGenreButton text={`${item}`} key={index} />
+            ))} */}
+            {genres.map((genre) => (
+              <MainGenreButton
+                key={genre.id}
+                text={genre.name}
+                onClick={() => handleGenreClick(genre.id)}
+                isActive={selectedGenre === genre.id}
+              />
             ))}
           </MainPageButtonWrapper>
           <MainPageSuggestMovieWrapper>
@@ -49,8 +70,9 @@ const MainPageSuggestMovieWrapper = styled.div`
 `
 
 const MainPageButtonWrapper = styled.div`
-  gap: 10px;
   display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
 `
 
 const NotLogInMovieBoxWrapper = styled.div`

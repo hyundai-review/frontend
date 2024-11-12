@@ -57,7 +57,7 @@ const LeftSection = styled.div``
 const Poster = styled.div`
   position: relative;
   border-radius: 5px;
-  // todo
+  // TODO(k)
   width: 94px;
   height: 141px;
   background: url(${(props) => props.imageUrl}) lightgray 50% / cover no-repeat;

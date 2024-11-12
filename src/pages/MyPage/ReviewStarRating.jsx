@@ -1,4 +1,4 @@
-// todo delete
+// TODO(k) delete
 import styled from 'styled-components'
 import star from '@/assets/icons/star-white.svg'
 import star2 from '@/assets/icons/star-gray.svg'
