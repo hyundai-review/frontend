@@ -34,7 +34,6 @@ function PhotoCard({ reviewInfo }) {
 export default PhotoCard
 
 const Container = styled.div`
-  background-color: red;
   width: 362px;
 `
 const CardWrap = styled.div`
