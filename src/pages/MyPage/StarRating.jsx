@@ -1,7 +1,7 @@
 import styled from 'styled-components'
-import star from '@/assets/icon/star.svg'
-import star2 from '@/assets/icon/star2.svg'
-const StarRating = ({ rating }) => {
+import star from '@/assets/icons/star-white.svg'
+import star2 from '@/assets/icons/star-gray.svg'
+const StarRating2 = ({ rating }) => {
   const totalStars = 5
 
   return (
@@ -20,7 +20,7 @@ const StarRating = ({ rating }) => {
   )
 }
 
-export default StarRating
+export default StarRating2
 const StarWrap = styled.div`
   display: flex;
 `

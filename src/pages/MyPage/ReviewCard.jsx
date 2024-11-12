@@ -1,9 +1,11 @@
 import React, { useState } from 'react'
-import StarRating from './StarRating'
+// import StarRating from './StarRating'
 import styled from 'styled-components'
 import ReviewComment from './ReviewComment'
-import commentWhite from '@/assets/icon/commentWhite.svg'
-import comment from '@/assets/icon/comment.svg'
+import commentWhite from '@/assets/icons/commentWhite.svg'
+import comment from '@/assets/icons/comment.svg'
+import StarRating from '@/components/common/StarRating'
+import StarRating2 from './StarRating'
 function ReviewCard() {
   // temp data
   const reviewContent =
@@ -21,7 +23,8 @@ function ReviewCard() {
   return (
     <ReviewCardContainer>
       <CardHeader>
-        <StarRating rating={rating} />
+        <StarRating type='readonly' initialValue={rating} max={5} />
+        <StarRating2 rating={rating} />
         <CardMovie>{movie}</CardMovie>
       </CardHeader>
       <CardContent>{reviewContent}</CardContent>
