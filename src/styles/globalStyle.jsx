@@ -5,6 +5,7 @@ const globalStyle = createGlobalStyle`
 	${reset}
 
     :root {
+        background-color: #0E111C;
         /* Colors */
     }
 `
