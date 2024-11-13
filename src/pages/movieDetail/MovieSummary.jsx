@@ -2,6 +2,8 @@ import React from 'react'
 import calendar from '@/assets/icons/calendar-tick.svg'
 import clock from '@/assets/icons/clock.svg'
 import GenreButton from '@/components/common/GenreButton'
+import styled from 'styled-components'
+import media from '@/styles/media'
 function MovieSummary() {
   const posterImageUrl =
     'https://img.cgv.co.kr/Movie/Thumbnail/StillCut/000088/88847/88847230819_727.jpg'
@@ -43,7 +45,6 @@ function MovieSummary() {
 }
 
 export default MovieSummary
-import styled from 'styled-components'
 const MovieSummaryContainer = styled.div`
   padding: 10px;
   border-radius: 10px;
@@ -52,7 +53,12 @@ const MovieSummaryContainer = styled.div`
   display: flex;
   gap: 10px;
 `
-const LeftSection = styled.div``
+const LeftSection = styled.div`
+  width: auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+`
 
 const Poster = styled.div`
   position: relative;
@@ -87,17 +93,22 @@ const RightTitle = styled.div`
   font-style: normal;
   font-weight: 700;
   line-height: 30px; /* 150% */
+  ${media.medium`
+    font-size: calc(20px + 0.5vw);
+  `}
 `
 
 const RightYear = styled.div`
   color: #fff;
-
   /* light/md */
   font-family: Pretendard;
   font-size: 16px;
   font-style: normal;
   font-weight: 200;
   line-height: 24px; /* 150% */
+  ${media.medium`
+    font-size: calc(16px + 0.5vw);
+  `}
 `
 
 const RightRating = styled.div`
@@ -111,6 +122,9 @@ const RightRating = styled.div`
   font-style: normal;
   font-weight: 400;
   line-height: 21px; /* 150% */
+  ${media.medium`
+    font-size: calc(14px + 0.5vw);
+  `}
 `
 const MovieInfo = styled.div`
   display: flex;
@@ -128,6 +142,10 @@ const CalendarIcon = styled.img`
   justify-content: center;
   align-items: center;
   margin-right: 4px;
+  ${media.medium`
+    width: 1em;
+    height: 1em;
+  `}
 `
 const ReleaseDate = styled.div`
   color: var(--gray-200, #e4e4e7);
@@ -137,12 +155,19 @@ const ReleaseDate = styled.div`
   font-style: normal;
   font-weight: 400;
   line-height: 21px; /* 150% */
+  ${media.medium`
+    font-size: calc(14px + 0.5vw);
+  `}
 `
 
 const ClockIcon = styled.img`
   width: 16px;
   height: 16px;
   margin-right: 4px;
+  ${media.medium`
+    width: 1em;
+  height: 1em;
+  `}
 `
 
 const RunningTime = styled.div`
@@ -153,6 +178,9 @@ const RunningTime = styled.div`
   font-style: normal;
   font-weight: 400;
   line-height: 21px; /* 150% */
+  ${media.medium`
+    font-size: calc(14px + 0.5vw);
+  `}
 `
 const MovieGenreWrap = styled.div`
   display: flex;
