@@ -58,7 +58,6 @@ function SuggestMovieBox({ isLogin, suggestMovieData }) {
 const MainPageSuggestMovieWrapper = styled.div`
   display: grid;
   grid-template-columns: repeat(auto-fill, 180px);
-  width: 100%;
   gap: 60px;
   justify-content: start;
   flex-direction: column;
