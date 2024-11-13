@@ -21,6 +21,20 @@ function MainPage() {
   const [isLogin, setIsLogin] = useState(true)
   const userName = '테스트'
   const nowDate = new Date()
+  const [screenWidth, setScreenWidth] = useState(document.documentElement.clientWidth)
+  useEffect(() => {
+    const handleResize = () => {
+      setScreenWidth(document.documentElement.clientWidth)
+    }
+
+    // 이벤트 리스너 등록
+    window.addEventListener('resize', handleResize)
+
+    // 컴포넌트가 언마운트될 때 리스너 제거
+    return () => {
+      window.removeEventListener('resize', handleResize)
+    }
+  }, [])
   const boxOfficeMovieData = [...Array(10)].map((_, index) => ({
     imageUrl: 'https://image.tmdb.org/t/p/w300/tKV0etz5OIsAjSNG1hJktsjbNJk.jpg',
     rank: index + 1,
@@ -35,23 +49,16 @@ function MainPage() {
       <BackgroundContainer>
         <div style={{ width: '100%' }}>
           <MainPageTopContainer>
-            <div
-              style={{
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center',
-                flexDirection: 'column',
-              }}
-            >
+            <MainPageTopWrapper>
               <MainPageTitle>
                 {isLogin === false ? '로그인이 필요합니다.' : `${userName}님,`}
               </MainPageTitle>
               {isLogin === false ? '' : <MainPageSubTitle time={nowDate.getHours()} />}
-            </div>
+            </MainPageTopWrapper>
             <SearchBar />
           </MainPageTopContainer>
           <MainPageBodyContainer>
-            <div style={{ gap: '40px', display: 'flex' }}>
+            <MainPageBodyTopWrapper>
               <div>
                 <MainPageSliderWrapper>
                   <MainPageWrapperTitle>{'최신 스토리'}</MainPageWrapperTitle>
@@ -63,18 +70,18 @@ function MainPage() {
               <div style={{ flex: '1' }}>
                 <MainPageSliderWrapper>
                   <MainPageWrapperTitle>{`${nowDate.getMonth() + 1}월 ${nowDate.getDate()}일 박스오피스 순위`}</MainPageWrapperTitle>
-                  <MainPageBoxOfficeSwiperWrapper>
-                    <Swiper slidesPerView={4.3} spaceBetween={10} style={{ maxWidth: '1038px' }}>
+                  <MainPageBoxOfficeSwiperWrapper $width={screenWidth - 402}>
+                    <Swiper spaceBetween={7} slidesPerView={'auto'}>
                       {boxOfficeMovieData.map((item, index) => (
-                        <SwiperSlide key={index}>
+                        <MainPageSwiperSlide key={index}>
                           <BoxOfficePosterCard movieInfo={item} />
-                        </SwiperSlide>
+                        </MainPageSwiperSlide>
                       ))}
                     </Swiper>
                   </MainPageBoxOfficeSwiperWrapper>
                 </MainPageSliderWrapper>
               </div>
-            </div>
+            </MainPageBodyTopWrapper>
             <MainPageSliderWrapper>
               <MainPageWrapperTitle>{'추천영화'}</MainPageWrapperTitle>
               <SuggestMovieBox isLogin={isLogin} suggestMovieData={suggestMovieData} />
@@ -103,32 +110,71 @@ const MainPageTitle = styled.div`
   line-height: 48px;
   font-size: 32px;
 `
+const MainPageTopWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+`
+
 const MainPageBodyContainer = styled.div`
   display: flex;
   justify-content: start;
   flex-direction: column;
+  gap: 30px;
 `
+
+const MainPageBodyTopWrapper = styled.div`
+  gap: 40px;
+  display: flex;
+  flex-direction: row;
+  ${media.medium`
+    flex-direction:column
+  `}
+`
+
+const MainPageSwiperSlide = styled(SwiperSlide)`
+  max-width: 250px;
+  display: flex;
+  overflow: hidden;
+  ${media.small`
+    max-width: 150px
+  `}
+`
+
 const MainPageWrapperTitle = styled.p`
   color: var(--color-gray-200);
   line-height: 30px;
   font-size: 20px;
   font-weight: 200;
+  padding-left: 20px;
 `
 
 const MainPageBoxOfficeSwiperWrapper = styled.div`
-  width: 100%;
+  max-width: 998px;
+  width: ${(props) => props.$width}px;
   position: relative;
   height: fit-content;
+  overflow: visible;
   &::after {
     content: '';
     position: absolute;
-    top: 0;
+    top: 19px;
     right: 0;
     width: 5%;
-    height: 100%;
+    height: 280px;
     background: linear-gradient(to left, rgba(0, 0, 0, 1), rgba(255, 255, 255, 0));
     z-index: 1;
   }
+  ${media.medium`
+    width: ${(props) => props.$width + 402}px
+  `}
+  ${media.small`
+    width:391px;
+    &::after{
+      height: 172px
+    }
+  `}
 `
 const MainPageSliderWrapper = styled.div`
   width: 100%;
@@ -136,6 +182,7 @@ const MainPageSliderWrapper = styled.div`
   height: fit-content;
   flex-direction: column;
   gap: 10px;
+  overflow: hidden;
 `
 
 const Wrap = styled.div`

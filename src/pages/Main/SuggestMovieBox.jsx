@@ -50,14 +50,16 @@ function SuggestMovieBox({ isLogin, suggestMovieData }) {
 
 const MainPageSuggestMovieWrapper = styled.div`
   display: grid;
-  grid-template-columns: repeat(auto-fill, 180px);
-  gap: 60px;
+  gap: 9px 60px;
   justify-content: start;
   flex-direction: column;
   place-items: center;
+  padding-left: 20px;
+  grid-template-columns: repeat(auto-fill, 180px);
   ${media.small`
     grid-template-columns: repeat(3, 130px);
-    gap : 2px
+    gap : 2px;
+    padding-left:0px;
   `}
 `
 
@@ -65,6 +67,11 @@ const MainPageButtonWrapper = styled.div`
   display: flex;
   gap: 10px;
   flex-wrap: wrap;
+  padding-bottom: 10px;
+  padding-left: 20px;
+  ${media.small`
+    margin-bottom:10px;
+  `};
 `
 
 const NotLogInMovieBoxWrapper = styled.div`
