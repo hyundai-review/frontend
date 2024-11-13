@@ -7,11 +7,10 @@ import 'swiper/css/pagination'
 import 'swiper/css/effect-coverflow'
 
 import styled from 'styled-components'
-import { reviewData } from '@/assets/data/reviewData'
 import StoryItem from './StoryItem'
 import { useCarousel } from '@/libs/useCarousel'
 
-function Stories() {
+function Stories({ dataList, path }) {
   const { handleSlideChange, handleSlideClick } = useCarousel(1)
 
   return (
@@ -32,10 +31,11 @@ function Stories() {
           scale: 0.8, // 비활성 슬라이드의 크기를 조절
         }}
       >
-        {reviewData.map((review, index) => (
+        {dataList.map((review, index) => (
           <SwiperSlide
             key={review.id}
-            onClick={() => handleSlideClick(index, '/main/story', review)}
+            // onClick={() => handleSlideClick(index, '/main/story', review)}
+            onClick={() => handleSlideClick(index, path, review)}
           >
             <StoryItem photocardImg={review.photocard} reviewId={review.id} />
           </SwiperSlide>

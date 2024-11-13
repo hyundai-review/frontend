@@ -9,6 +9,7 @@ import SuggestMovieBox from './SuggestMovieBox'
 import MainPageSubTitle from './MainPageSubTitle'
 import media from '@/styles/media'
 import Stories from '@/components/story/Stories'
+import { reviewData } from '@/assets/data/reviewData'
 
 /*boxOfficeMovieData - url, rank, date
 suggestMovieData - moviePosterUrl, movieID */
@@ -31,7 +32,7 @@ function MainPage() {
   return (
     <div>
       <Wrap>
-        <Stories />
+        <Stories dataList={reviewData} path={'/main/story'} />
       </Wrap>
       <MainPageTopContainer>
         <div
