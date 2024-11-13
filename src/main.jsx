@@ -7,26 +7,26 @@ import bg from '@/assets/DummyBackgroundImage.png'
 import Header from './components/common/Header.jsx'
 
 function Root() {
-  const [width, setWidth] = useState(window.innerWidth)
+  // const [width, setWidth] = useState(window.innerWidth)
 
-  const AppWrapper = styled.div`
-    max-width: ${({ width }) => Math.min(1440, width)}px;
-    margin: 0 auto;
-    min-height: 100dvh;
-  `
+  // const AppWrapper = styled.div`
+  //   max-width: ${({ width }) => Math.min(1440, width)}px;
+  //   margin: 0 auto;
+  //   min-height: 100dvh;
+  // `
 
-  useEffect(() => {
-    const handleResize = () => setWidth(window.innerWidth)
-    window.addEventListener('resize', handleResize)
-    return () => window.removeEventListener('resize', handleResize)
-  }, [])
+  // useEffect(() => {
+  //   const handleResize = () => setWidth(window.innerWidth)
+  //   window.addEventListener('resize', handleResize)
+  //   return () => window.removeEventListener('resize', handleResize)
+  // }, [])
 
   return (
     <StrictMode>
       <GlobalStyle />
-      <AppWrapper width={width}>
-        <App />
-      </AppWrapper>
+      {/* <AppWrapper width={width}> */}
+      <App />
+      {/* </AppWrapper> */}
     </StrictMode>
   )
 }
