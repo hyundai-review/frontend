@@ -62,7 +62,6 @@ const MovieSummaryContainer = styled.div`
   gap: 10px;
 `
 const LeftSection = styled.div`
-  background-color: black;
   width: auto;
   display: inline-flex;
   align-items: center;
@@ -109,17 +108,22 @@ const RightTitle = styled.div`
   font-style: normal;
   font-weight: 700;
   line-height: 30px; /* 150% */
+  ${media.medium`
+    font-size: calc(20px + 0.5vw);
+  `}
 `
 
 const RightYear = styled.div`
   color: #fff;
-
   /* light/md */
   font-family: Pretendard;
   font-size: 16px;
   font-style: normal;
   font-weight: 200;
   line-height: 24px; /* 150% */
+  ${media.medium`
+    font-size: calc(16px + 0.5vw);
+  `}
 `
 
 const RightRating = styled.div`
@@ -132,6 +136,9 @@ const RightRating = styled.div`
   font-style: normal;
   font-weight: 400;
   line-height: 21px; /* 150% */
+  ${media.medium`
+    font-size: calc(14px + 0.5vw);
+  `}
 `
 const MovieInfo = styled.div`
   display: flex;
@@ -149,6 +156,10 @@ const CalendarIcon = styled.img`
   justify-content: center;
   align-items: center;
   margin-right: 4px;
+  ${media.medium`
+    width: 1em;
+    height: 1em;
+  `}
 `
 const ReleaseDate = styled.div`
   color: var(--gray-200, #e4e4e7);
@@ -158,12 +169,19 @@ const ReleaseDate = styled.div`
   font-style: normal;
   font-weight: 400;
   line-height: 21px; /* 150% */
+  ${media.medium`
+    font-size: calc(14px + 0.5vw);
+  `}
 `
 
 const ClockIcon = styled.img`
   width: 16px;
   height: 16px;
   margin-right: 4px;
+  ${media.medium`
+    width: 1em;
+  height: 1em;
+  `}
 `
 
 const RunningTime = styled.div`
@@ -174,6 +192,9 @@ const RunningTime = styled.div`
   font-style: normal;
   font-weight: 400;
   line-height: 21px; /* 150% */
+  ${media.medium`
+    font-size: calc(14px + 0.5vw);
+  `}
 `
 const MovieGenreWrap = styled.div`
   display: flex;

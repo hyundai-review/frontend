@@ -14,16 +14,16 @@ export const useCarousel = (initialIndex = 1) => {
       // swiper.slideNext()
       swiper.slideTo(activeIndex + 1)
       // updateFocusReview(currentReview.id)
-      console.log('reviewList:', reviewList.length)
+      // console.log('reviewList:', reviewList.length)
     } else if (activeIndex === reviewList.length - 1) {
-      console.log('activeIndex', activeIndex)
+      // console.log('activeIndex', activeIndex)
       navigate('/')
     }
   }
 
   /** 슬라이드 index 바꾸는 함수 */
   const handleSlideChange = (swiper) => {
-    console.log('activeIndex:', swiper.activeIndex)
+    // console.log('activeIndex:', swiper.activeIndex)
 
     setActiveIndex(swiper.activeIndex)
 

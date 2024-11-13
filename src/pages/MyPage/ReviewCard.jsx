@@ -5,46 +5,55 @@ import ReviewComment from './ReviewComment'
 import commentWhite from '@/assets/icons/commentWhite.svg'
 import comment from '@/assets/icons/comment.svg'
 import StarRating from '@/components/common/StarRating'
-function ReviewCard() {
-  // temp data
-  const reviewContent =
-    '이 영화는 정말 재밌었어요! 이 영화는 정말 재밌었어요! 이 영화는 정말 재밌었어요! 이 영화는 정말 재밌었어요! 이 영화는 정말 재밌었어요!'
-  const commentCount = 13
-  const cardDate = '2024.11.09'
-  const rating = 4 // 별점
-  const movie = '청설'
-
+import { useNavigate } from 'react-router-dom'
+function ReviewCard({ review }) {
+  const { movieId, movieTitle, rating, reviewContent, commentCount, cardDate } = review
+  const navigate = useNavigate()
   const [isCommentOpen, setIsCommentOpen] = useState(false)
-  const handleIconClick = () => {
+  const handleCommentClick = (e) => {
     console.log('댓글 열려라 참깨')
     setIsCommentOpen((prev) => !prev)
+    e.stopPropagation()
+  }
+  const handleReviewClick = () => {
+    // TODO(k) 댓글까지 스크롤 처리
+    navigate(`/movie/${movieId}/detail`)
   }
   return (
-    <ReviewCardContainer>
-      <CardHeader>
-        <StarRating type='readonly' initialValue={rating} max={5} size={16} />
-        <CardMovie>{movie}</CardMovie>
-      </CardHeader>
-      <CardContent>{reviewContent}</CardContent>
-      <CardFooter>
-        <CardCommentWrap>
-          <CardCommentLeft>
-            <CardCommentIcon
-              src={isCommentOpen ? commentWhite : comment}
-              isCommentOpen={isCommentOpen}
-              onClick={handleIconClick}
-            />
-            <CardCommentCount>{commentCount}</CardCommentCount>
-          </CardCommentLeft>
-          <CardDate>{cardDate}</CardDate>
-        </CardCommentWrap>
-      </CardFooter>
-      {isCommentOpen && (
-        <>
-          <ReviewComment />
-          <ReviewComment />
-        </>
-      )}
+    <ReviewCardContainer className='hoverBright' onClick={handleReviewClick}>
+      <Wrap>
+        <LeftWrap>
+          <CardHeader>
+            <CardMovie>{movieTitle}</CardMovie>
+            <StarRating type='readonly' initialValue={rating} max={5} size={16} />
+          </CardHeader>
+          <CardContent>{reviewContent}</CardContent>
+        </LeftWrap>
+        <RightWrap>
+          <Photocard src={review.photocard} />
+        </RightWrap>
+      </Wrap>
+      <CommentWrap>
+        <CardFooter>
+          <CardCommentWrap>
+            <CardCommentLeft>
+              <CardCommentIcon
+                src={isCommentOpen ? commentWhite : comment}
+                isCommentOpen={isCommentOpen}
+                onClick={handleCommentClick}
+              />
+              <CardCommentCount>{commentCount}</CardCommentCount>
+            </CardCommentLeft>
+            <CardDate>{cardDate.substring(0, 10)}</CardDate>
+          </CardCommentWrap>
+        </CardFooter>
+        {isCommentOpen && (
+          <>
+            <ReviewComment />
+            <ReviewComment />
+          </>
+        )}
+      </CommentWrap>
     </ReviewCardContainer>
   )
 }
@@ -57,17 +66,27 @@ const ReviewCardContainer = styled.div`
   border-radius: 10px;
   border: 1px solid rgba(255, 255, 255, 0.1);
   background: rgba(0, 0, 0, 0.25);
+  cursor: pointer;
+`
+const Wrap = styled.div`
+  display: flex;
+  justify-content: space-between;
+`
+
+const LeftWrap = styled.div`
+  margin-right: 20px;
 `
 const CardHeader = styled.div`
   display: flex;
-  align-items: center;
-  justify-content: space-between;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
   margin-bottom: 8px;
+  gap: 5px;
 `
 
 const CardMovie = styled.span`
   color: var(--gray-50, #fafafa);
-  text-align: right;
   font-family: Pretendard;
   font-size: 14px;
   font-style: normal;
@@ -81,13 +100,25 @@ const CardContent = styled.div`
   font-style: normal;
   font-weight: 400;
   line-height: 24px;
-  margin-bottom: 10px;
+  // margin-bottom: 10px;
+  margin: 10px 0;
 `
+
 const CardFooter = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
   margin-top: 10px;
+  cursor: default;
+`
+
+const RightWrap = styled.div``
+
+const Photocard = styled.img`
+  width: 160px;
+  height: 160px;
+  border-radius: 5px;
+  object-fit: cover;
 `
 const CardCommentWrap = styled.div`
   width: 100%;
@@ -105,14 +136,13 @@ const CardCommentLeft = styled.div`
   align-items: center;
 `
 const CardComment = styled.span`
-  font-size: 14px;
+  /* font-size: 14px;
   font-weight: 400;
   color: #fafafa;
-  margin-right: 10px;
+  margin-right: 10px; */
 `
 const CardDate = styled.span`
   color: var(--gray-400, #a1a1aa);
-  text-align: right;
   /* regular/xs */
   font-family: Pretendard;
   font-size: 12px;
@@ -137,3 +167,4 @@ const CardCommentCount = styled.span`
   font-weight: 400;
   line-height: 21px; /* 150% */
 `
+const CommentWrap = styled.div``
