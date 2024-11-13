@@ -6,16 +6,6 @@ import Stories from '../story/Stories'
 import media from '@/styles/media'
 
 function ReviewSwiper({ dataList, path }) {
-  const [isMobile, setIsMobile] = useState(false)
-  useEffect(() => {
-    const handleResize = () => {
-      setIsMobile(window.matchMedia(media.small).matches)
-    }
-    handleResize()
-    window.addEventListener('resize', handleResize)
-    return () => window.removeEventListener('resize', handleResize)
-  }, [])
-
   return (
     <div>
       <SwiperWrapper>
