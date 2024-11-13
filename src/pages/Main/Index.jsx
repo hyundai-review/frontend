@@ -11,10 +11,11 @@ import media from '@/styles/media'
 import Stories from '@/components/story/Stories'
 import { reviewData } from '@/assets/data/reviewData'
 import BackgroundContainer from '@/components/common/BackgroundContainer'
-import ReviewSwiper from '@/components/reviewSwiper/ReviewSwiper'
+
 /*boxOfficeMovieData - url, rank, date
 suggestMovieData - moviePosterUrl, movieID */
 
+// TODO(j) 로그인시 isLogin에 상태 저장할것
 function MainPage() {
   const navigate = useNavigate()
   const [isLogin, setIsLogin] = useState(true)
@@ -29,7 +30,6 @@ function MainPage() {
     moviePosterUrl: 'https://image.tmdb.org/t/p/w300/tKV0etz5OIsAjSNG1hJktsjbNJk.jpg',
     movieId: index + 1,
   }))
-  // const genreData = ['전체', '액션', '모험']
   return (
     <div>
       <BackgroundContainer>
@@ -77,13 +77,8 @@ function MainPage() {
             </div>
             <MainPageSliderWrapper>
               <MainPageWrapperTitle>{'추천영화'}</MainPageWrapperTitle>
-              <SuggestMovieBox
-                isLogin={isLogin}
-                // genreData={genreData}
-                suggestMovieData={suggestMovieData}
-              />
+              <SuggestMovieBox isLogin={isLogin} suggestMovieData={suggestMovieData} />
             </MainPageSliderWrapper>
-            <ReviewSwiper dataList={reviewData} path={'/main/story'} />
           </MainPageBodyContainer>
         </div>
       </BackgroundContainer>
