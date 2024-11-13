@@ -16,10 +16,10 @@ function ReviewPostPage() {
   const { movieId } = useParams()
   const { reviewStep, prevStep, setNavi } = useReviewStore()
   const navigate = useNavigate()
-  // navigate 함수를 store에 설정
+
   useEffect(() => {
     setNavi((path) => navigate(path))
-    return () => setNavi(null) // cleanup
+    return () => setNavi(null)
   }, [navigate])
 
   return (

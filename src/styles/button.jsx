@@ -10,6 +10,7 @@ export const ReviewPostBtn = styled.button`
   box-shadow: 0px 0px 10px 0px var(--primary-solid-light, rgba(199, 125, 181, 0.5));
 
   cursor: pointer;
+  white-space: nowrap; // 텍스트 줄바꿈 방지
 
   &:hover {
     background: rgba(255, 255, 255, 0.2);

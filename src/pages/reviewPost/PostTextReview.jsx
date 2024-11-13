@@ -44,7 +44,7 @@ function PostTextReview() {
         </SBoxContainer.Box>
       </div>
       <BottomWrap>
-        <SBoxContainer.Box $width='324px'>
+        <SBoxContainer.Box $width='324px' $minWidth='362px'>
           <SpoWrap>
             <SText.Text>스포일러가 포함되어있나요?</SText.Text>
             <Checkbox
@@ -66,8 +66,8 @@ function PostTextReview() {
         </SBoxContainer.Box>
 
         <BtnWrap>
-          <button style={{ all: 'unset', cursor: 'pointer' }}>
-            <BtnText>리뷰만 올리기</BtnText>
+          <button style={{ all: 'unset', cursor: 'pointer', whiteSpace: 'nowrap' }}>
+            <BtnText style={{ padding: '0 50px' }}>리뷰만 올리기</BtnText>
           </button>
           <SBtn.ReviewPostBtn onClick={nextStep}>
             <BtnText>포토카드 만들기</BtnText>
@@ -109,8 +109,15 @@ const BtnText = styled(SText.Text)`
 const BottomWrap = styled.div`
   display: flex;
   justify-content: space-between;
+
+  @media (max-width: 933px) {
+    flex-direction: column;
+    gap: 20px;
+    /* align-items: center; // 가운데 정렬이 필요한 경우 */
+    /* width: 100%; // 전체 너비가 필요한 경우 */
+  }
 `
 const BtnWrap = styled.div`
   display: flex;
-  gap: 54px;
+  /* gap: 54px; */
 `
