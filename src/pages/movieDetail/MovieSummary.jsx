@@ -1,6 +1,6 @@
 import React from 'react'
-import calendar from '@/assets/icon/calendar-tick.svg'
-import clock from '@/assets/icon/clock.svg'
+import calendar from '@/assets/icons/calendar-tick.svg'
+import clock from '@/assets/icons/clock.svg'
 import GenreButton from '@/components/common/GenreButton'
 function MovieSummary() {
   const posterImageUrl =
