@@ -1,33 +1,81 @@
+// store/reviewStore.js
 import { create } from 'zustand'
-/** review 생성 store */
-//   “rating”: “integer”,
-//   “review”: “string”,
-//   “isSpoil”: “boolean”,
-//   “photocard”: “string”
+import { persist } from 'zustand/middleware'
 
-const useReviewStore = create((set) => ({
-  reviewStep: 1,
-  reviewPost: {
-    rating: 0,
-    textReview: '',
-    photocard: '',
-    isSpoil: false,
-  },
-  setReviewStep: (reviewStep) => set({ reviewStep }),
-  setReviewPost: (reviewPost) => set({ reviewPost }),
+const useReviewStore = create(
+  persist(
+    (set, get) => ({
+      reviewStep: 0,
+      reviewPost: {
+        rating: 0,
+        textReview: '',
+        photocard: '',
+        isSpoil: false,
+      },
+      navi: null, // navi callback 함수 저장
+      setNavi: (navi) => set({ navi }),
 
-  updateReviewStep: (reviewStep) =>
-    set((state) => {
-      return {
-        reviewStep: reviewStep,
-      }
+      // step
+      setReviewStep: (step) => set({ reviewStep: step }),
+
+      //   nextStep: () =>
+      //     set((state) => ({
+      //       reviewStep: Math.min(state.reviewStep + 1, 4),
+      //     })),
+      nextStep: () => {
+        const state = get()
+        const nextStepValue = Math.min(state.reviewStep + 1, 4)
+        set({ reviewStep: nextStepValue })
+
+        // 라우팅
+        if (state.navi) {
+          const paths = ['text', 'photo']
+          state.navi(paths[nextStepValue])
+        }
+      },
+
+      prevStep: () => {
+        const state = get()
+        const prevStepValue = Math.max(state.reviewStep - 1, 0)
+        set({ reviewStep: prevStepValue })
+
+        // 라우팅
+        if (state.navi) {
+          const paths = ['text', 'photo']
+          state.navi(paths[prevStepValue])
+        }
+      },
+
+      // review post
+      setReviewPost: (post) =>
+        set((state) => ({
+          reviewPost: { ...state.reviewPost, ...post },
+        })),
+      updateReviewPost: (reviewPost) =>
+        set(() => ({
+          reviewPost: reviewPost,
+        })),
+
+      // 초기화
+      resetStore: () =>
+        set({
+          reviewStep: 0,
+          reviewPost: {
+            rating: 0,
+            textReview: '',
+            photocard: '',
+            isSpoil: false,
+          },
+        }),
     }),
-  updateReviewPost: (reviewPost) =>
-    set((state) => {
-      return {
-        reviewPost: reviewPost,
-      }
-    }),
-}))
+    {
+      name: 'review-storage', // 로컬 스토리지
+      partialize: (state) => ({
+        reviewStep: state.reviewStep,
+        reviewPost: state.reviewPost,
+      }),
+    },
+  ),
+)
 
 export default useReviewStore
