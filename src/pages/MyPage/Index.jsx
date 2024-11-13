@@ -22,8 +22,8 @@ function MyPage() {
           <ReviewTitle>리뷰({transformedData[0].commentCount})</ReviewTitle>
         </ReviewTitleWrap>
         {/* TODO(k) 경로설정 */}
-        <Stories dataList={transformedData} path={'/mypage'} />
-        {/* <ReviewSwiper dataList={transformedData} path={'/mypage'} /> */}
+        {/* <Stories dataList={transformedData} path={'/mypage'} /> */}
+        <ReviewSwiper dataList={transformedData} path={'/mypage'} />
         <ReviewContainer>
           {/* <ReviewCard /> */}
           {transformedData.map((review) => (
