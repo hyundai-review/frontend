@@ -4,42 +4,33 @@ import { Swiper, SwiperSlide } from 'swiper/react'
 import 'swiper/css'
 import Stories from '../story/Stories'
 import media from '@/styles/media'
-
 function ReviewSwiper({ dataList, path }) {
-  const [isMobile, setIsMobile] = useState(false)
-  useEffect(() => {
-    const handleResize = () => {
-      setIsMobile(window.matchMedia(media.small).matches)
-    }
-    handleResize()
-    window.addEventListener('resize', handleResize)
-    return () => window.removeEventListener('resize', handleResize)
-  }, [])
-
+  const dataLength = dataList.length
   return (
     <div>
       <SwiperWrapper>
         <Swiper
+          style={{ margin: 0 }}
           breakpoints={{
             1380: {
-              slidesPerView: 5.6,
+              slidesPerView: Math.min(dataLength, 5.6),
             },
             1139: {
-              slidesPerView: 4.6,
+              slidesPerView: Math.min(dataLength, 4.6),
             },
             900: {
-              slidesPerView: 3.6,
+              slidesPerView: Math.min(dataLength, 3.6),
             },
             659: {
-              slidesPerView: 2.6,
+              slidesPerView: Math.min(dataLength, 2.6),
             },
             402: {
-              slidesPerView: 1.6,
+              slidesPerView: Math.min(dataLength, 1.6),
             },
           }}
         >
           {dataList.map((review, index) => (
-            <SwiperSlide onClick={`여기 ${path}로 이동`}>
+            <SwiperSlide onClick={console.log(`여기 ${path}로 이동`)} style={{ width: 250 }}>
               <ImageSlideWrap>
                 <ImageSlide imageUrl={review.photocard}>
                   <ImageText>{'여기는 나중에 대체됨'}</ImageText>
@@ -49,9 +40,9 @@ function ReviewSwiper({ dataList, path }) {
           ))}
         </Swiper>
       </SwiperWrapper>
-      <StoiresWrapper>
+      <StoriesWrapper>
         <Stories dataList={dataList} path={path} />
-      </StoiresWrapper>
+      </StoriesWrapper>
     </div>
   )
 }
@@ -92,6 +83,8 @@ const ImageText = styled.div`
 const SwiperWrapper = styled.div`
   display: flex;
   position: relative;
+  justify-content: flex-start;
+  align-items: flex-start;
   ${media.small`
         display:none
     `}
@@ -107,7 +100,7 @@ const SwiperWrapper = styled.div`
   }
 `
 
-const StoiresWrapper = styled.div`
+const StoriesWrapper = styled.div`
   display: none;
   ${media.small`
     display:flex
