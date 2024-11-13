@@ -4,8 +4,15 @@ import { Swiper, SwiperSlide } from 'swiper/react'
 import 'swiper/css'
 import Stories from '../story/Stories'
 import media from '@/styles/media'
+import { useNavigate } from 'react-router-dom'
+
 function ReviewSwiper({ dataList, path }) {
+  const navigate = useNavigate()
   const dataLength = dataList.length
+
+  const handleSlideClick = (index, path, item) => {
+    navigate(`${path}/${item.id}`)
+  }
   return (
     <div>
       <SwiperWrapper>
@@ -30,7 +37,10 @@ function ReviewSwiper({ dataList, path }) {
           }}
         >
           {dataList.map((review, index) => (
-            <SwiperSlide onClick={console.log(`여기 ${path}로 이동`)} style={{ width: 250 }}>
+            <SwiperSlide
+              onClick={() => handleSlideClick(index, path, review)}
+              style={{ width: 250 }}
+            >
               <ImageSlideWrap>
                 <ImageSlide imageUrl={review.photocard}>
                   <ImageText>{'여기는 나중에 대체됨'}</ImageText>
