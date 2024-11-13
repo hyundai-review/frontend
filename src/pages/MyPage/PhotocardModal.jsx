@@ -26,7 +26,7 @@ const ModalWrapper = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  background: rgba(0, 0, 0, 0.5); // 배경 어둡게 처리
+  background: rgba(0, 0, 0, 0.1);
   z-index: 9999;
 `
 

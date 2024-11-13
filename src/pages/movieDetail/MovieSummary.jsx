@@ -2,6 +2,8 @@ import React from 'react'
 import calendar from '@/assets/icons/calendar-tick.svg'
 import clock from '@/assets/icons/clock.svg'
 import GenreButton from '@/components/common/GenreButton'
+import styled from 'styled-components'
+import media from '@/styles/media'
 function MovieSummary() {
   const posterImageUrl =
     'https://img.cgv.co.kr/Movie/Thumbnail/StillCut/000088/88847/88847230819_727.jpg'
@@ -43,7 +45,6 @@ function MovieSummary() {
 }
 
 export default MovieSummary
-import styled from 'styled-components'
 const MovieSummaryContainer = styled.div`
   padding: 10px;
   border-radius: 10px;
