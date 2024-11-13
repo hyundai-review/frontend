@@ -36,6 +36,7 @@ const BoxOfficePosterCardContainer = styled.div`
   padding-left: 10px;
   padding-top: 19px;
   padding-bottom: 19px;
+  padding-right: 10px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -68,7 +69,7 @@ const BoxOfficePosterCardInfoWrapper = styled.div`
   flex-direction: column;
   align-items: center;
   height: 100%;
-  padding-left: 6px;
+  padding-left: 12px;
 `
 
 const BoxOfficePosterCardRank = styled.div`

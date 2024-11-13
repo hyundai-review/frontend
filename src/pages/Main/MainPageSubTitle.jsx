@@ -17,7 +17,6 @@ function MainPageSubTitle({ time }) {
   const [timeText, setTimeText] = useState('')
   useEffect(() => {
     setTimeText(setTime(time))
-    console.log(time)
   }, [time])
 
   return (

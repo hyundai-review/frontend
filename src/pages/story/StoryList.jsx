@@ -24,7 +24,7 @@ function StoryList() {
         modules={isMobile ? [Navigation] : [EffectCoverflow]}
         effect={isMobile ? undefined : 'coverflow'}
         centeredSlides={true}
-        slidesPerView={5}
+        slidesPerView='auto'
         initialSlide={2}
         onSlideChange={handleSlideChange}
         slidesPerGroup={1}
@@ -37,12 +37,13 @@ function StoryList() {
           scale: 0.9,
         }}
         spaceBetween={0}
+        watchSlidesProgress={true}
         breakpoints={{
           0: {
-            slidesPerView: 1,
+            slidesPerView: 'auto',
           },
           780: {
-            slidesPerView: 2,
+            slidesPerView: 'auto',
             coverflowEffect: {
               stretch: -140,
             },
@@ -53,11 +54,11 @@ function StoryList() {
             },
           },
           1358: {
-            slidesPerView: 5,
+            slidesPerView: 'auto',
             centeredSlides: true,
             coverflowEffect: {
               rotate: 0,
-              stretch: -140,
+              stretch: -50,
               depth: 100,
               modifier: 1,
               slideShadows: false,
@@ -88,14 +89,12 @@ const SwiperContainer = styled.div`
   justify-content: center;
   align-content: center;
 
-  /* height: 100%; */
   width: 100%;
+  overflow: hidden;
 
   .swiper {
-    margin-left: -50px;
-
     @media (max-width: 779px) {
-      width: 362px; // PhotoCard width와 동일
+      width: 362px; // PhotoCard width와 동일 적용
       margin: 0 auto;
 
       /* .swiper {
