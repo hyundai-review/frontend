@@ -1,4 +1,8 @@
 import React from 'react'
+import styled from 'styled-components'
+import media from '@/styles/media'
+import MovieOverview from './MovieOverview'
+import MovieReview from './MovieReview'
 import MovieSummary from './MovieSummary'
 import arrowLeft from '@/assets/icons/arrow-left.svg'
 function MovieDetailPage() {
@@ -12,7 +16,12 @@ function MovieDetailPage() {
             <MovieDetailHeader>
               <LeftIcon src={arrowLeft} />
             </MovieDetailHeader>
-            <MovieSummary />
+            <ContentsWrap>
+              <MovieSummary />
+              <MovieOverview />
+              <MovieReview />
+            </ContentsWrap>
+
             {/* <MovieOverviewWrap>
               <MovieOverviewTitle />
               <MovieOverviewBox>
@@ -31,12 +40,9 @@ function MovieDetailPage() {
 }
 
 export default MovieDetailPage
-import styled from 'styled-components'
-import media from '@/styles/media'
 const Wrap = styled.div`
   position: relative;
   width: 100vw;
-  height: 100vh;
   background: url(${(props) => props.imageUrl});
   background-size: cover;
   background-position: center;
@@ -51,6 +57,11 @@ const BlurOverlay = styled.div`
 `
 const MovieDetail = styled.div`
   padding: 20px;
+`
+const ContentsWrap = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
 `
 const MovieDetailHeader = styled.div`
   margin-bottom: 12px;

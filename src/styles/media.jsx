@@ -7,9 +7,9 @@ import { css } from 'styled-components'
 
 const breakpoints = {
   small: '@media (max-width: 402px)',
-  // medium: '@media (max-width: 768px)',
-  medium: '@media (min-width: 403px) and (max-width: 768px)',
-  large: '@media (min-width: 1440px)',
+  medium: '@media (max-width: 768px)',
+  large: '@media (min-width: 1441px)',
+  laptop: '@media (min-width: 769px) and (max-width: 1440px)', // 작은 노트북 ~ 일반 노트북 (769px ~ 1440px)
 }
 
 const media = Object.entries(breakpoints).reduce((acc, [key, value]) => {

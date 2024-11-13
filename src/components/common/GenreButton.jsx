@@ -23,9 +23,6 @@ const ButtonContainer = styled.div`
   border: 1px solid #b6b5ff;
   box-shadow: 0px 0px 10px 0px var(--primary-solid-light, rgba(199, 125, 181, 0.5));
   padding: 1px 4px;
-  ${media.medium`
-    padding: 5px 10px;
-  `}
 `
 const ButtonText = styled.div`
   text-align: center;
@@ -40,8 +37,8 @@ const ButtonText = styled.div`
   background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  ${media.medium`
+  /* ${media.medium`
     font-size : 0.8em;
     font-weight : 600;
-  `}
+  `} */
 `
