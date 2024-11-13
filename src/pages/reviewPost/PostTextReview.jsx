@@ -40,7 +40,11 @@ function PostTextReview() {
       <div>
         <SText.Text style={{ marginBottom: '6px' }}>리뷰를 작성해주세요</SText.Text>
         <SBoxContainer.Box $width='100%' $height='316px' $minWidth='362px'>
-          input 넣어야 해
+          <SText.TextArea
+            placeholder='해당 영화에 대한 리뷰를 남겨주세요'
+            $variant='md'
+            $color='var(--gray-200)'
+          />
         </SBoxContainer.Box>
       </div>
       <BottomWrap>
@@ -81,7 +85,6 @@ function PostTextReview() {
 export default PostTextReview
 
 const Container = styled.div`
-  /* background-color: red; */
   display: flex;
   flex-direction: column;
   gap: 20px;
@@ -113,11 +116,8 @@ const BottomWrap = styled.div`
   @media (max-width: 933px) {
     flex-direction: column;
     gap: 20px;
-    /* align-items: center; // 가운데 정렬이 필요한 경우 */
-    /* width: 100%; // 전체 너비가 필요한 경우 */
   }
 `
 const BtnWrap = styled.div`
   display: flex;
-  /* gap: 54px; */
 `
