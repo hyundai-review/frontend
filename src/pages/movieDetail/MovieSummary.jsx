@@ -1,6 +1,6 @@
 import React from 'react'
-import calendar from '@/assets/icon/calendar-tick.svg'
-import clock from '@/assets/icon/clock.svg'
+import calendar from '@/assets/icons/calendar-tick.svg'
+import clock from '@/assets/icons/clock.svg'
 import GenreButton from '@/components/common/GenreButton'
 function MovieSummary() {
   const posterImageUrl =
@@ -57,7 +57,7 @@ const LeftSection = styled.div``
 const Poster = styled.div`
   position: relative;
   border-radius: 5px;
-  // todo
+  // TODO(k)
   width: 94px;
   height: 141px;
   background: url(${(props) => props.imageUrl}) lightgray 50% / cover no-repeat;

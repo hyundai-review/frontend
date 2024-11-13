@@ -1,6 +1,6 @@
 import React from 'react'
 import MovieSummary from './MovieSummary'
-import arrowLeft from '@/assets/icon/arrow-left.svg'
+import arrowLeft from '@/assets/icons/arrow-left.svg'
 function MovieDetailPage() {
   const posterImageUrl =
     'https://img.cgv.co.kr/Movie/Thumbnail/StillCut/000088/88847/88847230819_727.jpg'

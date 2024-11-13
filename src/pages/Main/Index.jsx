@@ -9,6 +9,7 @@ import SuggestMovieBox from './SuggestMovieBox'
 import MainPageSubTitle from './MainPageSubTitle'
 import media from '@/styles/media'
 import Stories from '@/components/story/Stories'
+import BackgroundContainer from '@/components/common/BackgroundContainer'
 
 /*boxOfficeMovieData - url, rank, date
 suggestMovieData - moviePosterUrl, movieID */
@@ -27,9 +28,9 @@ function MainPage() {
     moviePosterUrl: 'https://image.tmdb.org/t/p/w300/tKV0etz5OIsAjSNG1hJktsjbNJk.jpg',
     movieId: index + 1,
   }))
-  const genreData = ['전체', '액션', '모험']
+  // const genreData = ['전체', '액션', '모험']
   return (
-    <div>
+    <BackgroundContainer>
       <Wrap>
         <Stories />
       </Wrap>
@@ -72,12 +73,12 @@ function MainPage() {
           <MainPageWrapperTitle>{'추천영화'}</MainPageWrapperTitle>
           <SuggestMovieBox
             isLogin={isLogin}
-            genreData={genreData}
+            // genreData={genreData}
             suggestMovieData={suggestMovieData}
           />
         </MainPageSliderWrapper>
       </MainPageBodyContainer>
-    </div>
+    </BackgroundContainer>
   )
 }
 
