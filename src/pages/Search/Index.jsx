@@ -36,12 +36,15 @@ const SearchPageBodyWrapper = styled.div`
 const SearchPageResultWrapper = styled.div`
   height: 30px;
   width: fit-content;
-  color: gray;
+  color: var(--color-gray-200);
   width: 100%;
-  padding-left: 50px;
   box-sizing: border-box;
   ${media.medium`
   padding-left:30px`}
+  font-size:20px;
+  line-height: 30px;
+  font-weight: 200;
+  margin-bottom: 20px;
 `
 
 const SearchPageContainer = styled.div`
@@ -59,12 +62,8 @@ const MoviePosterWrapper = styled.div`
   display: grid;
   justify-content: start;
   place-items: center;
-  gap: 9px;
-  grid-template-columns: repeat(auto-fill, 163px);
-  //더 부드러운 반응형
-  @media (max-width: 1280px) {
-    grid-template-columns: repeat(auto-fill, 163px);
-  }
+  gap: 60px;
+  grid-template-columns: repeat(auto-fill, 180px);
   ${media.small`
   grid-template-columns: repeat(3,130px);
   gap:2px
