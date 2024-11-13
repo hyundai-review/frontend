@@ -28,13 +28,6 @@ function SuggestMovieBox({ isLogin, suggestMovieData }) {
       ) : (
         <div>
           <MainPageButtonWrapper>
-            {/*
-              장르 데이터 개수 나오면 한줄에 보여줄 button개수 지정
-            */}
-            {/* {genreData.map((item, index) => (
-              // <Button text={`${item}`} key={index}></Button>
-              <MainGenreButton text={`${item}`} key={index} />
-            ))} */}
             {genres.map((genre) => (
               <MainGenreButton
                 key={genre.id}
@@ -58,9 +51,8 @@ function SuggestMovieBox({ isLogin, suggestMovieData }) {
 const MainPageSuggestMovieWrapper = styled.div`
   display: grid;
   grid-template-columns: repeat(auto-fill, 180px);
-  width: 100%;
-  gap: 40px;
-  justify-content: center;
+  gap: 60px;
+  justify-content: start;
   flex-direction: column;
   place-items: center;
   ${media.small`
