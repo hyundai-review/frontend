@@ -9,8 +9,13 @@ import SuggestMovieBox from './SuggestMovieBox'
 import MainPageSubTitle from './MainPageSubTitle'
 import media from '@/styles/media'
 import Stories from '@/components/story/Stories'
+<<<<<<< HEAD
 import GenreButton from '@/components/common/GenreButton'
 import ReviewSwiper from '@/components/reviewSwiper/ReviewSwiper'
+=======
+import { reviewData } from '@/assets/data/reviewData'
+import BackgroundContainer from '@/components/common/BackgroundContainer'
+>>>>>>> 8cd0d877448b89126e7a5c5a8a98d5787d51abf4
 
 /*boxOfficeMovieData - url, rank, date
 suggestMovieData - moviePosterUrl, movieID */
@@ -29,9 +34,16 @@ function MainPage() {
     moviePosterUrl: 'https://image.tmdb.org/t/p/w300/tKV0etz5OIsAjSNG1hJktsjbNJk.jpg',
     movieId: index + 1,
   }))
-  const genreData = ['전체', '액션', '모험']
+  // const genreData = ['전체', '액션', '모험']
   return (
+<<<<<<< HEAD
     <div style={{ width: '100%' }}>
+=======
+    <BackgroundContainer>
+      <Wrap>
+        <Stories dataList={reviewData} path={'/main/story'} />
+      </Wrap>
+>>>>>>> 8cd0d877448b89126e7a5c5a8a98d5787d51abf4
       <MainPageTopContainer>
         <div
           style={{
@@ -78,13 +90,13 @@ function MainPage() {
           <MainPageWrapperTitle>{'추천영화'}</MainPageWrapperTitle>
           <SuggestMovieBox
             isLogin={isLogin}
-            genreData={genreData}
+            // genreData={genreData}
             suggestMovieData={suggestMovieData}
           />
         </MainPageSliderWrapper>
         <ReviewSwiper />
       </MainPageBodyContainer>
-    </div>
+    </BackgroundContainer>
   )
 }
 

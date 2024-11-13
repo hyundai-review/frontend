@@ -9,7 +9,6 @@ const imageText = '헤헷 거마워 헤헷'
 function MyPage() {
   return (
     <>
-      {/* <BackgroundContainer imageUrl='/images/Background/webBackground.png'> */}
       <BackgroundContainer>
         <Profile />
         <ReviewTitleWrap>
