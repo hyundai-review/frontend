@@ -21,7 +21,7 @@ export default StoryPage
 
 const Wrap = styled.div`
   position: relative;
-  width: 100vw;
+  /* width: 100vw; */
   height: 100vh;
   background: ${(props) => `url(${props.image})`};
   background-size: cover;
