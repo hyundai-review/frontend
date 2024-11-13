@@ -9,13 +9,8 @@ import SuggestMovieBox from './SuggestMovieBox'
 import MainPageSubTitle from './MainPageSubTitle'
 import media from '@/styles/media'
 import Stories from '@/components/story/Stories'
-<<<<<<< HEAD
-import GenreButton from '@/components/common/GenreButton'
-import ReviewSwiper from '@/components/reviewSwiper/ReviewSwiper'
-=======
 import { reviewData } from '@/assets/data/reviewData'
 import BackgroundContainer from '@/components/common/BackgroundContainer'
->>>>>>> 8cd0d877448b89126e7a5c5a8a98d5787d51abf4
 
 /*boxOfficeMovieData - url, rank, date
 suggestMovieData - moviePosterUrl, movieID */
@@ -36,73 +31,71 @@ function MainPage() {
   }))
   // const genreData = ['전체', '액션', '모험']
   return (
-<<<<<<< HEAD
-    <div style={{ width: '100%' }}>
-=======
-    <BackgroundContainer>
-      <Wrap>
-        <Stories dataList={reviewData} path={'/main/story'} />
-      </Wrap>
->>>>>>> 8cd0d877448b89126e7a5c5a8a98d5787d51abf4
-      <MainPageTopContainer>
-        <div
-          style={{
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-            flexDirection: 'column',
-          }}
-        >
-          <MainPageTitle>
-            {isLogin === false ? '로그인이 필요합니다.' : `${userName}님,`}
-          </MainPageTitle>
-          {isLogin === false ? '' : <MainPageSubTitle time={nowDate.getHours()} />}
-        </div>
-        <SearchBar />
-      </MainPageTopContainer>
-      <MainPageBodyContainer>
-        <div style={{ gap: '40px', display: 'flex' }}>
-          <div>
+    <div>
+      <BackgroundContainer>
+        <Wrap>
+          <Stories dataList={reviewData} path={'/main/story'} />
+        </Wrap>
+        <div style={{ width: '100%' }}>
+          <MainPageTopContainer>
+            <div
+              style={{
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                flexDirection: 'column',
+              }}
+            >
+              <MainPageTitle>
+                {isLogin === false ? '로그인이 필요합니다.' : `${userName}님,`}
+              </MainPageTitle>
+              {isLogin === false ? '' : <MainPageSubTitle time={nowDate.getHours()} />}
+            </div>
+            <SearchBar />
+          </MainPageTopContainer>
+          <MainPageBodyContainer>
+            <div style={{ gap: '40px', display: 'flex' }}>
+              <div>
+                <MainPageSliderWrapper>
+                  <MainPageWrapperTitle>{'최신 스토리'}</MainPageWrapperTitle>
+                  <Wrap>
+                    <Stories />
+                  </Wrap>
+                </MainPageSliderWrapper>
+              </div>
+              <div style={{ flex: '1' }}>
+                <MainPageSliderWrapper>
+                  <MainPageWrapperTitle>{`${nowDate.getMonth() + 1}월 ${nowDate.getDate()}일 박스오피스 순위`}</MainPageWrapperTitle>
+                  <MainPageBoxOfficeSwiperWrapper>
+                    <Swiper slidesPerView={4.3} spaceBetween={10} style={{ maxWidth: '1038px' }}>
+                      {boxOfficeMovieData.map((item, index) => (
+                        <SwiperSlide key={index}>
+                          <BoxOfficePosterCard movieInfo={item} />
+                        </SwiperSlide>
+                      ))}
+                    </Swiper>
+                  </MainPageBoxOfficeSwiperWrapper>
+                </MainPageSliderWrapper>
+              </div>
+            </div>
             <MainPageSliderWrapper>
-              <MainPageWrapperTitle>{'최신 스토리'}</MainPageWrapperTitle>
-              <Wrap>
-                <Stories />
-              </Wrap>
+              <MainPageWrapperTitle>{'추천영화'}</MainPageWrapperTitle>
+              <SuggestMovieBox
+                isLogin={isLogin}
+                // genreData={genreData}
+                suggestMovieData={suggestMovieData}
+              />
             </MainPageSliderWrapper>
-          </div>
-          <div style={{ flex: '1' }}>
-            <MainPageSliderWrapper>
-              <MainPageWrapperTitle>{`${nowDate.getMonth() + 1}월 ${nowDate.getDate()}일 박스오피스 순위`}</MainPageWrapperTitle>
-              <MainPageBoxOfficeSwiperWrapper>
-                <Swiper slidesPerView={4.3} spaceBetween={10} style={{ maxWidth: '1038px' }}>
-                  {boxOfficeMovieData.map((item, index) => (
-                    <SwiperSlide key={index}>
-                      <BoxOfficePosterCard movieInfo={item} />
-                    </SwiperSlide>
-                  ))}
-                </Swiper>
-              </MainPageBoxOfficeSwiperWrapper>
-            </MainPageSliderWrapper>
-          </div>
+            <ReviewSwiper />
+          </MainPageBodyContainer>
         </div>
-
-        <MainPageSliderWrapper>
-          <MainPageWrapperTitle>{'추천영화'}</MainPageWrapperTitle>
-          <SuggestMovieBox
-            isLogin={isLogin}
-            // genreData={genreData}
-            suggestMovieData={suggestMovieData}
-          />
-        </MainPageSliderWrapper>
-        <ReviewSwiper />
-      </MainPageBodyContainer>
-    </BackgroundContainer>
+      </BackgroundContainer>
+    </div>
   )
 }
 
 const MainPageTopContainer = styled.div`
   display: flex;
-  width: 1200px;
   justify-content: center;
   align-items: center;
   flex-direction: column;
