@@ -128,7 +128,7 @@ const MainPageBodyTopWrapper = styled.div`
   gap: 40px;
   display: flex;
   flex-direction: row;
-  ${media.small`
+  ${media.medium`
     flex-direction:column
   `}
 `
@@ -147,9 +147,7 @@ const MainPageWrapperTitle = styled.p`
   line-height: 30px;
   font-size: 20px;
   font-weight: 200;
-  ${media.small`
-    padding-left:10px
-  `}
+  padding-left: 20px;
 `
 
 const MainPageBoxOfficeSwiperWrapper = styled.div`
@@ -161,16 +159,21 @@ const MainPageBoxOfficeSwiperWrapper = styled.div`
   &::after {
     content: '';
     position: absolute;
-    top: 0;
+    top: 19px;
     right: 0;
     width: 5%;
-    height: 100%;
+    height: 280px;
     background: linear-gradient(to left, rgba(0, 0, 0, 1), rgba(255, 255, 255, 0));
     z-index: 1;
   }
+  ${media.medium`
+    width: ${(props) => props.$width + 402}px
+  `}
   ${media.small`
     width:391px;
-    padding-left:10px;
+    &::after{
+      height: 172px
+    }
   `}
 `
 const MainPageSliderWrapper = styled.div`

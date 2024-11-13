@@ -31,6 +31,10 @@ function SearchPage() {
 
 const SearchPageBodyWrapper = styled.div`
   width: 100%;
+  padding-left: 20px;
+  ${media.small`
+    padding-left: 0px;
+  `}
 `
 
 const SearchPageResultWrapper = styled.div`
@@ -39,12 +43,13 @@ const SearchPageResultWrapper = styled.div`
   color: var(--color-gray-200);
   width: 100%;
   box-sizing: border-box;
-  ${media.medium`
-  padding-left:30px`}
-  font-size:20px;
+  font-size: 20px;
   line-height: 30px;
   font-weight: 200;
   margin-bottom: 20px;
+  ${media.small`
+    padding-left:20px;
+  `}
 `
 
 const SearchPageContainer = styled.div`
