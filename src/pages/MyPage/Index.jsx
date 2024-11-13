@@ -1,12 +1,18 @@
 import BackgroundContainer from '@/components/common/BackgroundContainer'
+import Stories from '@/components/story/Stories'
 import Profile from './Profile'
 import ReviewCard from './ReviewCard'
-
+import { myReviewData } from '@/assets/data/myReviewData'
+import { transformReviewData } from '@/utils/dataTransform'
+import { useEffect } from 'react'
 //temp data
 const reviewCount = 32
-const imageText = '헤헷 거마워 헤헷'
-
+// myReviewData에서 데이터를 변환
 function MyPage() {
+  const transformedData = transformReviewData(myReviewData)
+  useEffect(() => {
+    console.log(transformedData)
+  }, [])
   return (
     <>
       <BackgroundContainer>
@@ -15,11 +21,13 @@ function MyPage() {
           <ReviewTitle>리뷰({reviewCount})</ReviewTitle>
         </ReviewTitleWrap>
         <GalleryContainer>
-          <ImageSlideWrap>
+          {/* TODO(k) 경로설정 */}
+          <Stories dataList={transformedData} path={'/mypage'} />
+          {/* <ImageSlideWrap>
             <ImageSlide imageUrl='https://img.cgv.co.kr/Movie/Thumbnail/StillCut/000088/88847/88847231277_727.jpg'>
               <ImageText>{imageText}</ImageText>
             </ImageSlide>
-          </ImageSlideWrap>
+          </ImageSlideWrap> */}
         </GalleryContainer>
         <ReviewContainer>
           <ReviewCard />
