@@ -11,7 +11,7 @@ import media from '@/styles/media'
 import Stories from '@/components/story/Stories'
 import { reviewData } from '@/assets/data/reviewData'
 import BackgroundContainer from '@/components/common/BackgroundContainer'
-
+import ReviewSwiper from '@/components/reviewSwiper/ReviewSwiper'
 /*boxOfficeMovieData - url, rank, date
 suggestMovieData - moviePosterUrl, movieID */
 
@@ -33,9 +33,6 @@ function MainPage() {
   return (
     <div>
       <BackgroundContainer>
-        <Wrap>
-          <Stories dataList={reviewData} path={'/main/story'} />
-        </Wrap>
         <div style={{ width: '100%' }}>
           <MainPageTopContainer>
             <div
@@ -59,7 +56,7 @@ function MainPage() {
                 <MainPageSliderWrapper>
                   <MainPageWrapperTitle>{'최신 스토리'}</MainPageWrapperTitle>
                   <Wrap>
-                    <Stories />
+                    <Stories dataList={reviewData} path={'/main/story'} />
                   </Wrap>
                 </MainPageSliderWrapper>
               </div>
@@ -86,7 +83,7 @@ function MainPage() {
                 suggestMovieData={suggestMovieData}
               />
             </MainPageSliderWrapper>
-            <ReviewSwiper />
+            <ReviewSwiper dataList={reviewData} path={'/main/story'} />
           </MainPageBodyContainer>
         </div>
       </BackgroundContainer>

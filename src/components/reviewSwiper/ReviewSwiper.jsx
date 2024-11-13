@@ -5,7 +5,7 @@ import 'swiper/css'
 import Stories from '../story/Stories'
 import media from '@/styles/media'
 
-function ReviewSwiper() {
+function ReviewSwiper({ dataList, path }) {
   const [isMobile, setIsMobile] = useState(false)
   useEffect(() => {
     const handleResize = () => {
@@ -38,52 +38,19 @@ function ReviewSwiper() {
             },
           }}
         >
-          <SwiperSlide>
-            <ImageSlideWrap>
-              <ImageSlide imageUrl='https://img.cgv.co.kr/Movie/Thumbnail/StillCut/000088/88847/88847231277_727.jpg'>
-                <ImageText>{'test'}</ImageText>
-              </ImageSlide>
-            </ImageSlideWrap>
-          </SwiperSlide>
-          <SwiperSlide>
-            <ImageSlideWrap>
-              <ImageSlide imageUrl='https://img.cgv.co.kr/Movie/Thumbnail/StillCut/000088/88847/88847231277_727.jpg'>
-                <ImageText>{'test'}</ImageText>
-              </ImageSlide>
-            </ImageSlideWrap>
-          </SwiperSlide>
-          <SwiperSlide>
-            <ImageSlideWrap>
-              <ImageSlide imageUrl='https://img.cgv.co.kr/Movie/Thumbnail/StillCut/000088/88847/88847231277_727.jpg'>
-                <ImageText>{'test'}</ImageText>
-              </ImageSlide>
-            </ImageSlideWrap>
-          </SwiperSlide>
-          <SwiperSlide>
-            <ImageSlideWrap>
-              <ImageSlide imageUrl='https://img.cgv.co.kr/Movie/Thumbnail/StillCut/000088/88847/88847231277_727.jpg'>
-                <ImageText>{'test'}</ImageText>
-              </ImageSlide>
-            </ImageSlideWrap>
-          </SwiperSlide>
-          <SwiperSlide>
-            <ImageSlideWrap>
-              <ImageSlide imageUrl='https://img.cgv.co.kr/Movie/Thumbnail/StillCut/000088/88847/88847231277_727.jpg'>
-                <ImageText>{'test'}</ImageText>
-              </ImageSlide>
-            </ImageSlideWrap>
-          </SwiperSlide>
-          <SwiperSlide>
-            <ImageSlideWrap>
-              <ImageSlide imageUrl='https://img.cgv.co.kr/Movie/Thumbnail/StillCut/000088/88847/88847231277_727.jpg'>
-                <ImageText>{'test'}</ImageText>
-              </ImageSlide>
-            </ImageSlideWrap>
-          </SwiperSlide>
+          {reviewData.map((review, index) => (
+            <SwiperSlide onClick={`여기 ${path}로 이동`}>
+              <ImageSlideWrap>
+                <ImageSlide imageUrl={review.photocard}>
+                  <ImageText>{'여기는 나중에 대체됨'}</ImageText>
+                </ImageSlide>
+              </ImageSlideWrap>
+            </SwiperSlide>
+          ))}
         </Swiper>
       </SwiperWrapper>
       <StoiresWrapper>
-        <Stories />
+        <Stories dataList={reviewData} path={path} />
       </StoiresWrapper>
     </div>
   )
