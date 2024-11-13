@@ -38,7 +38,7 @@ function ReviewSwiper({ dataList, path }) {
             },
           }}
         >
-          {reviewData.map((review, index) => (
+          {dataList.map((review, index) => (
             <SwiperSlide onClick={`여기 ${path}로 이동`}>
               <ImageSlideWrap>
                 <ImageSlide imageUrl={review.photocard}>
@@ -50,7 +50,7 @@ function ReviewSwiper({ dataList, path }) {
         </Swiper>
       </SwiperWrapper>
       <StoiresWrapper>
-        <Stories dataList={reviewData} path={path} />
+        <Stories dataList={dataList} path={path} />
       </StoiresWrapper>
     </div>
   )
