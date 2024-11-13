@@ -1,7 +1,7 @@
 import Button from '@/components/common/Button'
 import React from 'react'
 import styled from 'styled-components'
-import edit from '@/assets/icon/edit.svg'
+import edit from '@/assets/icons/edit.svg'
 function Profile() {
   //temp data
   const nickname = '아보카도파김치'

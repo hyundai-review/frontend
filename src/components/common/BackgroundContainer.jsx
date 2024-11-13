@@ -1,8 +1,8 @@
 import styled from 'styled-components'
 
 const SBackgroundContainer = styled.div`
-  /* width: 100vw;
-  height: 100vh; */
+  width: 100vw;
+  /* height: 100vh; */
   position: relative;
 
   video {
@@ -23,7 +23,7 @@ const ContentWrapper = styled.div`
 `
 
 function BackgroundContainer({ children }) {
-  const videoUrl = '/video/ver1.mp4'
+  const videoUrl = '/video/ver2.mp4'
 
   return (
     <SBackgroundContainer>
