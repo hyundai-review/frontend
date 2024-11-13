@@ -57,13 +57,13 @@ const SearchPageContainer = styled.div`
 
 const MoviePosterWrapper = styled.div`
   display: grid;
-  justify-content: center;
+  justify-content: start;
   place-items: center;
-  gap: 40px;
-  grid-template-columns: repeat(6, 180px);
+  gap: 9px;
+  grid-template-columns: repeat(auto-fill, 163px);
   //더 부드러운 반응형
   @media (max-width: 1280px) {
-    grid-template-columns: repeat(auto-fill, 180px);
+    grid-template-columns: repeat(auto-fill, 163px);
   }
   ${media.small`
   grid-template-columns: repeat(3,130px);

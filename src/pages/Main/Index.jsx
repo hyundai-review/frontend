@@ -9,6 +9,8 @@ import SuggestMovieBox from './SuggestMovieBox'
 import MainPageSubTitle from './MainPageSubTitle'
 import media from '@/styles/media'
 import Stories from '@/components/story/Stories'
+import GenreButton from '@/components/common/GenreButton'
+import ReviewSwiper from '@/components/reviewSwiper/ReviewSwiper'
 
 /*boxOfficeMovieData - url, rank, date
 suggestMovieData - moviePosterUrl, movieID */
@@ -29,10 +31,7 @@ function MainPage() {
   }))
   const genreData = ['전체', '액션', '모험']
   return (
-    <div>
-      <Wrap>
-        <Stories />
-      </Wrap>
+    <div style={{ width: '100%' }}>
       <MainPageTopContainer>
         <div
           style={{
@@ -45,29 +44,36 @@ function MainPage() {
           <MainPageTitle>
             {isLogin === false ? '로그인이 필요합니다.' : `${userName}님,`}
           </MainPageTitle>
-          <MainPageSubTitle time={nowDate.getHours()} />
+          {isLogin === false ? '' : <MainPageSubTitle time={nowDate.getHours()} />}
         </div>
         <SearchBar />
       </MainPageTopContainer>
       <MainPageBodyContainer>
-        <div style={{ display: 'flex' }}>
-          <MainPageSliderWrapper>
-            <MainPageWrapperTitle>{'최신 스토리'}</MainPageWrapperTitle>
-            <div style={{ width: '362px', height: '240px' }}></div>
-          </MainPageSliderWrapper>
-          <MainPageSliderWrapper>
-            <MainPageWrapperTitle>{`${nowDate.getMonth() + 1}월 ${nowDate.getDate()}일 박스오피스 순위`}</MainPageWrapperTitle>
-            <MainPageBoxOfficeSwiperWrapper>
-              <Swiper slidesPerView={3.5}>
-                {boxOfficeMovieData.map((item, index) => (
-                  <SwiperSlide key={index}>
-                    <BoxOfficePosterCard movieInfo={item} />
-                  </SwiperSlide>
-                ))}
-              </Swiper>
-            </MainPageBoxOfficeSwiperWrapper>
-          </MainPageSliderWrapper>
+        <div style={{ gap: '40px', display: 'flex' }}>
+          <div>
+            <MainPageSliderWrapper>
+              <MainPageWrapperTitle>{'최신 스토리'}</MainPageWrapperTitle>
+              <Wrap>
+                <Stories />
+              </Wrap>
+            </MainPageSliderWrapper>
+          </div>
+          <div style={{ flex: '1' }}>
+            <MainPageSliderWrapper>
+              <MainPageWrapperTitle>{`${nowDate.getMonth() + 1}월 ${nowDate.getDate()}일 박스오피스 순위`}</MainPageWrapperTitle>
+              <MainPageBoxOfficeSwiperWrapper>
+                <Swiper slidesPerView={4.3} spaceBetween={10} style={{ maxWidth: '1038px' }}>
+                  {boxOfficeMovieData.map((item, index) => (
+                    <SwiperSlide key={index}>
+                      <BoxOfficePosterCard movieInfo={item} />
+                    </SwiperSlide>
+                  ))}
+                </Swiper>
+              </MainPageBoxOfficeSwiperWrapper>
+            </MainPageSliderWrapper>
+          </div>
         </div>
+
         <MainPageSliderWrapper>
           <MainPageWrapperTitle>{'추천영화'}</MainPageWrapperTitle>
           <SuggestMovieBox
@@ -76,6 +82,7 @@ function MainPage() {
             suggestMovieData={suggestMovieData}
           />
         </MainPageSliderWrapper>
+        <ReviewSwiper />
       </MainPageBodyContainer>
     </div>
   )
@@ -83,12 +90,13 @@ function MainPage() {
 
 const MainPageTopContainer = styled.div`
   display: flex;
+  width: 1200px;
   justify-content: center;
   align-items: center;
   flex-direction: column;
   padding-top: 110px;
-  gap: 40px;
   padding-bottom: 110px;
+  gap: 40px;
 `
 const MainPageTitle = styled.div`
   width: fit-content;
@@ -111,7 +119,7 @@ const MainPageWrapperTitle = styled.p`
 `
 
 const MainPageBoxOfficeSwiperWrapper = styled.div`
-  width: 800px;
+  width: 100%;
   position: relative;
   height: fit-content;
   &::after {
@@ -133,9 +141,9 @@ const MainPageSliderWrapper = styled.div`
   gap: 10px;
 `
 
-export default MainPage
-
 const Wrap = styled.div`
   display: flex;
   justify-content: center;
 `
+
+export default MainPage
