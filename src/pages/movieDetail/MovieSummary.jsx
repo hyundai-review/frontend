@@ -59,6 +59,7 @@ const MovieSummaryContainer = styled.div`
   background: rgba(0, 0, 0, 0.25);
   display: flex;
   width: 100%;
+  gap: 10px;
 `
 const LeftSection = styled.div`
   background-color: black;
@@ -78,10 +79,10 @@ const Poster = styled.div`
 `
 
 const RightSection = styled.div`
-  background-color: #fff;
   width: 100%;
   display: flex;
   flex-direction: column;
+  font-size: 20px; /* 기준 폰트 크기 설정 */
 `
 
 const RightHeader = styled.div`
@@ -91,7 +92,7 @@ const RightHeader = styled.div`
   margin-bottom: 15px;
 `
 const Wrap = styled.div`
-  flex: 1; /* 남은 공간을 차지하도록 설정 */
+  flex: 1;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -109,6 +110,9 @@ const RightTitle = styled.div`
   font-style: normal;
   font-weight: 700;
   line-height: 30px; /* 150% */
+  ${media.medium`
+    font-size: 1.2em;
+  `}
 `
 
 const RightYear = styled.div`
@@ -120,6 +124,9 @@ const RightYear = styled.div`
   font-style: normal;
   font-weight: 200;
   line-height: 24px; /* 150% */
+  ${media.medium`
+    font-size: 1.2em;
+  `}
 `
 
 const RightRating = styled.div`
@@ -133,6 +140,9 @@ const RightRating = styled.div`
   font-style: normal;
   font-weight: 400;
   line-height: 21px; /* 150% */
+  ${media.medium`
+    font-size: 1.2em;
+  `}
 `
 const MovieInfo = styled.div`
   display: flex;
@@ -150,6 +160,10 @@ const CalendarIcon = styled.img`
   justify-content: center;
   align-items: center;
   margin-right: 4px;
+  ${media.medium`
+    width: 1.2em;
+  height: 1.2em;
+  `}
 `
 const ReleaseDate = styled.div`
   color: var(--gray-200, #e4e4e7);
@@ -159,12 +173,19 @@ const ReleaseDate = styled.div`
   font-style: normal;
   font-weight: 400;
   line-height: 21px; /* 150% */
+  ${media.medium`
+    font-size: 0.9em;
+  `}
 `
 
 const ClockIcon = styled.img`
   width: 16px;
   height: 16px;
   margin-right: 4px;
+  ${media.medium`
+    width: 1.1em;
+  height: 1.1em;
+  `}
 `
 
 const RunningTime = styled.div`
@@ -175,6 +196,9 @@ const RunningTime = styled.div`
   font-style: normal;
   font-weight: 400;
   line-height: 21px; /* 150% */
+  ${media.medium`
+    font-size: 0.8em;
+  `}
 `
 const MovieGenreWrap = styled.div`
   display: flex;
