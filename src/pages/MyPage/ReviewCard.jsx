@@ -5,7 +5,6 @@ import ReviewComment from './ReviewComment'
 import commentWhite from '@/assets/icons/commentWhite.svg'
 import comment from '@/assets/icons/comment.svg'
 import StarRating from '@/components/common/StarRating'
-import ReviewStarRating from './ReviewStarRating'
 function ReviewCard() {
   // temp data
   const reviewContent =
