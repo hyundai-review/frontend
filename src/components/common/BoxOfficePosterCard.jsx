@@ -37,6 +37,7 @@ const BoxOfficePosterCardContainer = styled.div`
   padding-top: 19px;
   padding-bottom: 19px;
   padding-right: 10px;
+  margin: 20px;
   display: flex;
   justify-content: center;
   align-items: center;

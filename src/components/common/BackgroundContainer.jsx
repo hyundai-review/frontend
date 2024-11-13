@@ -1,10 +1,8 @@
+import media from '@/styles/media'
 import styled from 'styled-components'
 
 const SBackgroundContainer = styled.div`
-  width: 100vw;
-  /* height: 100vh; */
   position: relative;
-
   video {
     position: absolute;
     top: 0;
