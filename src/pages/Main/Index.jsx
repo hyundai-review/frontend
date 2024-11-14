@@ -99,7 +99,7 @@ const MainPageTopContainer = styled.div`
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  padding-top: 71px;
+  padding-top: 131px;
   padding-bottom: 110px;
   gap: 40px;
 `

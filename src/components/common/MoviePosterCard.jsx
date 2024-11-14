@@ -8,6 +8,7 @@ function MoviePosterCard({ moviePosterUrl, movieId }) {
     <div>
       <MoviePosterCardContainer
         onClick={() => {
+          //TODO(j) 영화 디테일 페이지로 이동할것
           console.log(movieId, '여기에 movie detailpage로 이동')
         }}
         className='hoverBright'

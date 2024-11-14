@@ -2,12 +2,15 @@ import React, { useRef, useState } from 'react'
 import searchBarIcon from '@/assets/icons/searchBarIcon.svg'
 import media from '@/styles/media'
 import styled from 'styled-components'
+import { useNavigate } from 'react-router-dom'
 
 function SearchBar({ handleSearch }) {
+  const navigate = useNavigate()
   const inputRef = useRef(null)
   const [inputFieldFocus, setInputFieldFocus] = useState(false)
   const handleSubmit = (e) => {
     e.preventDefault()
+    navigate('/search', { state: { searchValue: inputRef.current.value } })
     handleSearch(inputRef.current.value)
   }
   return (

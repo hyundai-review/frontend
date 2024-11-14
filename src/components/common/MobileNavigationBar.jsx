@@ -37,6 +37,7 @@ function MobileNavigationBar() {
                   handleClick(item.url, index)
                 }}
                 $isSelected={selectedItem === index ? true : false}
+                key={index}
               >
                 <img src={`${item.icon}`} />
                 {item.name}
@@ -48,6 +49,7 @@ function MobileNavigationBar() {
                   handleClick(item.url, index)
                 }}
                 $isSelected={selectedItem === index ? true : false}
+                key={index}
               >
                 <img src={`${item.icon}`} />
                 {item.name}

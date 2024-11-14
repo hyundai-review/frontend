@@ -31,7 +31,7 @@ function SearchPage() {
 
 const SearchPageBodyWrapper = styled.div`
   width: 100%;
-  padding-left: 20px;
+  padding-left: 131px;
   ${media.small`
     padding-left: 0px;
   `}
@@ -60,7 +60,7 @@ const SearchPageContainer = styled.div`
   align-items: center;
   justify-content: center;
   gap: 20px;
-  padding-top: 20px;
+  padding-top: 130px;
   padding-bottom: 20px;
 `
 

@@ -7,9 +7,10 @@ import media from '@/styles/media'
 //TODO(j)button onClick시 로그인 로직 작동
 function Header() {
   //TODO(j) 로그인 유저 정보 저장시 이 변수들 바꾸기
+  const navigate = useNavigate()
   const isLogin = true
   const profileImage = 'https://image.tmdb.org/t/p/w300/tKV0etz5OIsAjSNG1hJktsjbNJk.jpg'
-  const useName = '테스트'
+  const userName = '테스트'
   return (
     <div>
       <HeaderContainer>
@@ -27,7 +28,7 @@ function Header() {
             <Button text={'로그인'} onClick={console.log('여기에 로그인')} />
           </HeaderRightWrapper>
         ) : (
-          <HeaderRightWrapper onClick={console.log('여기에 마이')}>
+          <HeaderRightWrapper onClick={() => navigate('/mypage')}>
             <HeaderUserProfileImage src={`${profileImage}`} alt='profileImage' />
             <HeaderUserName>{`${userName}`}</HeaderUserName>
           </HeaderRightWrapper>
@@ -39,7 +40,11 @@ function Header() {
 
 const HeaderContainer = styled.div`
   width: 100%;
+  max-width: 1440px;
+  position: fixed;
+  top: 0;
   height: 60px;
+  z-index: 10;
   background: rgba(0, 0, 0, 0.25);
   backdrop-filter: blur(10px);
   display: flex;
