@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import ReviewComment from './ReviewComment'
 import commentWhite from '@/assets/icons/commentWhite.svg'
@@ -34,6 +34,11 @@ function ReviewCard({ review, pageType }) {
     e.stopPropagation()
     setIsSpoiler(false)
   }
+  useEffect(() => {
+    if (pageType === 'mypage') {
+      setIsSpoiler(false)
+    }
+  }, [pageType])
   return (
     <ReviewCardContainer className='hoverBright' onClick={handleReviewClick} pageType={pageType}>
       <Wrap>
@@ -200,10 +205,14 @@ const CardFooter = styled.div`
 const RightWrap = styled.div``
 
 const Photocard = styled.img`
-  width: 100%;
-  height: 240px;
+  width: 170px;
+  height: 100%;
   border-radius: 5px;
   object-fit: cover;
+  ${media.medium`
+  width: 100%;
+  height: 240px;
+`}
 `
 const CardCommentWrap = styled.div`
   width: 100%;
