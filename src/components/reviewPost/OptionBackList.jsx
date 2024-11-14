@@ -22,7 +22,7 @@ const movieData = {
     },
     {
       imgId: 3,
-      imgURL: '/assets/images/movie/poster2.jpg',
+      imgURL: 'https://image.tmdb.org/t/p/w780/xTE7Aba7nzFl9ldeD1erhbXYxkg.jpg',
     },
     {
       imgId: 4,
@@ -60,7 +60,7 @@ function OptionBackList() {
       <Swiper
         direction='vertical'
         modules={[Navigation]}
-        slidesPerView={5}
+        slidesPerView={5.5}
         // spaceBetween={10}
       >
         {movieData.image.map((item, index) => (

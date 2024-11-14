@@ -42,16 +42,16 @@ function Photography() {
     initializePhotograpy()
   }, [])
 
-  const takePhoto = () => {
-    const canvas = document.createElement('canvas')
-    const context = canvas.getContext('2d')
-    canvas.width = dimensions.width
-    canvas.height = dimensions.height
-    context.drawImage(canvasRef.current, 0, 0)
-    const imageData = canvas.toDataURL('image/png')
-    console.log('Photo taken:', imageData)
-    // 여기서 이미지 데이터를 원하는 대로 처리
-  }
+  //   const takePhoto = () => {
+  //     const canvas = document.createElement('canvas')
+  //     const context = canvas.getContext('2d')
+  //     canvas.width = dimensions.width
+  //     canvas.height = dimensions.height
+  //     context.drawImage(canvasRef.current, 0, 0)
+  //     const imageData = canvas.toDataURL('image/png')
+  //     console.log('Photo taken:', imageData)
+  //     // 여기서 이미지 데이터를 원하는 대로 처리
+  //   }
 
   return (
     <Container>
@@ -79,19 +79,21 @@ function Photography() {
 export default Photography
 
 const Container = styled.div`
-  /* width: 100%; */
-  /* height: 100%; */
-  /* height: 429.75px; */
-
   position: relative;
-
   background-color: blue;
+  width: 100%;
+  height: 100%;
 `
 const Wrap = styled.div`
-  width: 362px;
-  height: 429.75px;
-  /* width: 100%;
-  height: 100%; */
+  /* width: 362px;
+  height: 429.75px; */
+  /* width: 724px; */
+  /* height: 429.75px; */
+  /* width: 500px; */
+  /* height: 400px; */
+  width: 100%;
+  height: 100%;
+
   position: relative;
   background-color: brown;
   display: flex;

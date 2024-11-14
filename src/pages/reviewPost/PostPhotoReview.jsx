@@ -53,31 +53,26 @@ export default PostPhotoReview
 const Container = styled.div`
   border: 1px solid black;
   width: 100%;
-  background-color: yellow;
   display: flex;
   flex-direction: column;
-  /* gap: 78px; */
 `
 
 const MainWrap = styled.div`
   display: flex;
   justify-content: center;
   gap: 40px;
+
   width: 100%;
   height: 610px;
-  background-color: violet;
+
   margin: 30px 0;
 `
 const PhotoWrap = styled.div`
-  /* width: 700px; */
-  /* height: 610px; */
-  /* width: 362px;
-  height: 429.75px; */
-  background-color: aliceblue;
+  /* 중요 */
+  width: 700px;
+  height: 610px;
 `
-const OptionWrap = styled.div`
-  /* height: 100%; */
-`
+const OptionWrap = styled.div``
 
 const IconBtn = styled(SBtn.IconButton)`
   circle[fill='#FAFAFA'] {

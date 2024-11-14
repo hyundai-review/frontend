@@ -22,7 +22,9 @@ export const useModel = () => {
 
 /** 웹캠 */
 export const useCamera = () => {
-  const [dimensions, setDimensions] = useState({ width: 0, height: 0 }) // 비디오 크기(가로, 세로)를 추적
+  //   const [dimensions, setDimensions] = useState({ width: 0, height: 0 }) // 비디오 크기(가로, 세로)를 추적
+  const [dimensions, setDimensions] = useState({ width: 362, height: 429.75 })
+
   const videoRef = useRef(null) // 웹캠 비디오 스트림을 담을 <video> 요소
 
   //   // 웹캠을 활성화하여 비디오 스트림을 설정
@@ -48,7 +50,7 @@ export const useCamera = () => {
         }
       })
     } catch (error) {
-      console.error('Camera setup failed:', error)
+      console.error('카메라 셋업 실패', error)
     }
   }
 
