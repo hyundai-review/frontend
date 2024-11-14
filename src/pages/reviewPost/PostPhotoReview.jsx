@@ -36,7 +36,8 @@ function PostPhotoReview() {
           <OptionBackList />
         </OptionWrap>
       </MainWrap>
-      <SBoxContainer.Box $width='100%' $height='100px'>
+
+      <SBoxContainer.Box $width='100%' $height='100px' $display='flex' $justifyContent='center'>
         <IconBtn>
           <PHOTOBTN />
         </IconBtn>
@@ -50,6 +51,10 @@ export default PostPhotoReview
 const Container = styled.div`
   border: 1px solid black;
   width: 100%;
+  background-color: yellow;
+  display: flex;
+  flex-direction: column;
+  gap: 78px;
 `
 
 const MainWrap = styled.div`
