@@ -6,6 +6,7 @@ const loading = <div>loading...</div>
 const ReviewPostPage = lazy(() => import('@/pages/reviewPost/Index'))
 const PostTextReview = lazy(() => import('@/pages/reviewPost/PostTextReview'))
 const PostPhotoReview = lazy(() => import('@/pages/reviewPost/PostPhotoReview'))
+const PostDeployReview = lazy(() => import('@/pages/reviewPost/PostDeployReview'))
 
 const reviewRouter = () => {
   return [
@@ -28,6 +29,10 @@ const reviewRouter = () => {
         {
           path: 'photo',
           element: <PostPhotoReview />,
+        },
+        {
+          path: 'deploy',
+          element: <PostDeployReview />,
         },
       ],
     },

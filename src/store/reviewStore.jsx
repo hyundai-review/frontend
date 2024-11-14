@@ -12,8 +12,7 @@ const useReviewStore = create(
         photocard: '/assets/images/movie/poster1.png',
         isSpoil: false,
       },
-      navi: null, // navi callback 함수 저장
-      setNavi: (navi) => set({ navi }),
+      navi: (path) => (window.location.href = `/review/2/post/${path}`),
       optionBackImg: {
         imgId: 0,
         imgURL: '',
@@ -32,7 +31,7 @@ const useReviewStore = create(
 
         // 라우팅
         if (state.navi) {
-          const paths = ['text', 'photo']
+          const paths = ['text', 'photo', 'deploy']
           state.navi(paths[nextStepValue])
         }
       },
@@ -44,7 +43,7 @@ const useReviewStore = create(
 
         // 라우팅
         if (state.navi) {
-          const paths = ['text', 'photo']
+          const paths = ['text', 'photo', 'deploy']
           state.navi(paths[prevStepValue])
         }
       },

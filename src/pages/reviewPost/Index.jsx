@@ -14,13 +14,8 @@ const movieData = {
 
 function ReviewPostPage() {
   const { movieId } = useParams()
-  const { reviewStep, prevStep, setNavi } = useReviewStore()
+  const { reviewStep, prevStep } = useReviewStore()
   const navigate = useNavigate()
-
-  useEffect(() => {
-    setNavi((path) => navigate(path))
-    return () => setNavi(null)
-  }, [navigate])
 
   return (
     <Container $image={movieData.image}>
@@ -30,7 +25,7 @@ function ReviewPostPage() {
             {/* 단계 바 */}
             <MobileStepper
               variant='progress'
-              steps={2}
+              steps={3}
               position='static'
               activeStep={reviewStep}
               sx={{

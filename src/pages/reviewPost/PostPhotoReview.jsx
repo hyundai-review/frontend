@@ -32,12 +32,7 @@ function PostPhotoReview() {
     }
   }
 
-  const { reviewStep, nextStep, setNavi } = useReviewStore()
-  const navigate = useNavigate()
-  useEffect(() => {
-    setNavi((path) => navigate(path))
-    return () => setNavi(null)
-  }, [navigate])
+  const { reviewStep, nextStep } = useReviewStore()
 
   return (
     <Container>

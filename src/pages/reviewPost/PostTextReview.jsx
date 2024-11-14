@@ -12,12 +12,7 @@ import { useNavigate } from 'react-router-dom'
 /** step 1. 텍스트 리뷰 작성 */
 function PostTextReview() {
   const navigate = useNavigate()
-  const { reviewStep, nextStep, setNavi } = useReviewStore()
-
-  useEffect(() => {
-    setNavi((path) => navigate(path))
-    return () => setNavi(null)
-  }, [navigate])
+  const { reviewStep, nextStep } = useReviewStore()
 
   // TODO (Y) zustand로 state 값 변경
   const [starRating, setStarRating] = useState(0)
