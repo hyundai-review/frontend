@@ -2,6 +2,8 @@ import React, { useEffect, useRef, useState } from 'react'
 import styled from 'styled-components'
 import ActorCard from './ActorCard'
 import actorData from '@/assets/data/actorsData'
+import down from '@/assets/icons/down.svg'
+import up from '@/assets/icons/up.svg'
 function MovieOverview() {
   const [isExpanded, setIsExpanded] = useState(false)
   const [isOverflowing, setIsOverflowing] = useState(false)
@@ -29,11 +31,11 @@ function MovieOverview() {
             <Contents ref={contentsRef} isExpanded={isExpanded}>
               {contents}
             </Contents>
-            {/* {isOverflowing && ( // 컨텐츠가 길 경우에만 더보기 버튼 표시
-            <ToggleButton onClick={toggleExpand}>
-              <ToggleText>{isExpanded ? '접기' : '더보기'}</ToggleText>
-            </ToggleButton>
-          )} */}
+            {isOverflowing && ( // 컨텐츠가 길 경우에만 더보기 버튼 표시
+              <ToggleButton onClick={toggleExpand}>
+                {isExpanded ? <Icon src={up} /> : <Icon src={down} />}
+              </ToggleButton>
+            )}
           </TextWrap>
         </Box>
       </Wrap>
@@ -98,14 +100,9 @@ const ToggleButton = styled.button`
   border-radius: 10px;
   border: 1px solid rgba(255, 255, 255, 0.1);
   background: rgba(0, 0, 0, 0.25);
-  padding: 4px 0;
+  padding: 2px 0;
 `
-const ToggleText = styled.div`
-  color: var(--gray-50, #fafafa);
-  /* bold/sm */
-  font-family: Pretendard;
-  font-size: 14px;
-  font-style: normal;
-  font-weight: 700;
-  line-height: 21px; /* 150% */
+const Icon = styled.img`
+  width: 24px;
+  height: 24px;
 `
