@@ -35,7 +35,7 @@ const ProfileContainer = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding-top: 71px;
+  padding-top: 131px;
 `
 const ProfileImage = styled.img`
   width: 128px;

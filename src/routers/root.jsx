@@ -4,31 +4,47 @@ import userRouter from './userRouter'
 import mainRouter from './mainRouter'
 import movieRouter from './movieRouter'
 import mypageRouter from './mypageRouter'
+import MainLayout from '@/components/layout/MainLayout'
 const loading = <div>loading</div>
 const MainPage = lazy(() => import('@/pages/Main/Index'))
 const SearchPage = lazy(() => import('@/pages/Search/Index'))
 
 const root = createBrowserRouter([
   {
-    path: '',
+    path: '/',
     element: (
       <Suspense fallback={loading}>
-        <MainPage />
+        <MainLayout />
       </Suspense>
     ),
+    children: [
+      {
+        index: true,
+        element: (
+          <Suspense fallback={loading}>
+            <MainPage />
+          </Suspense>
+        ),
+      },
+      {
+        path: '/search',
+        element: (
+          <Suspense fallback={loading}>
+            <SearchPage />
+          </Suspense>
+        ),
+      },
+      {
+        path: '/mypage',
+        children: mypageRouter,
+      },
+    ],
   },
   {
     path: '/main',
     children: mainRouter(),
   },
-  {
-    path: '/search',
-    element: (
-      <Suspense fallback={loading}>
-        <SearchPage />
-      </Suspense>
-    ),
-  },
+
   {
     path: '/user',
     children: userRouter(),
@@ -36,10 +52,6 @@ const root = createBrowserRouter([
   {
     path: '/movie',
     children: movieRouter,
-  },
-  {
-    path: '/mypage',
-    children: mypageRouter,
   },
 ])
 
