@@ -1,3 +1,4 @@
+import media from '@/styles/media'
 import styled from 'styled-components'
 /*사용 예시
  <GenreButton category='로맨스' onClick={handleLogout}, fontSize=14 />
@@ -28,7 +29,7 @@ const ButtonText = styled.div`
   text-shadow: 0px 0px 10px var(--primary-solid, #c77db5);
   /* regular/xs */
   font-family: Pretendard;
-  // font-size: ${({ fontSize }) => fontSize || 12}px; /* fontSize가 없을 때 기본값 12px */
+  font-size: ${({ fontSize }) => fontSize || 12}px; /* fontSize가 없을 때 기본값 12px */
   font-style: normal;
   font-weight: 400;
   line-height: 18px; /* 150% */
@@ -36,5 +37,4 @@ const ButtonText = styled.div`
   background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  font-size: calc(12px + 1vw);
 `

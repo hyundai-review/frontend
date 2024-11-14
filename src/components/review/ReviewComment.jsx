@@ -1,5 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
+import * as S from '@/styles/review/comment.style'
 function ReviewComment() {
   const commentContent = '댓글 내용입니다.'
   const commentProfileImage =
@@ -11,8 +12,8 @@ function ReviewComment() {
     <CommentContainer>
       <CommentContent>{commentContent}</CommentContent>
       <CommentFooter>
-        <CommentProfileImage src={commentProfileImage} />
-        <CommentNickname>{commentNickname}</CommentNickname>
+        <S.CommentProfileImage src={commentProfileImage} />
+        <S.CommentNickname>{commentNickname}</S.CommentNickname>
         <CommentDate>{commentDate}</CommentDate>
       </CommentFooter>
     </CommentContainer>
@@ -43,23 +44,6 @@ const CommentFooter = styled.div`
   display: flex;
   align-items: center;
   margin-top: 10px;
-`
-const CommentProfileImage = styled.img`
-  width: 20px;
-  height: 20px;
-  border-radius: 16px;
-  margin-right: 10px;
-`
-const CommentNickname = styled.span`
-  color: var(--gray-400, #a1a1aa);
-  text-align: right;
-  /* regular/xs */
-  font-family: Pretendard;
-  font-size: 12px;
-  font-style: normal;
-  font-weight: 400;
-  line-height: 18px; /* 150% */
-  margin-right: 4px;
 `
 const CommentDate = styled.span`
   color: var(--gray-400, #a1a1aa);
