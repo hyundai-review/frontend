@@ -22,7 +22,7 @@ function MovieDetailPage() {
               <LeftIcon src={arrowLeft} />
             </Header>
             <ContentsWrap>
-              {screenSize === 'large' ? (
+              {screenSize === 'medium' || screenSize === 'large' ? (
                 <MovieSummaryLarge />
               ) : (
                 <>
@@ -56,10 +56,7 @@ const BlurOverlay = styled.div`
   background: rgba(0, 0, 0, 0.5);
   backdrop-filter: blur(20px);
 `
-const Container = styled.div`
-  // WARNING(k): 100px padding은 임시. 이후 수정필요
-  /* padding: 50px 100px; */
-`
+const Container = styled.div``
 const ContentsWrap = styled.div`
   display: flex;
   flex-direction: column;
