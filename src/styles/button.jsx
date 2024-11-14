@@ -19,3 +19,8 @@ export const ReviewPostBtn = styled.button`
     box-shadow: 0 0 15px 5px rgba(255, 255, 255, 0.3);
   }
 `
+
+export const IconButton = styled.button`
+  all: unset;
+  cursor: pointer;
+`

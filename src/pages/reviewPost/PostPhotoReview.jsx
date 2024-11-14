@@ -6,10 +6,14 @@ import 'react-resizable/css/styles.css'
 import { useNavigate } from 'react-router-dom'
 import useReviewStore from '@/store/reviewStore'
 import * as SBoxContainer from '@/styles/boxContainer'
+import * as SBtn from '@/styles/button'
+
 import OptionBackList from '@/components/reviewPost/OptionBackList'
 import Photography from '@/components/reviewPost/Photography'
+import PHOTOBTN from '@/assets/icons/photoBtn.svg?react'
 import MyTest from './mytest'
 import Test from './test'
+
 /** step 2. 사진 촬영 */
 function PostPhotoReview() {
   const { optionBackImg } = useReviewStore()
@@ -32,6 +36,11 @@ function PostPhotoReview() {
           <OptionBackList />
         </OptionWrap>
       </MainWrap>
+      <SBoxContainer.Box $width='100%' $height='100px'>
+        <IconBtn>
+          <PHOTOBTN />
+        </IconBtn>
+      </SBoxContainer.Box>
     </Container>
   )
 }
@@ -57,4 +66,15 @@ const PhotoWrap = styled.div`
 `
 const OptionWrap = styled.div`
   /* height: 100%; */
+`
+
+const IconBtn = styled(SBtn.IconButton)`
+  circle[fill='#FAFAFA'] {
+    transition: fill 0.3s ease-in-out;
+  }
+
+  &:hover circle[fill='#FAFAFA'] {
+    fill: #b6b5ff;
+    filter: drop-shadow(0px 0px 3px var(--primary-light-red, #ffd7d7));
+  }
 `

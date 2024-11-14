@@ -9,6 +9,7 @@ import {
   useModel,
   useVideoProcessing,
 } from '@/libs/useVideo'
+import styled from 'styled-components'
 
 function Photography() {
   const { optionBackImg } = useReviewStore()
@@ -52,12 +53,12 @@ function Photography() {
   }
 
   return (
-    <div>
+    <Container>
       {!modelReady ? (
-        <div>Loading model, please wait...</div>
+        <div>model 로딩중</div>
       ) : (
         <div className='container-fluid'>
-          {/* 웹캠 비디오 */}
+          {/* 웹캠 비디오 : ML 모델이 해당 비디오 데이터를 분석해서 사람 인식 */}
           <div style={{ display: 'none' }}>
             <video
               ref={videoRef}
@@ -67,6 +68,7 @@ function Photography() {
               playsInline
             />
           </div>
+
           {/* 합성 결과 캔버스 */}
           <div className='output col-sm center-content'>
             <canvas ref={canvasRef} height={dimensions.height} width={dimensions.width} />
@@ -74,8 +76,12 @@ function Photography() {
           <button onClick={takePhoto}>Take Photo</button>
         </div>
       )}
-    </div>
+    </Container>
   )
 }
 
 export default Photography
+
+const Container = styled.div`
+  background-color: red;
+`
