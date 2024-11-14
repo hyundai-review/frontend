@@ -1,5 +1,5 @@
 import StarRating from '@/components/common/StarRating'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 
 import * as SBoxContainer from '@/styles/boxContainer'
@@ -7,18 +7,27 @@ import * as SText from '@/styles/text'
 import * as SBtn from '@/styles/button'
 import { Checkbox } from '@mui/material'
 import useReviewStore from '@/store/reviewStore'
+import { useNavigate } from 'react-router-dom'
 
 /** step 1. 텍스트 리뷰 작성 */
 function PostTextReview() {
+  const navigate = useNavigate()
+  const { reviewStep, nextStep, setNavi } = useReviewStore()
+
+  useEffect(() => {
+    setNavi((path) => navigate(path))
+    return () => setNavi(null)
+  }, [navigate])
+
+  // TODO (Y) zustand로 state 값 변경
   const [starRating, setStarRating] = useState(0)
   const handleStarRating = (rating) => {
     setStarRating(rating)
   }
   const [isChecked, setIsChecked] = useState(false)
-  const { nextStep } = useReviewStore()
 
-  const handleChange = (event) => {
-    setIsChecked(event.target.checked)
+  const handleChange = (e) => {
+    setIsChecked(e.target.checked)
   }
 
   return (

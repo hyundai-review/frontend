@@ -9,7 +9,7 @@ const useReviewStore = create(
       reviewPost: {
         rating: 0,
         textReview: '',
-        photocard: '',
+        photocard: '/assets/images/movie/poster1.png',
         isSpoil: false,
       },
       navi: null, // navi callback 함수 저장
