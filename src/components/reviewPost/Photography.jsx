@@ -85,7 +85,6 @@ export default Photography
 
 const Container = styled.div`
   position: relative;
-  background-color: blue;
   width: 100%;
   height: 100%;
 `
@@ -100,7 +99,6 @@ const Wrap = styled.div`
   height: 100%;
 
   position: relative;
-  background-color: brown;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -111,7 +109,6 @@ const VideoWrap = styled.div`
   width: 100%;
   height: 100%;
   position: relative;
-  background-color: chartreuse;
 
   video {
     width: 100%;
