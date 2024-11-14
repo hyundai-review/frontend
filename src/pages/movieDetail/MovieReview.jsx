@@ -1,10 +1,11 @@
-import { myReviewData } from '@/assets/data/myReviewData'
+import { myReviewData, review } from '@/assets/data/myReviewData'
 import StarRating from '@/components/common/StarRating'
 import ReviewSwiper from '@/components/reviewSwiper/ReviewSwiper'
 import { transformReviewData } from '@/utils/dataTransform'
 import React, { useState } from 'react'
 import styled from 'styled-components'
 import ReviewCard from '../../components/review/ReviewCard'
+import MyReview from './MyReview'
 function MovieReview() {
   // data
   const reviewCount = 123
@@ -39,18 +40,20 @@ function MovieReview() {
         <>
           <ReviewContentsContainer>
             <ReviewSwiper dataList={transformedData} path={'/mypage'} />
-            <ButtonWrap className='hoverBright'>
-              {!isReviewWritten ? (
+            {!isReviewWritten ? (
+              <ButtonWrap className='hoverBright'>
                 <ReviewPostButton>스토리 & 리뷰 작성하기</ReviewPostButton>
-              ) : (
-                <MyReview>내리뷰..완성해야함..</MyReview>
-              )}
-            </ButtonWrap>
+              </ButtonWrap>
+            ) : (
+              <ButtonWrap>
+                <MyReview review={review} />
+              </ButtonWrap>
+            )}
             <>
               <ReviewContainer>
                 {/* <ReviewCard /> */}
                 {transformedData.map((review) => (
-                  <ReviewCard key={review.movieId} review={review} />
+                  <ReviewCard pageType='movieDetail' key={review.movieId} review={review} />
                 ))}
               </ReviewContainer>
             </>
@@ -142,6 +145,7 @@ const ButtonWrap = styled.div`
 const ReviewPostButton = styled.div`
   text-align: center;
   text-shadow: 0px 0px 10px var(--primary-solid, #c77db5);
+  cursor: pointer;
 
   /* regular/md */
   font-family: Pretendard;
@@ -154,7 +158,6 @@ const ReviewPostButton = styled.div`
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 `
-const MyReview = styled.div``
 const ReviewContainer = styled.div`
   display: flex;
   flex-wrap: wrap;

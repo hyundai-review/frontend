@@ -27,7 +27,7 @@ function MyPage() {
         <ReviewContainer>
           {/* <ReviewCard /> */}
           {transformedData.map((review) => (
-            <ReviewCard key={review.movieId} review={review} />
+            <ReviewCard pageType='mypage' key={review.movieId} review={review} />
           ))}
         </ReviewContainer>
       </BackgroundContainer>

@@ -42,7 +42,7 @@ function MovieDetailPage() {
 export default MovieDetailPage
 const Wrap = styled.div`
   position: relative;
-  width: 100vw;
+  // width: 100vw;
   height: auto;
   background: url(${(props) => props.imageUrl});
   background-size: cover;

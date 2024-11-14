@@ -1,3 +1,14 @@
+export const review = {
+  movieId: 1,
+  movieTitle: '명탐정 코난-시한장치의 마천루',
+  reviewId: 101,
+  rating: 5,
+  content: '5월 3일 토요일 밤 10시! 베이카 시네마 로비에서 만나는 거다! 잊지 마!',
+  photocard: 'https://img.cgv.co.kr/Movie/Thumbnail/Poster/000088/88769/88769_320.jpg',
+  totalComments: 12,
+  createdAt: '2023-11-01T12:00:00Z',
+  updatedAt: '2023-11-02T10:00:00Z',
+}
 export const myReviewData = {
   contents: [
     {
