@@ -6,7 +6,6 @@ import { useNavigate } from 'react-router-dom'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import 'swiper/css'
 import SuggestMovieBox from './SuggestMovieBox'
-import MainPageSubTitle from './MainPageSubTitle'
 import media from '@/styles/media'
 import Stories from '@/components/story/Stories'
 import { reviewData } from '@/assets/data/reviewData'
@@ -22,16 +21,26 @@ function MainPage() {
   const [isLogin, setIsLogin] = useState(true)
   const userName = '테스트'
   const nowDate = new Date()
+  const chkTime = (time) => {
+    if (time < 5) {
+      return '밤'
+    } else if (time < 12) {
+      return '아침'
+    } else if (time < 18) {
+      return '낮'
+    } else if (time < 22) {
+      return '저녁'
+    } else {
+      return '밤'
+    }
+  }
+  const timeText = chkTime(nowDate.getHours())
   const [screenWidth, setScreenWidth] = useState(document.documentElement.clientWidth)
   useEffect(() => {
     const handleResize = () => {
       setScreenWidth(document.documentElement.clientWidth)
     }
-
-    // 이벤트 리스너 등록
     window.addEventListener('resize', handleResize)
-
-    // 컴포넌트가 언마운트될 때 리스너 제거
     return () => {
       window.removeEventListener('resize', handleResize)
     }
@@ -54,7 +63,13 @@ function MainPage() {
               <MainPageTitle>
                 {isLogin === false ? '로그인이 필요합니다.' : `${userName}님,`}
               </MainPageTitle>
-              {isLogin === false ? '' : <MainPageSubTitle time={nowDate.getHours()} />}
+              {isLogin === false ? (
+                ''
+              ) : (
+                <MainPageSubTitle>
+                  {`좋은 ${timeText}이에요! 어떤 영화 리뷰를 찾으시나요?`}{' '}
+                </MainPageSubTitle>
+              )}
             </MainPageTopWrapper>
             <SearchBar />
           </MainPageTopContainer>
@@ -118,12 +133,18 @@ const MainPageTopWrapper = styled.div`
   flex-direction: column;
 `
 
+const MainPageSubTitle = styled.p`
+  color: var(--color-gray-300);
+  font-weight: 100;
+`
+
 const MainPageBodyContainer = styled.div`
   display: flex;
   justify-content: start;
   flex-direction: column;
   gap: 30px;
   padding-bottom: 20px;
+  padding-left: 20px;
 `
 
 const MainPageBodyTopWrapper = styled.div`
@@ -149,12 +170,11 @@ const MainPageWrapperTitle = styled.p`
   line-height: 30px;
   font-size: 20px;
   font-weight: 200;
-  padding-left: 20px;
 `
 
 const MainPageBoxOfficeSwiperWrapper = styled.div`
   max-width: 998px;
-  width: ${(props) => props.$width}px;
+  width: ${(props) => props.$width - 20}px;
   position: relative;
   height: fit-content;
   overflow: visible;

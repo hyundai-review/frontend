@@ -58,7 +58,7 @@ const BlurOverlay = styled.div`
 `
 const Container = styled.div`
   // WARNING(k): 100px padding은 임시. 이후 수정필요
-  padding: 50px 100px;
+  /* padding: 50px 100px; */
 `
 const ContentsWrap = styled.div`
   display: flex;

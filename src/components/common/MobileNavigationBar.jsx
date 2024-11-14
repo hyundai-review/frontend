@@ -1,6 +1,6 @@
 import media from '@/styles/media'
 import React, { useState } from 'react'
-import styled from 'styled-components'
+import styled, { css } from 'styled-components'
 import homeIcon from '@/assets/icons/navHomeIcon.svg'
 import searchIcon from '@/assets/icons/navSearchIcon.svg'
 import myIcon from '@/assets/icons/navMyIcon.svg'
@@ -13,15 +13,14 @@ function MobileNavigationBar() {
   //TODO(j) 로그인상태 store로 저장하면 이 변수 대체
   const isLogin = true
   const logInMenuItems = [
-    { icon: `${homeIcon}`, name: '홈', url: '/' },
-    { icon: `${searchIcon}`, name: '검색', url: '/search' },
-    { icon: `${myIcon}`, name: '마이', url: '/mypage' },
+    { icon: `${homeIcon}`, url: '/' },
+    { icon: `${searchIcon}`, url: '/search' },
+    { icon: `${myIcon}`, url: '/mypage' },
   ]
   const logOutMenuItems = [
-    { icon: `${homeIcon}`, name: '홈', url: '/' },
-    { icon: `${searchIcon}`, name: '검색', url: '/search' },
-    //TODO(j) 로그인 페이지 만들면 연결하기
-    { icon: `${loginIcon}`, name: '로그인', url: '/mypage' },
+    { icon: `${homeIcon}`, url: '/' },
+    { icon: `${searchIcon}`, url: '/search' },
+    { icon: `${loginIcon}`, url: '/user/login' },
   ]
   const handleClick = (url, index) => {
     navigate(`${url}`)
@@ -30,6 +29,7 @@ function MobileNavigationBar() {
   return (
     <div>
       <MobileNavigationBarContainer>
+        <SelectedButtonSlider $index={selectedItem} />
         {isLogin === true
           ? logInMenuItems.map((item, index) => (
               <MobileNavigationBarItemWrapper
@@ -40,7 +40,6 @@ function MobileNavigationBar() {
                 key={index}
               >
                 <img src={`${item.icon}`} />
-                {item.name}
               </MobileNavigationBarItemWrapper>
             ))
           : logOutMenuItems.map((item, index) => (
@@ -52,7 +51,6 @@ function MobileNavigationBar() {
                 key={index}
               >
                 <img src={`${item.icon}`} />
-                {item.name}
               </MobileNavigationBarItemWrapper>
             ))}
       </MobileNavigationBarContainer>
@@ -61,7 +59,7 @@ function MobileNavigationBar() {
 }
 
 const MobileNavigationBarContainer = styled.div`
-  //이후 outlet연결시 제거
+  //TODO(j) 이후 outlet연결시 제거
   position: fixed;
   bottom: 10px;
   left: 50%;
@@ -71,9 +69,9 @@ const MobileNavigationBarContainer = styled.div`
   z-index: 100;
   border-radius: 10px;
   margin: 0 auto;
-  /* background: rgba(0, 0, 0, 0.25); */
-  /* backdrop-filter: blur(10px); */
-  background: gray;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(10px);
+  /* background: gray; */
   display: none;
   justify-content: space-between;
   ${media.small`
@@ -83,7 +81,6 @@ const MobileNavigationBarContainer = styled.div`
 const MobileNavigationBarItemWrapper = styled.div`
   width: 80px;
   color: var(--color-gray-200);
-  /* line-height: 30px; */
   font-size: 13px;
   margin-top: 2px;
   margin-bottom: 2px;
@@ -93,7 +90,27 @@ const MobileNavigationBarItemWrapper = styled.div`
   justify-content: center;
   align-items: center;
   cursor: pointer;
-  background-color: ${(props) => (props.$isSelected === true ? 'black' : 'transparent')};
+`
+
+const SelectedButtonSlider = styled.div`
+  position: fixed;
+  left: ${(props) => props.$index * 80}px;
+  width: 80px;
+  height: 30px;
+  background: rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 0 15px 5px rgba(255, 255, 255, 0.3);
+  border-radius: 10px;
+  transition: left 0.3s ease;
+`
+
+const SelectedStyle = css`
+  background: rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 0 15px 5px rgba(255, 255, 255, 0.3);
+  /* animation: slideEffect 0.3 ease; */
 `
 
 export default MobileNavigationBar

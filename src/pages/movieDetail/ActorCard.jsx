@@ -1,3 +1,4 @@
+import media from '@/styles/media'
 import React from 'react'
 import styled from 'styled-components'
 function ActorCard({ data }) {
@@ -36,12 +37,16 @@ const Title = styled.div`
   margin-bottom: 10px;
 `
 const ActorCardContainer = styled.div`
-  display: flex;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, 130px);
   gap: 10px;
+  ${media.medium`
+    grid-template-columns: repeat(auto-fill, 90px)
+  `}
 `
 
 const ActorCardWrap = styled.div`
-  width: 80px;
+  width: 120px;
   border-radius: 10px;
   border: 1px solid rgba(255, 255, 255, 0.1);
   background: rgba(0, 0, 0, 0.25);
@@ -50,17 +55,24 @@ const ActorCardWrap = styled.div`
   justify-content: flex-start;
   align-items: center;
   box-sizing: border-box;
+  ${media.medium`
+    width:80px;
+  `}
 `
 const TextWrap = styled.div`
   padding: 0 10px;
 `
 const ActorImg = styled.img`
   margin-top: 10px;
-  width: 60px;
-  height: 80px;
+  width: 100px;
+  height: 125px;
   border-radius: 5px;
   background-size: cover;
   object-fit: cover;
+  ${media.medium`
+    width: 60px;
+    height: 80px;
+  `}
 `
 
 const ActorName = styled.div`

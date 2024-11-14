@@ -150,6 +150,7 @@ const Wrap = styled.div`
 
 const LeftWrap = styled.div`
   margin-right: 20px;
+  flex: 1;
 `
 const CardHeader = styled.div`
   display: flex;
@@ -253,10 +254,34 @@ const CardCommentRight = styled.div`
   align-items: center;
   gap: 15px;
 `
-const EditInput = styled.input``
+const EditInput = styled.textarea`
+  outline: none;
+  background-color: transparent;
+  border: none;
+  color: var(--gray-400, #a1a1aa);
+  font-family: Pretendard;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 24px;
+  width: 100%;
+  height: 100%;
+  vertical-align: top;
+  text-align: left;
+  resize: none;
+  background: rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 0 15px 5px rgba(255, 255, 255, 0.3);
+`
 
 const EditWrap = styled.div`
   display: flex;
   flex-direction: column;
   gap: 10px;
+  width: 100%;
+  height: 205px;
+  ${media.medium`
+  height:86px;
+`}
 `

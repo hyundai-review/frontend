@@ -19,16 +19,21 @@ export const actorData = [
     name: '홍경',
     role: '용준',
   },
-  //   {
-  //     img: 'https://search.pstatic.net/common?type=n&size=174x196&quality=100&direct=true&src=https%3A%2F%2Fssl.pstatic.net%2Fimgmovie%2Fmdi%2Fpi%2F000000043%2FPM4323_153635_000.jpg',
-  //     name: '다니엘 래드클리프',
-  //     role: '해리 포터',
-  //   },
-  //   {
-  //     img: 'https://search.pstatic.net/common?type=n&size=174x196&quality=100&direct=true&src=https%3A%2F%2Fssl.pstatic.net%2Fimgmovie%2Fmdi%2Fpi%2F000000043%2FPM4325_164641_000.jpg',
-  //     name: '엠마 왓슨',
-  //     role: '헤르미온느',
-  //   },
+  {
+    img: 'https://search.pstatic.net/common?type=n&size=174x196&quality=100&direct=true&src=https%3A%2F%2Fssl.pstatic.net%2Fimgmovie%2Fmdi%2Fpi%2F000000043%2FPM4323_153635_000.jpg',
+    name: '다니엘 래드클리프',
+    role: '해리 포터',
+  },
+  {
+    img: 'https://search.pstatic.net/common?type=n&size=174x196&quality=100&direct=true&src=https%3A%2F%2Fssl.pstatic.net%2Fimgmovie%2Fmdi%2Fpi%2F000000043%2FPM4325_164641_000.jpg',
+    name: '엠마 왓슨',
+    role: '헤르미온느',
+  },
+  {
+    img: 'https://search.pstatic.net/common?type=n&size=174x196&quality=100&direct=true&src=https%3A%2F%2Fssl.pstatic.net%2Fimgmovie%2Fmdi%2Fpi%2F000000043%2FPM4325_164641_000.jpg',
+    name: '엠마 왓슨',
+    role: '헤르미온느',
+  },
 ]
 
 export default actorData
