@@ -11,11 +11,12 @@ import media from '@/styles/media'
 import Stories from '@/components/story/Stories'
 import { reviewData } from '@/assets/data/reviewData'
 import BackgroundContainer from '@/components/common/BackgroundContainer'
+import Header from '@/components/common/Header'
+import MobileNavigationBar from '@/components/common/MobileNavigationBar'
 
 /*boxOfficeMovieData - url, rank, date
 suggestMovieData - moviePosterUrl, movieID */
-
-// TODO(j) 로그인시 isLogin에 상태 저장할것
+// TODO(j) 로그인시 isLogin에 상태 저장할것s
 function MainPage() {
   const navigate = useNavigate()
   const [isLogin, setIsLogin] = useState(true)
@@ -98,7 +99,7 @@ const MainPageTopContainer = styled.div`
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  padding-top: 110px;
+  padding-top: 71px;
   padding-bottom: 110px;
   gap: 40px;
 `
@@ -122,6 +123,7 @@ const MainPageBodyContainer = styled.div`
   justify-content: start;
   flex-direction: column;
   gap: 30px;
+  padding-bottom: 20px;
 `
 
 const MainPageBodyTopWrapper = styled.div`

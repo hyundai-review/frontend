@@ -61,6 +61,7 @@ const SearchPageContainer = styled.div`
   justify-content: center;
   gap: 20px;
   padding-top: 20px;
+  padding-bottom: 20px;
 `
 
 const MoviePosterWrapper = styled.div`

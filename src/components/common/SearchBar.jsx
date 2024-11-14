@@ -1,5 +1,5 @@
 import React, { useRef, useState } from 'react'
-import searchBarIcon from '@/assets/searchBarIcon.svg'
+import searchBarIcon from '@/assets/icons/searchBarIcon.svg'
 import media from '@/styles/media'
 import styled from 'styled-components'
 
