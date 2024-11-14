@@ -6,6 +6,7 @@ import commentWhite from '@/assets/icons/commentWhite.svg'
 import comment from '@/assets/icons/comment.svg'
 import StarRating from '@/components/common/StarRating'
 import { useNavigate } from 'react-router-dom'
+import media from '@/styles/media'
 function ReviewCard({ review }) {
   const { movieId, movieTitle, rating, reviewContent, commentCount, cardDate } = review
   const navigate = useNavigate()
@@ -62,7 +63,8 @@ export default ReviewCard
 
 const ReviewCardContainer = styled.div`
   width: 100%;
-  padding: 19px;
+  padding: 0 19px;
+  padding-top: 19px;
   border-radius: 10px;
   border: 1px solid rgba(255, 255, 255, 0.1);
   background: rgba(0, 0, 0, 0.25);
@@ -70,6 +72,9 @@ const ReviewCardContainer = styled.div`
 `
 const Wrap = styled.div`
   display: flex;
+  ${media.medium`
+  flex-direction: column;
+`}
   justify-content: space-between;
 `
 
@@ -115,8 +120,8 @@ const CardFooter = styled.div`
 const RightWrap = styled.div``
 
 const Photocard = styled.img`
-  width: 160px;
-  height: 160px;
+  width: 100%;
+  height: 240px;
   border-radius: 5px;
   object-fit: cover;
 `

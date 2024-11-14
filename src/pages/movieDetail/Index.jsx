@@ -43,7 +43,6 @@ export default MovieDetailPage
 const Wrap = styled.div`
   position: relative;
   width: 100vw;
-  min-height: 100vh;
   height: auto;
   background: url(${(props) => props.imageUrl});
   background-size: cover;
@@ -52,7 +51,6 @@ const Wrap = styled.div`
 
 const BlurOverlay = styled.div`
   width: 100%;
-  min-height: 100vh;
   height: auto;
   border: 1px solid rgba(255, 255, 255, 0.1);
   background: rgba(0, 0, 0, 0.5);

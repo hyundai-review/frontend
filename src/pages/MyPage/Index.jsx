@@ -1,7 +1,7 @@
 import BackgroundContainer from '@/components/common/BackgroundContainer'
 import Stories from '@/components/story/Stories'
 import Profile from './Profile'
-import ReviewCard from './ReviewCard'
+import ReviewCard from '../../components/review/ReviewCard'
 import { myReviewData } from '@/assets/data/myReviewData'
 import { transformReviewData } from '@/utils/dataTransform'
 import { useEffect } from 'react'
@@ -81,10 +81,12 @@ const ImageText = styled.div`
 `
 
 const ReviewContainer = styled.div`
+  background: rgba(255, 255, 255, 0.25);
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   justify-content: center;
   padding: 20px;
   margin-top: 20px;
+  gap: 10px;
 `
