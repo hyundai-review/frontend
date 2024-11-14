@@ -2,7 +2,7 @@ import React from 'react'
 import Header from '../common/Header'
 import { Outlet } from 'react-router-dom'
 
-function OnlyHeaderLayout() {
+function HeaderLayout() {
   return (
     <div>
       <Header />
@@ -11,4 +11,4 @@ function OnlyHeaderLayout() {
   )
 }
 
-export default OnlyHeaderLayout
+export default HeaderLayout

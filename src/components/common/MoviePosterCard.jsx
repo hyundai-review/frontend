@@ -37,7 +37,11 @@ const MoviePosterCardContainer = styled.div`
   ${media.small`
     width:114px;
     height:161px;
-    padding:5px`}
+    padding-top:5px;
+    padding-bottom:5px;
+    padding-left:2px;
+    padding-right:2px;
+    `}
 `
 const MoviePosterCardImageWrapper = styled.div`
   width: 154px;

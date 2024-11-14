@@ -42,6 +42,7 @@ const HeaderContainer = styled.div`
   width: 100%;
   max-width: 1440px;
   position: fixed;
+  box-sizing: border-box;
   top: 0;
   height: 60px;
   z-index: 10;

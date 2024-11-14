@@ -72,7 +72,7 @@ const MoviePosterWrapper = styled.div`
   grid-template-columns: repeat(auto-fill, 180px);
   ${media.small`
   grid-template-columns: repeat(3,130px);
-  gap:2px
+  gap:1px
   `}
 `
 
