@@ -22,10 +22,10 @@ export const useModel = () => {
 
 /** 웹캠 */
 export const useCamera = () => {
-  const [dimensions, setDimensions] = useState({ width: 640, height: 480 }) // 비디오 크기(가로, 세로)를 추적
+  const [dimensions, setDimensions] = useState({ width: 0, height: 0 }) // 비디오 크기(가로, 세로)를 추적
   const videoRef = useRef(null) // 웹캠 비디오 스트림을 담을 <video> 요소
 
-  // 웹캠을 활성화하여 비디오 스트림을 설정
+  //   // 웹캠을 활성화하여 비디오 스트림을 설정
   const setupCamera = async () => {
     try {
       // 웹캠 스트림을 요청
@@ -39,6 +39,7 @@ export const useCamera = () => {
 
       return new Promise((resolve) => {
         videoRef.current.onloadedmetadata = () => {
+          // 비디오의 실제 크기를 dimensions에 설정
           setDimensions({
             width: videoRef.current.videoWidth,
             height: videoRef.current.videoHeight,
@@ -77,20 +78,24 @@ export const useCanvas = () => {
 }
 
 /** 배경 이미지 */
-export const useBackgroundImage = (imageUrl) => {
+export const useBackgroundImage = (imageUrl, dimensions) => {
   const backgroundImageObj = useRef(null)
 
   useEffect(() => {
-    if (!imageUrl) return
+    if (!imageUrl || !dimensions.width || !dimensions.height) return
 
     const img = new Image()
 
     img.onload = () => {
+      // 이미지 크기를 부모 컨테이너 크기로 설정
+      img.width = dimensions.width
+      img.height = dimensions.height
+
       backgroundImageObj.current = img
     }
 
     img.src = imageUrl
-  }, [imageUrl])
+  }, [imageUrl, dimensions])
 
   return backgroundImageObj
 }

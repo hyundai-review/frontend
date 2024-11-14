@@ -21,6 +21,8 @@ function PostPhotoReview() {
     console.log('dddddd', optionBackImg)
   }, [optionBackImg])
 
+  const takePhoto = () => {}
+
   return (
     <Container>
       <MainWrap>
@@ -38,7 +40,7 @@ function PostPhotoReview() {
       </MainWrap>
 
       <SBoxContainer.Box $width='100%' $height='100px' $display='flex' $justifyContent='center'>
-        <IconBtn>
+        <IconBtn onClick={takePhoto}>
           <PHOTOBTN />
         </IconBtn>
       </SBoxContainer.Box>
@@ -54,7 +56,7 @@ const Container = styled.div`
   background-color: yellow;
   display: flex;
   flex-direction: column;
-  gap: 78px;
+  /* gap: 78px; */
 `
 
 const MainWrap = styled.div`
@@ -63,10 +65,14 @@ const MainWrap = styled.div`
   gap: 40px;
   width: 100%;
   height: 610px;
+  background-color: violet;
+  margin: 30px 0;
 `
 const PhotoWrap = styled.div`
-  width: 700px;
-  height: 610px;
+  /* width: 700px; */
+  /* height: 610px; */
+  /* width: 362px;
+  height: 429.75px; */
   background-color: aliceblue;
 `
 const OptionWrap = styled.div`
