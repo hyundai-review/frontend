@@ -1,6 +1,5 @@
 import React from 'react'
 import styled from 'styled-components'
-import { Rating } from '@mui/material'
 function ActorCard({ data }) {
   return (
     <>

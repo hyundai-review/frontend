@@ -1,7 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react'
 import styled from 'styled-components'
-import ActorCard from './ActorCard'
-import actorData from '@/assets/data/actorsData'
 import down from '@/assets/icons/down.svg'
 import up from '@/assets/icons/up.svg'
 function MovieOverview() {
@@ -39,7 +37,6 @@ function MovieOverview() {
           </TextWrap>
         </Box>
       </Wrap>
-      <ActorCard data={actorData} />
     </>
   )
 }
