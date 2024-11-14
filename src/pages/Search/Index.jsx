@@ -31,10 +31,6 @@ function SearchPage() {
 
 const SearchPageBodyWrapper = styled.div`
   width: 100%;
-  padding-left: 131px;
-  ${media.small`
-    padding-left: 0px;
-  `}
 `
 
 const SearchPageResultWrapper = styled.div`
@@ -47,9 +43,7 @@ const SearchPageResultWrapper = styled.div`
   line-height: 30px;
   font-weight: 200;
   margin-bottom: 20px;
-  ${media.small`
-    padding-left:20px;
-  `}
+  padding-left: 20px;
 `
 
 const SearchPageContainer = styled.div`
@@ -69,10 +63,12 @@ const MoviePosterWrapper = styled.div`
   justify-content: start;
   place-items: center;
   gap: 9px 60px;
+  padding-left: 20px;
   grid-template-columns: repeat(auto-fill, 180px);
   ${media.small`
   grid-template-columns: repeat(3,130px);
-  gap:1px
+  gap:1px;
+  padding-left:10px;
   `}
 `
 

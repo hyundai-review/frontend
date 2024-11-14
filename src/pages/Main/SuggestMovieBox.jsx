@@ -67,8 +67,8 @@ const MainPageButtonWrapper = styled.div`
   display: flex;
   gap: 10px;
   flex-wrap: wrap;
+  padding-right: 20px;
   padding-bottom: 10px;
-  padding-left: 20px;
   ${media.small`
     margin-bottom:10px;
   `};
