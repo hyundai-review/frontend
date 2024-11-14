@@ -1,12 +1,13 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import 'swiper/css'
 import 'swiper/css/navigation'
 import 'swiper/css/pagination'
 import 'swiper/css/effect-coverflow'
 import styled from 'styled-components'
 import { Swiper, SwiperSlide } from 'swiper/react'
-import { Navigation, Pagination } from 'swiper/modules'
+import { Navigation } from 'swiper/modules'
 import OptionBackItem from './OptionBackItem'
+import useReviewStore from '@/store/reviewStore'
 
 const movieData = {
   id: 1,
@@ -43,6 +44,17 @@ const movieData = {
 }
 
 function OptionBackList() {
+  const { setOptionBackImg } = useReviewStore()
+
+  useEffect(() => {
+    if (movieData.image.length > 0) {
+      setOptionBackImg({
+        imgId: movieData.image[0].imgId,
+        imgURL: movieData.image[0].imgURL,
+      })
+    }
+  }, [])
+
   return (
     <SwiperContainer>
       <Swiper

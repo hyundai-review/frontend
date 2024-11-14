@@ -14,14 +14,17 @@ const useReviewStore = create(
       },
       navi: null, // navi callback 함수 저장
       setNavi: (navi) => set({ navi }),
+      optionBackImg: {
+        imgId: 0,
+        imgURL: '',
+      },
 
-      // step
+      /** 사진 background 선택 */
+      setOptionBackImg: (backImg) => set({ optionBackImg: backImg }),
+
+      /** step */
       setReviewStep: (step) => set({ reviewStep: step }),
 
-      //   nextStep: () =>
-      //     set((state) => ({
-      //       reviewStep: Math.min(state.reviewStep + 1, 4),
-      //     })),
       nextStep: () => {
         const state = get()
         const nextStepValue = Math.min(state.reviewStep + 1, 4)
@@ -46,7 +49,7 @@ const useReviewStore = create(
         }
       },
 
-      // review post
+      /** review post */
       setReviewPost: (post) =>
         set((state) => ({
           reviewPost: { ...state.reviewPost, ...post },

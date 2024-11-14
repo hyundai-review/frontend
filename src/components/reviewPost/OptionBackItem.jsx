@@ -1,10 +1,19 @@
+import useReviewStore from '@/store/reviewStore'
 import React from 'react'
 import styled from 'styled-components'
 
 function OptionBackItem({ backImg, backImgId }) {
-  console.log(backImg, backImgId)
+  const { optionBackImg, setOptionBackImg } = useReviewStore()
+
+  const handleImgClick = () => {
+    setOptionBackImg({
+      imgId: backImgId,
+      imgURL: backImg,
+    })
+  }
+
   return (
-    <ImgFrame>
+    <ImgFrame onClick={handleImgClick}>
       <img src={backImg} alt={`Slide ${backImgId}`} />
     </ImgFrame>
   )
