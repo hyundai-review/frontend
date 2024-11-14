@@ -81,7 +81,6 @@ const ImageText = styled.div`
 `
 
 const ReviewContainer = styled.div`
-  background: rgba(255, 255, 255, 0.25);
   display: flex;
   flex-wrap: wrap;
   align-items: center;
