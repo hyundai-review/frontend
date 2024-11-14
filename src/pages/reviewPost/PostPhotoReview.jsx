@@ -7,18 +7,25 @@ import { useNavigate } from 'react-router-dom'
 import useReviewStore from '@/store/reviewStore'
 import * as SBoxContainer from '@/styles/boxContainer'
 import OptionBackList from '@/components/reviewPost/OptionBackList'
-
+import Photography from '@/components/reviewPost/Photography'
+import MyTest from './mytest'
+import Test from './test'
 /** step 2. 사진 촬영 */
 function PostPhotoReview() {
   const { optionBackImg } = useReviewStore()
   useEffect(() => {
     console.log('dddddd', optionBackImg)
   }, [optionBackImg])
+
   return (
     <Container>
       <MainWrap>
         {/* 촬영 */}
-        <PhotoWrap></PhotoWrap>
+        <PhotoWrap>
+          <Photography />
+          {/* <Test /> */}
+          {/* <MyTest /> */}
+        </PhotoWrap>
 
         {/* 스와이퍼 */}
         <OptionWrap>
