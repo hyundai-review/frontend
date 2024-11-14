@@ -32,23 +32,36 @@ export const useCamera = () => {
     try {
       // 웹캠 스트림을 요청
       const stream = await navigator.mediaDevices.getUserMedia({
-        video: true,
+        video: {
+          width: { ideal: dimensions.width },
+          height: { ideal: dimensions.height },
+          aspectRatio: dimensions.width / dimensions.height,
+        },
         audio: false,
       })
+      //   const stream = await navigator.mediaDevices.getUserMedia({
+      //     video: true,
+      //     audio: false,
+      //   })
 
       // <video> 요소가 웹캠 영상을 표시
       videoRef.current.srcObject = stream
 
       return new Promise((resolve) => {
         videoRef.current.onloadedmetadata = () => {
-          // 비디오의 실제 크기를 dimensions에 설정
-          setDimensions({
-            width: videoRef.current.videoWidth,
-            height: videoRef.current.videoHeight,
-          })
           resolve(videoRef.current)
         }
       })
+      //   return new Promise((resolve) => {
+      //     videoRef.current.onloadedmetadata = () => {
+      //       // 비디오의 실제 크기를 dimensions에 설정
+      //       setDimensions({
+      //         width: videoRef.current.videoWidth,
+      //         height: videoRef.current.videoHeight,
+      //       })
+      //       resolve(videoRef.current)
+      //     }
+      //   })
     } catch (error) {
       console.error('카메라 셋업 실패', error)
     }

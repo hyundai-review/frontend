@@ -11,7 +11,7 @@ import {
 } from '@/libs/useVideo'
 import styled from 'styled-components'
 
-function Photography() {
+function Photography({ setTakePhotoFunc }) {
   const { optionBackImg } = useReviewStore()
 
   const { modelReady, modelRef, loadModel } = useModel() // ML 모델 준비
@@ -42,16 +42,21 @@ function Photography() {
     initializePhotograpy()
   }, [])
 
-  //   const takePhoto = () => {
-  //     const canvas = document.createElement('canvas')
-  //     const context = canvas.getContext('2d')
-  //     canvas.width = dimensions.width
-  //     canvas.height = dimensions.height
-  //     context.drawImage(canvasRef.current, 0, 0)
-  //     const imageData = canvas.toDataURL('image/png')
-  //     console.log('Photo taken:', imageData)
-  //     // 여기서 이미지 데이터를 원하는 대로 처리
-  //   }
+  const takePhoto = () => {
+    const canvas = document.createElement('canvas')
+    const context = canvas.getContext('2d')
+    canvas.width = dimensions.width
+    canvas.height = dimensions.height
+    context.drawImage(canvasRef.current, 0, 0)
+    const imageData = canvas.toDataURL('image/png')
+    console.log('Photo taken:', imageData)
+    return imageData
+  }
+
+  // 상위 컴포넌트로 takePhoto 함수 전달
+  useEffect(() => {
+    setTakePhotoFunc(() => takePhoto)
+  }, [])
 
   return (
     <Container>

@@ -1,5 +1,4 @@
-import { useState, useEffect, useRef } from 'react'
-import * as bodyPix from '@tensorflow-models/body-pix'
+import { useState, useEffect } from 'react'
 import '@tensorflow/tfjs'
 import styled from 'styled-components'
 import 'react-resizable/css/styles.css'
@@ -7,40 +6,48 @@ import { useNavigate } from 'react-router-dom'
 import useReviewStore from '@/store/reviewStore'
 import * as SBoxContainer from '@/styles/boxContainer'
 import * as SBtn from '@/styles/button'
-
 import OptionBackList from '@/components/reviewPost/OptionBackList'
 import Photography from '@/components/reviewPost/Photography'
 import PHOTOBTN from '@/assets/icons/photoBtn.svg?react'
-import MyTest from './mytest'
-import Test from './test'
 
 /** step 2. 사진 촬영 */
 function PostPhotoReview() {
   const { optionBackImg } = useReviewStore()
+  const [takePhoto, setTakePhoto] = useState(null) // takePhoto 함수 저장용 state
+
+  const [testImg, setTestImg] = useState('')
+
   useEffect(() => {
     console.log('dddddd', optionBackImg)
   }, [optionBackImg])
 
-  const takePhoto = () => {}
+  const handleTakePhoto = () => {
+    if (takePhoto) {
+      const imageData = takePhoto()
+      // 여기서 이미지 데이터 처리
+      // console.log('imageData', imageData)
+      setTestImg(imageData)
+    }
+  }
 
   return (
     <Container>
       <MainWrap>
         {/* 촬영 */}
         <PhotoWrap>
-          <Photography />
-          {/* <Test /> */}
-          {/* <MyTest /> */}
+          <Photography setTakePhotoFunc={setTakePhoto} />
         </PhotoWrap>
 
         {/* 스와이퍼 */}
         <OptionWrap>
           <OptionBackList />
         </OptionWrap>
+
+        <img src={testImg} />
       </MainWrap>
 
       <SBoxContainer.Box $width='100%' $height='100px' $display='flex' $justifyContent='center'>
-        <IconBtn onClick={takePhoto}>
+        <IconBtn onClick={handleTakePhoto}>
           <PHOTOBTN />
         </IconBtn>
       </SBoxContainer.Box>
