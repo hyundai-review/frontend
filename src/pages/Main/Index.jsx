@@ -108,7 +108,7 @@ function MainPage() {
         </MainPageBodyTopWrapper>
         <MainPageSliderWrapper>
           <MainPageWrapperTitle>{'추천영화'}</MainPageWrapperTitle>
-          <SuggestMovieBox isLogin={isLogin} suggestMovieData={suggestMovieData} />
+          <SuggestMovieBox isLogin={isLoggedIn} suggestMovieData={suggestMovieData} />
         </MainPageSliderWrapper>
       </MainPageBodyContainer>
     </div>
