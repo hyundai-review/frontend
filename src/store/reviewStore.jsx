@@ -21,7 +21,6 @@ const useReviewStore = create(
       processPhotocard: {
         step1: '',
         step2: '',
-        step3: '',
       },
 
       /** 사진 background 선택 */
