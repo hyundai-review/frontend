@@ -6,12 +6,13 @@ import searchIcon from '@/assets/icons/navSearchIcon.svg'
 import myIcon from '@/assets/icons/navMyIcon.svg'
 import loginIcon from '@/assets/icons/navLoginIcon.svg'
 import { useNavigate } from 'react-router-dom'
+import useAuthStore from '@/store/authStore'
 
 function MobileNavigationBar() {
   const navigate = useNavigate()
   const [selectedItem, setSelectedItem] = useState(0)
   //TODO(j) 로그인상태 store로 저장하면 이 변수 대체
-  const isLogin = true
+  const { isLoggedIn } = useAuthStore()
   const logInMenuItems = [
     { icon: `${homeIcon}`, url: '/' },
     { icon: `${searchIcon}`, url: '/search' },
@@ -30,7 +31,7 @@ function MobileNavigationBar() {
     <div>
       <MobileNavigationBarContainer>
         <SelectedButtonSlider $index={selectedItem} />
-        {isLogin === true
+        {isLoggedIn
           ? logInMenuItems.map((item, index) => (
               <MobileNavigationBarItemWrapper
                 onClick={() => {

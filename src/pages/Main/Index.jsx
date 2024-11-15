@@ -12,13 +12,14 @@ import { reviewData } from '@/assets/data/reviewData'
 import BackgroundContainer from '@/components/common/BackgroundContainer'
 import Header from '@/components/common/Header'
 import MobileNavigationBar from '@/components/common/MobileNavigationBar'
+import useAuthStore from '@/store/authStore'
 
 /*boxOfficeMovieData - url, rank, date
 suggestMovieData - moviePosterUrl, movieID */
 // TODO(j) 로그인시 isLogin에 상태 저장할것s
 function MainPage() {
   const navigate = useNavigate()
-  const [isLogin, setIsLogin] = useState(true)
+  const { isLoggedIn } = useAuthStore()
   const userName = '테스트'
   const nowDate = new Date()
   const chkTime = (time) => {
@@ -61,9 +62,9 @@ function MainPage() {
           <MainPageTopContainer>
             <MainPageTopWrapper>
               <MainPageTitle>
-                {isLogin === false ? '로그인이 필요합니다.' : `${userName}님,`}
+                {!isLoggedIn ? '로그인이 필요합니다.' : `${userName}님,`}
               </MainPageTitle>
-              {isLogin === false ? (
+              {!isLoggedIn ? (
                 ''
               ) : (
                 <MainPageSubTitle>
@@ -79,7 +80,11 @@ function MainPage() {
                 <MainPageSliderWrapper>
                   <MainPageWrapperTitle>{'최신 스토리'}</MainPageWrapperTitle>
                   <Wrap>
-                    <Stories dataList={reviewData} path={'/main/story'} />
+                    {isLoggedIn ? (
+                      <Stories dataList={reviewData} path={'/main/story'} />
+                    ) : (
+                      <Stories dataList={reviewData} path={'/user/login'} />
+                    )}
                   </Wrap>
                 </MainPageSliderWrapper>
               </div>
@@ -100,7 +105,7 @@ function MainPage() {
             </MainPageBodyTopWrapper>
             <MainPageSliderWrapper>
               <MainPageWrapperTitle>{'추천영화'}</MainPageWrapperTitle>
-              <SuggestMovieBox isLogin={isLogin} suggestMovieData={suggestMovieData} />
+              <SuggestMovieBox isLogin={isLoggedIn} suggestMovieData={suggestMovieData} />
             </MainPageSliderWrapper>
           </MainPageBodyContainer>
         </div>

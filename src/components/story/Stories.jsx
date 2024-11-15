@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Swiper, SwiperSlide, useSwiper } from 'swiper/react'
 import { EffectCoverflow } from 'swiper/modules'
 import 'swiper/css'
@@ -10,13 +10,16 @@ import styled from 'styled-components'
 import StoryItem from './StoryItem'
 import { useCarousel } from '@/libs/useCarousel'
 import useModalStore from '@/store/modalStore'
-
+import { useNavigate } from 'react-router-dom'
 function Stories({ dataList, path }) {
   const { handleSlideChange, handleSlideClick } = useCarousel(1)
   const openModal = useModalStore((state) => state.openModal)
+  const navigate = useNavigate()
 
   const handleClick = (index, path, review) => {
-    if (path) {
+    if (path === '/user/login') {
+      navigate(path) // /user/login 경로로 이동
+    } else if (path) {
       handleSlideClick(index, path, review)
     } else {
       openModal(review)
