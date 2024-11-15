@@ -15,25 +15,27 @@ function Header() {
   return (
     <div>
       <HeaderContainer>
-        <HeaderLogoWrapper>
-          <HeaderLogo
-            alt='logo'
-            src={Logo}
-            onClick={() => {
-              window.location.href = '/'
-            }}
-          />
-        </HeaderLogoWrapper>
-        {!isLoggedIn ? (
-          <HeaderRightWrapper>
-            <Button text={'로그인'} onClick={console.log('여기에 로그인')} />
-          </HeaderRightWrapper>
-        ) : (
-          <HeaderRightWrapper onClick={() => navigate('/mypage')}>
-            <HeaderUserProfileImage src={`${profileImage}`} alt='profileImage' />
-            <HeaderUserName>{`${userName}`}</HeaderUserName>
-          </HeaderRightWrapper>
-        )}
+        <HeaderWrapper>
+          <HeaderLogoWrapper>
+            <HeaderLogo
+              alt='logo'
+              src={Logo}
+              onClick={() => {
+                window.location.href = '/'
+              }}
+            />
+          </HeaderLogoWrapper>
+          {!isLoggedIn ? (
+            <HeaderRightWrapper>
+              <Button text={'로그인'} onClick={console.log('여기에 로그인')} />
+            </HeaderRightWrapper>
+          ) : (
+            <HeaderRightWrapper onClick={() => navigate('/mypage')}>
+              <HeaderUserProfileImage src={`${profileImage}`} alt='profileImage' />
+              <HeaderUserName>{`${userName}`}</HeaderUserName>
+            </HeaderRightWrapper>
+          )}
+        </HeaderWrapper>
       </HeaderContainer>
     </div>
   )
@@ -50,7 +52,6 @@ const HeaderContainer = styled.div`
   backdrop-filter: blur(10px);
   display: flex;
   justify-content: center;
-
   border-bottom-left-radius: 10px;
   border-bottom-right-radius: 10px;
   margin: 0 auto;

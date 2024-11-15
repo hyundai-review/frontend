@@ -39,22 +39,23 @@ const root = createBrowserRouter([
         path: '/mypage',
         children: mypageRouter,
       },
-    ],
-  },
-  {
-    path: '/movie',
-    element: (
-      <Suspense fallback={loading}>
-        <HeaderLayout />
-      </Suspense>
-    ),
-    children: [
       {
-        path: '',
-        children: movieRouter,
+        path: '/movie',
+        element: (
+          <Suspense fallback={loading}>
+            <HeaderLayout />
+          </Suspense>
+        ),
+        children: [
+          {
+            path: '',
+            children: movieRouter,
+          },
+        ],
       },
     ],
   },
+
   {
     path: '/main',
     children: mainRouter(),
