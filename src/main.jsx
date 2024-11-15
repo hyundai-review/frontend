@@ -7,24 +7,10 @@ import styled from 'styled-components'
 function Root() {
   const [width, setWidth] = useState(window.innerWidth)
 
-  const AppWrapper = styled.div`
-    max-width: ${({ width }) => Math.min(1440, width)}px;
-    margin: 0 auto;
-    min-height: 100dvh;
-  `
-
-  useEffect(() => {
-    const handleResize = () => setWidth(window.innerWidth)
-    window.addEventListener('resize', handleResize)
-    return () => window.removeEventListener('resize', handleResize)
-  }, [])
-
   return (
     <StrictMode>
       <GlobalStyle />
-      <AppWrapper width={width}>
-        <App />
-      </AppWrapper>
+      <App />
     </StrictMode>
   )
 }

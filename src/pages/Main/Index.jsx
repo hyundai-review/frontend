@@ -13,10 +13,12 @@ import BackgroundContainer from '@/components/common/BackgroundContainer'
 import Header from '@/components/common/Header'
 import MobileNavigationBar from '@/components/common/MobileNavigationBar'
 import useAuthStore from '@/store/authStore'
+import { authenticated, nonAuthenticated } from '@/libs/axiosInstance'
+import OverlayPosterCard from '@/components/moviePosterCard/OverlayPosterCard'
 
 /*boxOfficeMovieData - url, rank, date
 suggestMovieData - moviePosterUrl, movieID */
-// TODO(j) 로그인시 isLogin에 상태 저장할것s
+// TODO(j) 로그인시 isLogin에 상태 저장할것
 function MainPage() {
   const navigate = useNavigate()
   const { isLoggedIn } = useAuthStore()
@@ -37,10 +39,19 @@ function MainPage() {
   }
   const timeText = chkTime(nowDate.getHours())
   const [screenWidth, setScreenWidth] = useState(document.documentElement.clientWidth)
+  const res = async () => {
+    try {
+      const res = await nonAuthenticated.get('/api/movies/boxoffice')
+      console.log(res)
+    } catch (e) {
+      console.log(e)
+    }
+  }
   useEffect(() => {
     const handleResize = () => {
       setScreenWidth(document.documentElement.clientWidth)
     }
+    // res()
     window.addEventListener('resize', handleResize)
     return () => {
       window.removeEventListener('resize', handleResize)
@@ -57,59 +68,49 @@ function MainPage() {
   }))
   return (
     <div>
-      <BackgroundContainer>
-        <div style={{ width: '100%' }}>
-          <MainPageTopContainer>
-            <MainPageTopWrapper>
-              <MainPageTitle>
-                {!isLoggedIn ? '로그인이 필요합니다.' : `${userName}님,`}
-              </MainPageTitle>
-              {!isLoggedIn ? (
-                ''
-              ) : (
-                <MainPageSubTitle>
-                  {`좋은 ${timeText}이에요! 어떤 영화 리뷰를 찾으시나요?`}{' '}
-                </MainPageSubTitle>
-              )}
-            </MainPageTopWrapper>
-            <SearchBar />
-          </MainPageTopContainer>
-          <MainPageBodyContainer>
-            <MainPageBodyTopWrapper>
-              <div>
-                <MainPageSliderWrapper>
-                  <MainPageWrapperTitle>{'최신 스토리'}</MainPageWrapperTitle>
-                  <Wrap>
-                    {isLoggedIn ? (
-                      <Stories dataList={reviewData} path={'/main/story'} />
-                    ) : (
-                      <Stories dataList={reviewData} path={'/user/login'} />
-                    )}
-                  </Wrap>
-                </MainPageSliderWrapper>
-              </div>
-              <div style={{ flex: '1' }}>
-                <MainPageSliderWrapper>
-                  <MainPageWrapperTitle>{`${nowDate.getMonth() + 1}월 ${nowDate.getDate()}일 박스오피스 순위`}</MainPageWrapperTitle>
-                  <MainPageBoxOfficeSwiperWrapper $width={screenWidth - 402}>
-                    <Swiper spaceBetween={7} slidesPerView={'auto'}>
-                      {boxOfficeMovieData.map((item, index) => (
-                        <MainPageSwiperSlide key={index}>
-                          <BoxOfficePosterCard movieInfo={item} />
-                        </MainPageSwiperSlide>
-                      ))}
-                    </Swiper>
-                  </MainPageBoxOfficeSwiperWrapper>
-                </MainPageSliderWrapper>
-              </div>
-            </MainPageBodyTopWrapper>
+      <MainPageTopContainer>
+        <MainPageTopWrapper>
+          <MainPageTitle>{!isLoggedIn ? '로그인이 필요합니다.' : `${userName}님,`}</MainPageTitle>
+          {!isLoggedIn ? (
+            ''
+          ) : (
+            <MainPageSubTitle>
+              {`좋은 ${timeText}이에요! 어떤 영화 리뷰를 찾으시나요?`}{' '}
+            </MainPageSubTitle>
+          )}
+        </MainPageTopWrapper>
+        <SearchBar />
+      </MainPageTopContainer>
+      <MainPageBodyContainer>
+        <MainPageBodyTopWrapper>
+          <div>
             <MainPageSliderWrapper>
-              <MainPageWrapperTitle>{'추천영화'}</MainPageWrapperTitle>
-              <SuggestMovieBox isLogin={isLoggedIn} suggestMovieData={suggestMovieData} />
+              <MainPageWrapperTitle>{'최신 스토리'}</MainPageWrapperTitle>
+              <Wrap>
+                <Stories dataList={reviewData} path={'/main/story'} />
+              </Wrap>
             </MainPageSliderWrapper>
-          </MainPageBodyContainer>
-        </div>
-      </BackgroundContainer>
+          </div>
+          <div style={{ flex: '1' }}>
+            <MainPageSliderWrapper>
+              <MainPageWrapperTitle>{`${nowDate.getMonth() + 1}월 ${nowDate.getDate()}일 박스오피스 순위`}</MainPageWrapperTitle>
+              <MainPageBoxOfficeSwiperWrapper $width={screenWidth - 402}>
+                <Swiper spaceBetween={7} slidesPerView={'auto'}>
+                  {boxOfficeMovieData.map((item, index) => (
+                    <MainPageSwiperSlide key={index}>
+                      <BoxOfficePosterCard movieInfo={item} />
+                    </MainPageSwiperSlide>
+                  ))}
+                </Swiper>
+              </MainPageBoxOfficeSwiperWrapper>
+            </MainPageSliderWrapper>
+          </div>
+        </MainPageBodyTopWrapper>
+        <MainPageSliderWrapper>
+          <MainPageWrapperTitle>{'추천영화'}</MainPageWrapperTitle>
+          <SuggestMovieBox isLogin={isLogin} suggestMovieData={suggestMovieData} />
+        </MainPageSliderWrapper>
+      </MainPageBodyContainer>
     </div>
   )
 }
@@ -162,7 +163,7 @@ const MainPageBodyTopWrapper = styled.div`
 `
 
 const MainPageSwiperSlide = styled(SwiperSlide)`
-  max-width: 250px;
+  max-width: 270px;
   display: flex;
   overflow: hidden;
   ${media.small`
@@ -208,7 +209,7 @@ const MainPageSliderWrapper = styled.div`
   display: flex;
   height: fit-content;
   flex-direction: column;
-  gap: 10px;
+  gap: 8px;
   overflow: hidden;
 `
 

@@ -1,5 +1,5 @@
 import React from 'react'
-import MoviePosterBox from '@/components/common/MoviePosterCard.jsx'
+import MoviePosterBox from '@/components/moviePosterCard/MoviePosterCard.jsx'
 import SearchBar from '@/components/common/SearchBar.jsx'
 import media from '@/styles/media'
 import styled from 'styled-components'

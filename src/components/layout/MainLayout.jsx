@@ -3,15 +3,10 @@ import Header from '../common/Header'
 import MobileNavigationBar from '../common/MobileNavigationBar'
 import { Outlet } from 'react-router-dom'
 import styled from 'styled-components'
+import BackgroundContainer from '../common/BackgroundContainer'
 
 function MainLayout() {
   const [width, setWidth] = useState(window.innerWidth)
-
-  const AppWrapper = styled.div`
-    max-width: ${({ width }) => Math.min(1440, width)}px;
-    margin: 0 auto;
-    min-height: 100dvh;
-  `
 
   useEffect(() => {
     const handleResize = () => setWidth(window.innerWidth)
@@ -20,13 +15,21 @@ function MainLayout() {
   }, [])
   return (
     <div>
-      <Header />
-      <AppWrapper width={width}>
-        <Outlet />
-      </AppWrapper>
-      <MobileNavigationBar />
+      <BackgroundContainer>
+        <Header />
+        <AppWrapper width={width}>
+          <Outlet />
+        </AppWrapper>
+        <MobileNavigationBar />
+      </BackgroundContainer>
     </div>
   )
 }
+
+const AppWrapper = styled.div`
+  max-width: ${({ width }) => Math.min(1440, width)}px;
+  margin: 0 auto;
+  min-height: 100dvh;
+`
 
 export default MainLayout

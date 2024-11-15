@@ -41,7 +41,6 @@ function Header() {
 
 const HeaderContainer = styled.div`
   width: 100%;
-  max-width: 1440px;
   position: fixed;
   box-sizing: border-box;
   top: 0;
@@ -50,15 +49,25 @@ const HeaderContainer = styled.div`
   background: rgba(0, 0, 0, 0.25);
   backdrop-filter: blur(10px);
   display: flex;
-  justify-content: space-between;
-  padding-left: 20px;
-  padding-right: 20px;
+  justify-content: center;
+
   border-bottom-left-radius: 10px;
   border-bottom-right-radius: 10px;
+  margin: 0 auto;
   ${media.small`
     display:none;
   `}
 `
+
+const HeaderWrapper = styled.div`
+  max-width: 1440px;
+  width: 100%;
+  padding-left: 20px;
+  padding-right: 20px;
+  display: flex;
+  justify-content: space-between;
+`
+
 const HeaderLogoWrapper = styled.div`
   width: fit-content;
   height: 100%;

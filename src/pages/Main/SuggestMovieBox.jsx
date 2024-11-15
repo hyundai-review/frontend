@@ -1,6 +1,6 @@
 import BoxOfficePosterCard from '@/components/common/BoxOfficePosterCard'
 import Button from '@/components/common/Button'
-import MoviePosterCard from '@/components/common/MoviePosterCard'
+import MoviePosterCard from '@/components/moviePosterCard/MoviePosterCard'
 import media from '@/styles/media'
 import React, { useState } from 'react'
 import styled from 'styled-components'
