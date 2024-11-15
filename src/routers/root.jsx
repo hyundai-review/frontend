@@ -1,22 +1,82 @@
-import { lazy, Suspense } from 'react'
+import { lazy, Suspense, useState } from 'react'
 import { createBrowserRouter } from 'react-router-dom'
 import userRouter from './userRouter'
+import mainRouter from './mainRouter'
+import movieRouter from './movieRouter'
+import reviewRouter from './reviewRouter'
+import mypageRouter from './mypageRouter'
+import MainLayout from '@/components/layout/MainLayout'
+import HeaderLayout from '@/components/layout/HeaderLayout'
 
 const loading = <div>loading</div>
 const MainPage = lazy(() => import('@/pages/Main/Index'))
+const SearchPage = lazy(() => import('@/pages/Search/Index'))
 
 const root = createBrowserRouter([
   {
-    path: '',
+    path: '/',
     element: (
       <Suspense fallback={loading}>
-        <MainPage />
+        <MainLayout />
       </Suspense>
     ),
+    children: [
+      {
+        index: true,
+        element: (
+          <Suspense fallback={loading}>
+            <MainPage />
+          </Suspense>
+        ),
+      },
+      {
+        path: '/search',
+        element: (
+          <Suspense fallback={loading}>
+            <SearchPage />
+          </Suspense>
+        ),
+      },
+      {
+        path: '/mypage',
+        children: mypageRouter,
+      },
+    ],
   },
   {
+    path: '/main',
+    children: mainRouter(),
+  },
+  {
+    path: '/movie',
+    element: (
+      <Suspense fallback={loading}>
+        <HeaderLayout />
+      </Suspense>
+    ),
+    children: [
+      {
+        path: '',
+        children: movieRouter,
+      },
+    ],
+  },
+  {
+    path: '/main',
+    children: mainRouter(),
+  },
+
+  {
     path: '/user',
-    children: userRouter,
+    children: userRouter(),
+  },
+  {
+    path: '/movie',
+    children: movieRouter,
+  },
+  {
+    path: '/review',
+    children: reviewRouter(),
   },
 ])
 

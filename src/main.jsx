@@ -1,11 +1,18 @@
-import { StrictMode } from 'react'
+import { StrictMode, useEffect, useState } from 'react'
 import { createRoot } from 'react-dom/client'
 import App from './App.jsx'
 import GlobalStyle from './styles/globalStyle.jsx'
+import styled from 'styled-components'
 
-createRoot(document.getElementById('root')).render(
-  <StrictMode>
-    <GlobalStyle />
-    <App />
-  </StrictMode>,
-)
+function Root() {
+
+
+  return (
+    <StrictMode>
+      <GlobalStyle />
+      <App />
+    </StrictMode>
+  )
+}
+
+createRoot(document.getElementById('root')).render(<Root />)

@@ -11,7 +11,10 @@ export const GET_KakaoLoginLink = () => {
 
 export const GET_AccessToken = async (authCode) => {
   try {
-    const res = await nonAuthenticated.get(`/api/kakao/callback?code=${authCode}`)
+    const res = await nonAuthenticated.post(`/api/auth/login`, {
+      authorizationCode: authCode,
+    })
+    console.log(res.data)
     return res.data
   } catch (error) {
     throw error
