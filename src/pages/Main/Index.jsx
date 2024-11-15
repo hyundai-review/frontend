@@ -25,7 +25,7 @@ function MainPage() {
   const timeText = chkTime(nowDate.getHours())
   const [screenWidth, setScreenWidth] = useState(document.documentElement.clientWidth)
   // API
-  const { data: boxOfficeMovies, isLoading, isError } = useMovieData('boxOffice')
+  const { dataArray: boxOfficeMovies, isLoading, isError } = useMovieData('boxOffice')
 
   useEffect(() => {
     console.log(boxOfficeMovies)

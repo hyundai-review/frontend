@@ -12,7 +12,7 @@ export const getBoxOfficeMovies = async () => {
 // 특정 영화 상세 정보 조회
 export const getMovieDetail = async (movieId) => {
   try {
-    const response = await nonAuthenticated.get('/api/movies/details/${movieId}')
+    const response = await nonAuthenticated.get(`/api/movies/details/${movieId}`)
     return response.data
   } catch (error) {
     console.error('영화 상세 페이지 에러났다! 해결해줘!', error)
