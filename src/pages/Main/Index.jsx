@@ -6,20 +6,57 @@ import { useNavigate } from 'react-router-dom'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import 'swiper/css'
 import SuggestMovieBox from './SuggestMovieBox'
-import MainPageSubTitle from './MainPageSubTitle'
 import media from '@/styles/media'
 import Stories from '@/components/story/Stories'
 import { reviewData } from '@/assets/data/reviewData'
 import BackgroundContainer from '@/components/common/BackgroundContainer'
+import Header from '@/components/common/Header'
+import MobileNavigationBar from '@/components/common/MobileNavigationBar'
+import useAuthStore from '@/store/authStore'
+import { authenticated, nonAuthenticated } from '@/libs/axiosInstance'
+import OverlayPosterCard from '@/components/moviePosterCard/OverlayPosterCard'
 
 /*boxOfficeMovieData - url, rank, date
 suggestMovieData - moviePosterUrl, movieID */
-
+// TODO(j) 로그인시 isLogin에 상태 저장할것
 function MainPage() {
   const navigate = useNavigate()
-  const [isLogin, setIsLogin] = useState(true)
+  const { isLoggedIn } = useAuthStore()
   const userName = '테스트'
   const nowDate = new Date()
+  const chkTime = (time) => {
+    if (time < 5) {
+      return '밤'
+    } else if (time < 12) {
+      return '아침'
+    } else if (time < 18) {
+      return '낮'
+    } else if (time < 22) {
+      return '저녁'
+    } else {
+      return '밤'
+    }
+  }
+  const timeText = chkTime(nowDate.getHours())
+  const [screenWidth, setScreenWidth] = useState(document.documentElement.clientWidth)
+  const res = async () => {
+    try {
+      const res = await nonAuthenticated.get('/api/movies/boxoffice')
+      console.log(res)
+    } catch (e) {
+      console.log(e)
+    }
+  }
+  useEffect(() => {
+    const handleResize = () => {
+      setScreenWidth(document.documentElement.clientWidth)
+    }
+    // res()
+    window.addEventListener('resize', handleResize)
+    return () => {
+      window.removeEventListener('resize', handleResize)
+    }
+  }, [])
   const boxOfficeMovieData = [...Array(10)].map((_, index) => ({
     imageUrl: 'https://image.tmdb.org/t/p/w300/tKV0etz5OIsAjSNG1hJktsjbNJk.jpg',
     rank: index + 1,
@@ -29,57 +66,52 @@ function MainPage() {
     moviePosterUrl: 'https://image.tmdb.org/t/p/w300/tKV0etz5OIsAjSNG1hJktsjbNJk.jpg',
     movieId: index + 1,
   }))
-  // const genreData = ['전체', '액션', '모험']
   return (
-    <BackgroundContainer>
-      <Wrap>
-        <Stories dataList={reviewData} path={'/main/story'} />
-      </Wrap>
+    <div>
       <MainPageTopContainer>
-        <div
-          style={{
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-            flexDirection: 'column',
-          }}
-        >
-          <MainPageTitle>
-            {isLogin === false ? '로그인이 필요합니다.' : `${userName}님,`}
-          </MainPageTitle>
-          <MainPageSubTitle time={nowDate.getHours()} />
-        </div>
+        <MainPageTopWrapper>
+          <MainPageTitle>{!isLoggedIn ? '로그인이 필요합니다.' : `${userName}님,`}</MainPageTitle>
+          {!isLoggedIn ? (
+            ''
+          ) : (
+            <MainPageSubTitle>
+              {`좋은 ${timeText}이에요! 어떤 영화 리뷰를 찾으시나요?`}{' '}
+            </MainPageSubTitle>
+          )}
+        </MainPageTopWrapper>
         <SearchBar />
       </MainPageTopContainer>
       <MainPageBodyContainer>
-        <div style={{ display: 'flex' }}>
-          <MainPageSliderWrapper>
-            <MainPageWrapperTitle>{'최신 스토리'}</MainPageWrapperTitle>
-            <div style={{ width: '362px', height: '240px' }}></div>
-          </MainPageSliderWrapper>
-          <MainPageSliderWrapper>
-            <MainPageWrapperTitle>{`${nowDate.getMonth() + 1}월 ${nowDate.getDate()}일 박스오피스 순위`}</MainPageWrapperTitle>
-            <MainPageBoxOfficeSwiperWrapper>
-              <Swiper slidesPerView={3.5}>
-                {boxOfficeMovieData.map((item, index) => (
-                  <SwiperSlide key={index}>
-                    <BoxOfficePosterCard movieInfo={item} />
-                  </SwiperSlide>
-                ))}
-              </Swiper>
-            </MainPageBoxOfficeSwiperWrapper>
-          </MainPageSliderWrapper>
-        </div>
+        <MainPageBodyTopWrapper>
+          <div>
+            <MainPageSliderWrapper>
+              <MainPageWrapperTitle>{'최신 스토리'}</MainPageWrapperTitle>
+              <Wrap>
+                <Stories dataList={reviewData} path={'/main/story'} />
+              </Wrap>
+            </MainPageSliderWrapper>
+          </div>
+          <div style={{ flex: '1' }}>
+            <MainPageSliderWrapper>
+              <MainPageWrapperTitle>{`${nowDate.getMonth() + 1}월 ${nowDate.getDate()}일 박스오피스 순위`}</MainPageWrapperTitle>
+              <MainPageBoxOfficeSwiperWrapper $width={screenWidth - 402}>
+                <Swiper spaceBetween={7} slidesPerView={'auto'}>
+                  {boxOfficeMovieData.map((item, index) => (
+                    <MainPageSwiperSlide key={index}>
+                      <BoxOfficePosterCard movieInfo={item} />
+                    </MainPageSwiperSlide>
+                  ))}
+                </Swiper>
+              </MainPageBoxOfficeSwiperWrapper>
+            </MainPageSliderWrapper>
+          </div>
+        </MainPageBodyTopWrapper>
         <MainPageSliderWrapper>
           <MainPageWrapperTitle>{'추천영화'}</MainPageWrapperTitle>
-          <SuggestMovieBox
-            isLogin={isLogin}
-            // genreData={genreData}
-            suggestMovieData={suggestMovieData}
-          />
+          <SuggestMovieBox isLogin={isLogin} suggestMovieData={suggestMovieData} />
         </MainPageSliderWrapper>
       </MainPageBodyContainer>
-    </BackgroundContainer>
+    </div>
   )
 }
 
@@ -88,9 +120,9 @@ const MainPageTopContainer = styled.div`
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  padding-top: 110px;
-  gap: 40px;
+  padding-top: 131px;
   padding-bottom: 110px;
+  gap: 40px;
 `
 const MainPageTitle = styled.div`
   width: fit-content;
@@ -100,11 +132,45 @@ const MainPageTitle = styled.div`
   line-height: 48px;
   font-size: 32px;
 `
+const MainPageTopWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+`
+
+const MainPageSubTitle = styled.p`
+  color: var(--color-gray-300);
+  font-weight: 100;
+`
+
 const MainPageBodyContainer = styled.div`
   display: flex;
   justify-content: start;
   flex-direction: column;
+  gap: 30px;
+  padding-bottom: 20px;
+  padding-left: 20px;
 `
+
+const MainPageBodyTopWrapper = styled.div`
+  gap: 40px;
+  display: flex;
+  flex-direction: row;
+  ${media.medium`
+    flex-direction:column
+  `}
+`
+
+const MainPageSwiperSlide = styled(SwiperSlide)`
+  max-width: 270px;
+  display: flex;
+  overflow: hidden;
+  ${media.small`
+    max-width: 150px
+  `}
+`
+
 const MainPageWrapperTitle = styled.p`
   color: var(--color-gray-200);
   line-height: 30px;
@@ -113,31 +179,43 @@ const MainPageWrapperTitle = styled.p`
 `
 
 const MainPageBoxOfficeSwiperWrapper = styled.div`
-  width: 800px;
+  max-width: 998px;
+  width: ${(props) => props.$width - 20}px;
   position: relative;
   height: fit-content;
+  overflow: visible;
   &::after {
     content: '';
     position: absolute;
-    top: 0;
+    top: 19px;
     right: 0;
     width: 5%;
-    height: 100%;
+    height: 280px;
     background: linear-gradient(to left, rgba(0, 0, 0, 1), rgba(255, 255, 255, 0));
     z-index: 1;
   }
+  ${media.medium`
+    width: ${(props) => props.$width + 402}px
+  `}
+  ${media.small`
+    width:391px;
+    &::after{
+      height: 172px
+    }
+  `}
 `
 const MainPageSliderWrapper = styled.div`
   width: 100%;
   display: flex;
   height: fit-content;
   flex-direction: column;
-  gap: 10px;
+  gap: 8px;
+  overflow: hidden;
 `
-
-export default MainPage
 
 const Wrap = styled.div`
   display: flex;
   justify-content: center;
 `
+
+export default MainPage

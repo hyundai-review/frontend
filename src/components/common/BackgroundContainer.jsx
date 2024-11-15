@@ -1,10 +1,8 @@
+import media from '@/styles/media'
 import styled from 'styled-components'
 
 const SBackgroundContainer = styled.div`
-  width: 100vw;
-  /* height: 100vh; */
   position: relative;
-
   video {
     position: absolute;
     top: 0;
@@ -21,7 +19,7 @@ const ContentWrapper = styled.div`
   position: relative;
   z-index: 1;
 `
-
+//TODO(j) 비디오랑 이미지 url store로 받아서 제공할것 + 비디오는 이미지 값 없으면 자동으로 선택되게 할것
 function BackgroundContainer({ children }) {
   const videoUrl = '/video/ver2.mp4'
 

@@ -55,6 +55,7 @@ const globalStyle = createGlobalStyle`
             border: 1px solid rgba(255, 255, 255, 0.6);
             backdrop-filter: blur(10px);
             box-shadow: 0 0 15px 5px rgba(255, 255, 255, 0.3);
+            transition : 0.5s;
         }
     }
     

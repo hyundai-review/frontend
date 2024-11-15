@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Swiper, SwiperSlide, useSwiper } from 'swiper/react'
 import { EffectCoverflow } from 'swiper/modules'
 import 'swiper/css'
@@ -9,9 +9,22 @@ import 'swiper/css/effect-coverflow'
 import styled from 'styled-components'
 import StoryItem from './StoryItem'
 import { useCarousel } from '@/libs/useCarousel'
-
+import useModalStore from '@/store/modalStore'
+import { useNavigate } from 'react-router-dom'
 function Stories({ dataList, path }) {
   const { handleSlideChange, handleSlideClick } = useCarousel(1)
+  const openModal = useModalStore((state) => state.openModal)
+  const navigate = useNavigate()
+
+  const handleClick = (index, path, review) => {
+    if (path === '/user/login') {
+      navigate(path) // /user/login 경로로 이동
+    } else if (path) {
+      handleSlideClick(index, path, review)
+    } else {
+      openModal(review)
+    }
+  }
 
   return (
     <SwiperContainer>
@@ -35,7 +48,7 @@ function Stories({ dataList, path }) {
           <SwiperSlide
             key={review.id}
             // onClick={() => handleSlideClick(index, '/main/story', review)}
-            onClick={() => handleSlideClick(index, path, review)}
+            onClick={() => handleClick(index, path, review)}
           >
             <StoryItem photocardImg={review.photocard} reviewId={review.id} />
           </SwiperSlide>

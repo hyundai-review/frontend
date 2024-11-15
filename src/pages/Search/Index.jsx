@@ -1,5 +1,5 @@
 import React from 'react'
-import MoviePosterBox from '@/components/common/MoviePosterCard.jsx'
+import MoviePosterBox from '@/components/moviePosterCard/MoviePosterCard.jsx'
 import SearchBar from '@/components/common/SearchBar.jsx'
 import media from '@/styles/media'
 import styled from 'styled-components'
@@ -36,12 +36,14 @@ const SearchPageBodyWrapper = styled.div`
 const SearchPageResultWrapper = styled.div`
   height: 30px;
   width: fit-content;
-  color: gray;
+  color: var(--color-gray-200);
   width: 100%;
-  padding-left: 50px;
   box-sizing: border-box;
-  ${media.medium`
-  padding-left:30px`}
+  font-size: 20px;
+  line-height: 30px;
+  font-weight: 200;
+  margin-bottom: 20px;
+  padding-left: 20px;
 `
 
 const SearchPageContainer = styled.div`
@@ -52,22 +54,21 @@ const SearchPageContainer = styled.div`
   align-items: center;
   justify-content: center;
   gap: 20px;
-  padding-top: 20px;
+  padding-top: 130px;
+  padding-bottom: 20px;
 `
 
 const MoviePosterWrapper = styled.div`
   display: grid;
-  justify-content: center;
+  justify-content: start;
   place-items: center;
-  gap: 40px;
-  grid-template-columns: repeat(6, 180px);
-  //더 부드러운 반응형
-  @media (max-width: 1280px) {
-    grid-template-columns: repeat(auto-fill, 180px);
-  }
+  gap: 9px 60px;
+  padding-left: 20px;
+  grid-template-columns: repeat(auto-fill, 180px);
   ${media.small`
   grid-template-columns: repeat(3,130px);
-  gap:2px
+  gap:1px;
+  padding-left:10px;
   `}
 `
 

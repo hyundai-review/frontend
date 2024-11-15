@@ -1,6 +1,6 @@
 import BoxOfficePosterCard from '@/components/common/BoxOfficePosterCard'
 import Button from '@/components/common/Button'
-import MoviePosterCard from '@/components/common/MoviePosterCard'
+import MoviePosterCard from '@/components/moviePosterCard/MoviePosterCard'
 import media from '@/styles/media'
 import React, { useState } from 'react'
 import styled from 'styled-components'
@@ -28,13 +28,6 @@ function SuggestMovieBox({ isLogin, suggestMovieData }) {
       ) : (
         <div>
           <MainPageButtonWrapper>
-            {/*
-              장르 데이터 개수 나오면 한줄에 보여줄 button개수 지정
-            */}
-            {/* {genreData.map((item, index) => (
-              // <Button text={`${item}`} key={index}></Button>
-              <MainGenreButton text={`${item}`} key={index} />
-            ))} */}
             {genres.map((genre) => (
               <MainGenreButton
                 key={genre.id}
@@ -57,15 +50,16 @@ function SuggestMovieBox({ isLogin, suggestMovieData }) {
 
 const MainPageSuggestMovieWrapper = styled.div`
   display: grid;
-  grid-template-columns: repeat(auto-fill, 180px);
-  width: 100%;
-  gap: 40px;
-  justify-content: center;
+  gap: 9px 60px;
+  justify-content: start;
   flex-direction: column;
   place-items: center;
+  padding-left: 20px;
+  grid-template-columns: repeat(auto-fill, 180px);
   ${media.small`
     grid-template-columns: repeat(3, 130px);
-    gap : 2px
+    gap : 2px;
+    padding-left:0px;
   `}
 `
 
@@ -73,6 +67,11 @@ const MainPageButtonWrapper = styled.div`
   display: flex;
   gap: 10px;
   flex-wrap: wrap;
+  padding-right: 20px;
+  padding-bottom: 10px;
+  ${media.small`
+    margin-bottom:10px;
+  `};
 `
 
 const NotLogInMovieBoxWrapper = styled.div`

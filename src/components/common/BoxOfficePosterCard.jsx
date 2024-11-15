@@ -9,6 +9,7 @@ function BoxOfficePosterCard({ movieInfo }) {
     <div>
       <BoxOfficePosterCardContainer
         onClick={() => {
+          //TODO(j) 영화 디테일페이지로 이동
           console.log(movieInfo.id, '여기에 movie detailpage로 이동')
         }}
         className='hoverBright'
@@ -33,9 +34,11 @@ const BoxOfficePosterCardContainer = styled.div`
   border-radius: 10px;
   border: 1px solid rgba(255, 255, 255, 0.1);
   backdrop-filter: blur(10px);
-  padding-left: 10px;
+  padding-left: 19px;
   padding-top: 19px;
   padding-bottom: 19px;
+  padding-right: 10px;
+  margin: 20px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -68,7 +71,7 @@ const BoxOfficePosterCardInfoWrapper = styled.div`
   flex-direction: column;
   align-items: center;
   height: 100%;
-  padding-left: 6px;
+  padding-left: 12px;
 `
 
 const BoxOfficePosterCardRank = styled.div`

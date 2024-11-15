@@ -31,8 +31,8 @@ const ButtonContainer = styled.div`
 // 활성화된 상태의 텍스트 스타일
 const ActiveButtonText = styled.div`
   font-family: Pretendard;
-  font-size: 14px;
-  font-weight: 600;
+  font-size: 17px;
+  font-weight: 700;
   line-height: 21px;
   text-align: center;
   background: linear-gradient(91deg, #b6b5ff 0%, #ffd7d7 99.7%);
@@ -44,7 +44,7 @@ const ActiveButtonText = styled.div`
 // 비활성화된 상태의 텍스트 스타일
 const InactiveButtonText = styled.div`
   font-family: Pretendard;
-  font-size: 14px;
+  font-size: 16px;
   font-weight: 400;
   line-height: 21px;
   text-align: center;
