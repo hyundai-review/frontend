@@ -23,8 +23,6 @@ const StyledStarGray = styled(StarGray)`
 `
 
 function StarRating({ type = 'readonly', initialValue = 0, onChange, max = 5, size = 14 }) {
-  const location = useLocation()
-
   return (
     <Rating
       name={`star-rating-${type}`}
