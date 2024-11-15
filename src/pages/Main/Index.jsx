@@ -15,53 +15,28 @@ import MobileNavigationBar from '@/components/common/MobileNavigationBar'
 import useAuthStore from '@/store/authStore'
 import { authenticated, nonAuthenticated } from '@/libs/axiosInstance'
 import OverlayPosterCard from '@/components/moviePosterCard/OverlayPosterCard'
+import { chkTime } from '@/utils/timeUtils'
+import useBoxOfficeMovies from '@/hooks/main/useBoxOfficeMovies'
 
-/*boxOfficeMovieData - url, rank, date
-suggestMovieData - moviePosterUrl, movieID */
-// TODO(j) 로그인시 isLogin에 상태 저장할것
 function MainPage() {
   const navigate = useNavigate()
   const { isLoggedIn } = useAuthStore()
   const userName = '테스트'
   const nowDate = new Date()
-  const chkTime = (time) => {
-    if (time < 5) {
-      return '밤'
-    } else if (time < 12) {
-      return '아침'
-    } else if (time < 18) {
-      return '낮'
-    } else if (time < 22) {
-      return '저녁'
-    } else {
-      return '밤'
-    }
-  }
   const timeText = chkTime(nowDate.getHours())
   const [screenWidth, setScreenWidth] = useState(document.documentElement.clientWidth)
-  const res = async () => {
-    try {
-      const res = await nonAuthenticated.get('/api/movies/boxoffice')
-      console.log(res)
-    } catch (e) {
-      console.log(e)
-    }
-  }
+  // API
+  const { boxOfficeMovies } = useBoxOfficeMovies()
   useEffect(() => {
     const handleResize = () => {
       setScreenWidth(document.documentElement.clientWidth)
     }
-    // res()
     window.addEventListener('resize', handleResize)
     return () => {
       window.removeEventListener('resize', handleResize)
     }
   }, [])
-  const boxOfficeMovieData = [...Array(10)].map((_, index) => ({
-    imageUrl: 'https://image.tmdb.org/t/p/w300/tKV0etz5OIsAjSNG1hJktsjbNJk.jpg',
-    rank: index + 1,
-    date: '2024.11.11',
-  }))
+
   const suggestMovieData = [...Array(10)].map((_, index) => ({
     moviePosterUrl: 'https://image.tmdb.org/t/p/w300/tKV0etz5OIsAjSNG1hJktsjbNJk.jpg',
     movieId: index + 1,
@@ -96,7 +71,7 @@ function MainPage() {
               <MainPageWrapperTitle>{`${nowDate.getMonth() + 1}월 ${nowDate.getDate()}일 박스오피스 순위`}</MainPageWrapperTitle>
               <MainPageBoxOfficeSwiperWrapper $width={screenWidth - 402}>
                 <Swiper spaceBetween={7} slidesPerView={'auto'}>
-                  {boxOfficeMovieData.map((item, index) => (
+                  {boxOfficeMovies.map((item, index) => (
                     <MainPageSwiperSlide key={index}>
                       <BoxOfficePosterCard movieInfo={item} />
                     </MainPageSwiperSlide>
@@ -108,7 +83,7 @@ function MainPage() {
         </MainPageBodyTopWrapper>
         <MainPageSliderWrapper>
           <MainPageWrapperTitle>{'추천영화'}</MainPageWrapperTitle>
-          <SuggestMovieBox isLogin={isLogin} suggestMovieData={suggestMovieData} />
+          <SuggestMovieBox isLogin={isLoggedIn} suggestMovieData={suggestMovieData} />
         </MainPageSliderWrapper>
       </MainPageBodyContainer>
     </div>

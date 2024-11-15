@@ -15,25 +15,28 @@ function Header() {
   return (
     <div>
       <HeaderContainer>
-        <HeaderLogoWrapper>
-          <HeaderLogo
-            alt='logo'
-            src={Logo}
-            onClick={() => {
-              window.location.href = '/'
-            }}
-          />
-        </HeaderLogoWrapper>
-        {!isLoggedIn ? (
-          <HeaderRightWrapper>
-            <Button text={'로그인'} onClick={console.log('여기에 로그인')} />
-          </HeaderRightWrapper>
-        ) : (
-          <HeaderRightWrapper onClick={() => navigate('/mypage')}>
-            <HeaderUserProfileImage src={`${profileImage}`} alt='profileImage' />
-            <HeaderUserName>{`${userName}`}</HeaderUserName>
-          </HeaderRightWrapper>
-        )}
+        <HeaderWrapper>
+          <HeaderLogoWrapper>
+            <HeaderLogo
+              alt='logo'
+              src={Logo}
+              onClick={() => {
+                window.location.href = '/'
+              }}
+            />
+          </HeaderLogoWrapper>
+          {!isLoggedIn ? (
+            <HeaderRightWrapper>
+              <Button text={'로그인'} />
+              {/* <Button text={'로그인'} onClick={console.log('여기에 로그인')} /> */}
+            </HeaderRightWrapper>
+          ) : (
+            <HeaderRightWrapper onClick={() => navigate('/mypage')}>
+              <HeaderUserProfileImage src={`${profileImage}`} alt='profileImage' />
+              <HeaderUserName>{`${userName}`}</HeaderUserName>
+            </HeaderRightWrapper>
+          )}
+        </HeaderWrapper>
       </HeaderContainer>
     </div>
   )
