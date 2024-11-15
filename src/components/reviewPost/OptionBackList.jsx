@@ -22,7 +22,8 @@ const movieData = {
     },
     {
       imgId: 3,
-      imgURL: 'https://image.tmdb.org/t/p/w780/xTE7Aba7nzFl9ldeD1erhbXYxkg.jpg',
+      imgURL:
+        'https://cors-anywhere.herokuapp.com/https://image.tmdb.org/t/p/w780/xTE7Aba7nzFl9ldeD1erhbXYxkg.jpg',
     },
     {
       imgId: 4,

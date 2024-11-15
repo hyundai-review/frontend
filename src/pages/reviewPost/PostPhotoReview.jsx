@@ -14,21 +14,17 @@ import { useNavigate } from 'react-router-dom'
 
 /** step 2. 사진 촬영 */
 function PostPhotoReview() {
-  const { optionBackImg } = useReviewStore()
+  const { optionBackImg, processPhotocard, setProcessPhotocard } = useReviewStore()
   const [takePhoto, setTakePhoto] = useState(null) // takePhoto 함수 저장용 state
-
-  const [testImg, setTestImg] = useState('')
-
-  useEffect(() => {
-    console.log('dddddd', optionBackImg)
-  }, [optionBackImg])
 
   const handleTakePhoto = () => {
     if (takePhoto) {
       const imageData = takePhoto()
+
       // 여기서 이미지 데이터 처리
-      // console.log('imageData', imageData)
-      setTestImg(imageData)
+      setProcessPhotocard({
+        step1: imageData,
+      })
     }
   }
 
@@ -62,11 +58,11 @@ function PostPhotoReview() {
           <PHOTOBTN />
         </IconBtn>
 
-        <Preview hasImage={!!testImg}>
-          <img src={testImg} />
+        <Preview hasImage={!!processPhotocard.step1}>
+          <img src={processPhotocard.step1} />
         </Preview>
 
-        <NextBtn onClick={nextStep} disabled={!testImg}>
+        <NextBtn onClick={nextStep} disabled={!processPhotocard.step1}>
           <BtnText>다음</BtnText>
         </NextBtn>
       </SBoxContainer.Box>
@@ -104,8 +100,9 @@ const Preview = styled.div`
 
 const PhotoWrap = styled.div`
   /* 중요 */
-  width: 700px;
+  width: 362px;
   height: 610px;
+  background-color: black;
 `
 const OptionWrap = styled.div``
 

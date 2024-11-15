@@ -17,11 +17,22 @@ const useReviewStore = create(
         imgId: 0,
         imgURL: '',
       },
+      // 이미지 처리 단계
+      processPhotocard: {
+        step1: '',
+        step2: '',
+        step3: '',
+      },
 
       /** 사진 background 선택 */
       setOptionBackImg: (backImg) => set({ optionBackImg: backImg }),
+      /** 이미지 처리 단계 업로드 */
+      setProcessPhotocard: (img) =>
+        set((state) => ({
+          processPhotocard: { ...state.processPhotocard, ...img },
+        })),
 
-      /** step */
+      /** 리뷰 프로세스 step */
       setReviewStep: (step) => set({ reviewStep: step }),
 
       nextStep: () => {
@@ -30,10 +41,8 @@ const useReviewStore = create(
         set({ reviewStep: nextStepValue })
 
         // 라우팅
-        if (state.navi) {
-          const paths = ['text', 'photo', 'deploy']
-          state.navi(paths[nextStepValue])
-        }
+        const paths = ['text', 'photo', 'deploy']
+        state.navi(paths[nextStepValue])
       },
 
       prevStep: () => {
@@ -42,10 +51,8 @@ const useReviewStore = create(
         set({ reviewStep: prevStepValue })
 
         // 라우팅
-        if (state.navi) {
-          const paths = ['text', 'photo', 'deploy']
-          state.navi(paths[prevStepValue])
-        }
+        const paths = ['text', 'photo', 'deploy']
+        state.navi(paths[prevStepValue])
       },
 
       /** review post */
@@ -75,6 +82,8 @@ const useReviewStore = create(
       partialize: (state) => ({
         reviewStep: state.reviewStep,
         reviewPost: state.reviewPost,
+        processPhotocard: state.processPhotocard,
+        optionBackImg: state.optionBackImg,
       }),
     },
   ),

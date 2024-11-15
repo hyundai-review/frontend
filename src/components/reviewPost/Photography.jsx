@@ -73,8 +73,6 @@ function Photography({ setTakePhotoFunc }) {
             {/* 합성 결과 캔버스 */}
             <canvas ref={canvasRef} />
           </CanvasWrap>
-
-          {/* <button onClick={takePhoto}>Take Photo</button> */}
         </Wrap>
       )}
     </Container>
@@ -89,12 +87,6 @@ const Container = styled.div`
   height: 100%;
 `
 const Wrap = styled.div`
-  /* width: 362px;
-  height: 429.75px; */
-  /* width: 724px; */
-  /* height: 429.75px; */
-  /* width: 500px; */
-  /* height: 400px; */
   width: 100%;
   height: 100%;
 
@@ -127,6 +119,7 @@ const CanvasWrap = styled.div`
   canvas {
     width: 100%;
     height: 100%;
-    object-fit: cover;
+    /* object-fit: cover; */
+    object-fit: contain;
   }
 `

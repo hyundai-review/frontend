@@ -100,6 +100,7 @@ export const useBackgroundImage = (imageUrl, dimensions) => {
     if (!imageUrl || !dimensions.width || !dimensions.height) return
 
     const img = new Image()
+    img.crossOrigin = 'anonymous'
 
     img.onload = () => {
       // 이미지 크기를 부모 컨테이너 크기로 설정
