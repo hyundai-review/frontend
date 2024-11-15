@@ -22,8 +22,6 @@ const PostDeployReview = () => {
       const generatedImage = await generateImage(canvasRef, processPhotocard.step1, subtitle)
 
       if (generatedImage) {
-        console.log('dㅁㅁㅁ', generatedImage)
-
         setProcessPhotocard({
           step2: generatedImage,
         })

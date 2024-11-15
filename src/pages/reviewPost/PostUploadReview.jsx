@@ -9,6 +9,21 @@ import DOWNLOAD from '@/assets/icons/download.svg?react'
 function PostUploadReview() {
   const { processPhotocard } = useReviewStore()
 
+  const handleDownload = async () => {
+    try {
+      // base64 이미지
+      const link = document.createElement('a')
+      link.href = processPhotocard.step2
+      link.download = 'photocard.png' // 다운로드 파일명
+      document.body.appendChild(link)
+      link.click()
+      document.body.removeChild(link)
+    } catch (error) {
+      console.error('이미지 다운로드 실패:', error)
+      alert('이미지 다운로드 실패')
+    }
+  }
+
   return (
     <Container>
       <Wrap>
@@ -27,7 +42,7 @@ function PostUploadReview() {
           >
             <DownloadWrap>
               <SText.Text>영화 포토카드를 저장해보세요!</SText.Text>
-              <SBtn.CircleIconWrapperBtn>
+              <SBtn.CircleIconWrapperBtn onClick={handleDownload}>
                 <DownloadIcon />
               </SBtn.CircleIconWrapperBtn>
             </DownloadWrap>
