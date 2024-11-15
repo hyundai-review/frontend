@@ -4,37 +4,36 @@ import Button from './Button'
 import Logo from '/logo.svg'
 import { useNavigate } from 'react-router-dom'
 import media from '@/styles/media'
+import useAuthStore from '@/store/authStore'
 //TODO(j)button onClick시 로그인 로직 작동
 function Header() {
   //TODO(j) 로그인 유저 정보 저장시 이 변수들 바꾸기
   const navigate = useNavigate()
-  const isLogin = true
+  const { isLoggedIn } = useAuthStore()
   const profileImage = 'https://image.tmdb.org/t/p/w300/tKV0etz5OIsAjSNG1hJktsjbNJk.jpg'
   const userName = '테스트'
   return (
     <div>
       <HeaderContainer>
-        <HeaderWrapper>
-          <HeaderLogoWrapper>
-            <HeaderLogo
-              alt='logo'
-              src={Logo}
-              onClick={() => {
-                window.location.href = '/'
-              }}
-            />
-          </HeaderLogoWrapper>
-          {isLogin === false ? (
-            <HeaderRightWrapper>
-              <Button text={'로그인'} onClick={console.log('여기에 로그인')} />
-            </HeaderRightWrapper>
-          ) : (
-            <HeaderRightWrapper onClick={() => navigate('/mypage')}>
-              <HeaderUserProfileImage src={`${profileImage}`} alt='profileImage' />
-              <HeaderUserName>{`${userName}`}</HeaderUserName>
-            </HeaderRightWrapper>
-          )}
-        </HeaderWrapper>
+        <HeaderLogoWrapper>
+          <HeaderLogo
+            alt='logo'
+            src={Logo}
+            onClick={() => {
+              window.location.href = '/'
+            }}
+          />
+        </HeaderLogoWrapper>
+        {!isLoggedIn ? (
+          <HeaderRightWrapper>
+            <Button text={'로그인'} onClick={console.log('여기에 로그인')} />
+          </HeaderRightWrapper>
+        ) : (
+          <HeaderRightWrapper onClick={() => navigate('/mypage')}>
+            <HeaderUserProfileImage src={`${profileImage}`} alt='profileImage' />
+            <HeaderUserName>{`${userName}`}</HeaderUserName>
+          </HeaderRightWrapper>
+        )}
       </HeaderContainer>
     </div>
   )

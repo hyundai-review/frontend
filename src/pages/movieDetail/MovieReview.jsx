@@ -6,32 +6,32 @@ import React, { useState } from 'react'
 import styled from 'styled-components'
 import ReviewCard from '../../components/review/ReviewCard'
 import MyReview from './MyReview'
+import useAuthStore from '@/store/authStore'
 function MovieReview() {
   // data
   const reviewCount = 123
   const averageRating = 4.23
   const transformedData = transformReviewData(myReviewData)
   //
-  const [isLogin, setIsLogin] = useState(false)
+  const { isLoggedIn } = useAuthStore()
   const [isReviewWritten, setIsReviewWritten] = useState(true)
-  const handleLogin = () => {
-    setIsLogin((prev) => !prev)
-  }
+
   return (
     <Wrap>
       <TitleWrap>
-        <Title onClick={handleLogin}>리뷰({reviewCount})</Title>
-        {!isLogin && (
+        <Title>리뷰({reviewCount})</Title>
+        {!isLoggedIn && (
           <RatingWrap>
             <StarRating type='readonly' initialValue='1' max={1} size={24} />
             <AverageRating>{averageRating}</AverageRating>
           </RatingWrap>
         )}
       </TitleWrap>
-      {isLogin ? (
+      {isLoggedIn ? (
         <Box>
           <TextWrap>
             <Text>
+              {/* TODO(k) 회원가입 누르면 로그인 페이지로 이동 */}
               <BoldText>회원가입</BoldText>을 통해 리뷰를 확인하세요
             </Text>
           </TextWrap>

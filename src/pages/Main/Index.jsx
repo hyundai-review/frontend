@@ -12,6 +12,7 @@ import { reviewData } from '@/assets/data/reviewData'
 import BackgroundContainer from '@/components/common/BackgroundContainer'
 import Header from '@/components/common/Header'
 import MobileNavigationBar from '@/components/common/MobileNavigationBar'
+import useAuthStore from '@/store/authStore'
 import { authenticated, nonAuthenticated } from '@/libs/axiosInstance'
 import OverlayPosterCard from '@/components/moviePosterCard/OverlayPosterCard'
 
@@ -20,7 +21,7 @@ suggestMovieData - moviePosterUrl, movieID */
 // TODO(j) 로그인시 isLogin에 상태 저장할것
 function MainPage() {
   const navigate = useNavigate()
-  const [isLogin, setIsLogin] = useState(true)
+  const { isLoggedIn } = useAuthStore()
   const userName = '테스트'
   const nowDate = new Date()
   const chkTime = (time) => {
@@ -69,10 +70,8 @@ function MainPage() {
     <div>
       <MainPageTopContainer>
         <MainPageTopWrapper>
-          <MainPageTitle>
-            {isLogin === false ? '로그인이 필요합니다.' : `${userName}님,`}
-          </MainPageTitle>
-          {isLogin === false ? (
+          <MainPageTitle>{!isLoggedIn ? '로그인이 필요합니다.' : `${userName}님,`}</MainPageTitle>
+          {!isLoggedIn ? (
             ''
           ) : (
             <MainPageSubTitle>
