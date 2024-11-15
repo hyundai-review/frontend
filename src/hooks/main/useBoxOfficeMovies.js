@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { getBoxOfficeMovies } from '@/apis/main/movieApi'
+import { getBoxOfficeMovies } from '@/apis/movieApi'
 
 function useBoxOfficeMovies() {
   const [boxOfficeMovies, setMovies] = useState([])

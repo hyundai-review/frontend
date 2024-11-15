@@ -13,10 +13,9 @@ import BackgroundContainer from '@/components/common/BackgroundContainer'
 import Header from '@/components/common/Header'
 import MobileNavigationBar from '@/components/common/MobileNavigationBar'
 import useAuthStore from '@/store/authStore'
-import { authenticated, nonAuthenticated } from '@/libs/axiosInstance'
 import OverlayPosterCard from '@/components/moviePosterCard/OverlayPosterCard'
 import { chkTime } from '@/utils/timeUtils'
-import useBoxOfficeMovies from '@/hooks/main/useBoxOfficeMovies'
+import useMovieData from '@/hooks/useMovieData'
 
 function MainPage() {
   const navigate = useNavigate()
@@ -26,8 +25,10 @@ function MainPage() {
   const timeText = chkTime(nowDate.getHours())
   const [screenWidth, setScreenWidth] = useState(document.documentElement.clientWidth)
   // API
-  const { boxOfficeMovies } = useBoxOfficeMovies()
+  const { data: boxOfficeMovies, isLoading, isError } = useMovieData('boxOffice')
+
   useEffect(() => {
+    console.log(boxOfficeMovies)
     const handleResize = () => {
       setScreenWidth(document.documentElement.clientWidth)
     }
