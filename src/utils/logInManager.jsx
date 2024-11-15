@@ -1,0 +1,25 @@
+import React from 'react'
+
+//로컬 스토리지에 저장된 사용자 정보, 로그인 상태를 null값과 비교하여 전달
+
+export const userData = () => {
+  const checkLogIn = localStorage.getItem('isLogIn')
+  if (checkLogIn == 'true') {
+    const userInfo = localStorage.getItem('userInfo')
+    const value = JSON.parse(userInfo)
+    return value
+  } else {
+    return { memberId: ' ', nickname: ' ', profile: ' ' }
+  }
+}
+
+export const isLoggedIn = () => {
+  const checkLogIn = localStorage.getItem('isLogIn')
+  if (checkLogIn === null) {
+    return false
+  } else if (checkLogIn === 'true') {
+    return true
+  } else {
+    return false
+  }
+}

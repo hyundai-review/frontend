@@ -8,10 +8,10 @@ function Root() {
 
 
   return (
-    <StrictMode>
+    <>
       <GlobalStyle />
       <App />
-    </StrictMode>
+    </>
   )
 }
 

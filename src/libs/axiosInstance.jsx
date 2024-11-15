@@ -31,15 +31,14 @@ authenticated.interceptors.response.use(
   },
   async (error) => {
     // access token 만료된 경우
+    //TODO(j) 400대 에러는 다 추가할 것 (요청사항)
     if (error.response && error.response.status === 401) {
       alert('재로그인 필요')
       window.location.href = '/user/login'
 
-      // refreshtoken 로직 추가 예정
-      // try {
-      //   // refreshtoken 요청 로직
-      // } catch (error) {
-      // }
+      try {
+        // refreshtoken 요청 로직
+      } catch (error) {}
     }
   },
 )

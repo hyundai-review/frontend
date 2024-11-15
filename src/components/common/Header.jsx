@@ -1,39 +1,46 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import Button from './Button'
 import Logo from '/logo.svg'
-import { useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import media from '@/styles/media'
 import useAuthStore from '@/store/authStore'
-//TODO(j)button onClick시 로그인 로직 작동
+import { isLoggedIn, userData } from '@/utils/logInManager'
+
 function Header() {
-  //TODO(j) 로그인 유저 정보 저장시 이 변수들 바꾸기
+  //TODO(j) 로컬 스토리지로 불러오는 값 훅으로 빼기
   const navigate = useNavigate()
-  const { isLoggedIn } = useAuthStore()
-  const profileImage = 'https://image.tmdb.org/t/p/w300/tKV0etz5OIsAjSNG1hJktsjbNJk.jpg'
-  const userName = '테스트'
+  const [isLogIn, setIsLogIn] = useState(isLoggedIn())
+  const [data, setData] = useState(userData())
+  const location = useLocation()
+  useEffect(() => {
+    setIsLogIn(isLoggedIn())
+    setData(userData())
+  }, [location.pathname])
   return (
     <div>
       <HeaderContainer>
-        <HeaderLogoWrapper>
-          <HeaderLogo
-            alt='logo'
-            src={Logo}
-            onClick={() => {
-              window.location.href = '/'
-            }}
-          />
-        </HeaderLogoWrapper>
-        {!isLoggedIn ? (
-          <HeaderRightWrapper>
-            <Button text={'로그인'} onClick={console.log('여기에 로그인')} />
-          </HeaderRightWrapper>
-        ) : (
-          <HeaderRightWrapper onClick={() => navigate('/mypage')}>
-            <HeaderUserProfileImage src={`${profileImage}`} alt='profileImage' />
-            <HeaderUserName>{`${userName}`}</HeaderUserName>
-          </HeaderRightWrapper>
-        )}
+        <HeaderWrapper>
+          <HeaderLogoWrapper>
+            <HeaderLogo
+              alt='logo'
+              src={Logo}
+              onClick={() => {
+                window.location.href = '/'
+              }}
+            />
+          </HeaderLogoWrapper>
+          {!isLogIn ? (
+            <HeaderRightWrapper>
+              <Button text={'로그인'} onClick={() => navigate('/user/login')} />
+            </HeaderRightWrapper>
+          ) : (
+            <HeaderRightWrapper onClick={() => navigate('/mypage')}>
+              <HeaderUserProfileImage src={`${data.profile}`} alt='profileImage' />
+              <HeaderUserName>{`${data.nickname}`}</HeaderUserName>
+            </HeaderRightWrapper>
+          )}
+        </HeaderWrapper>
       </HeaderContainer>
     </div>
   )
