@@ -1,5 +1,5 @@
 import useReviewStore from '@/store/reviewStore'
-import React from 'react'
+import React, { useState } from 'react'
 import Draggable from 'react-draggable'
 import { ResizableBox } from 'react-resizable'
 import styled from 'styled-components'
@@ -10,6 +10,8 @@ import * as SBtn from '@/styles/button'
 /** step 3. 사진 배치 */
 function PostDeployReview() {
   const { optionBackImg, processPhotocard, setProcessPhotocard } = useReviewStore()
+  const [subtitle, setSubtitle] = useState('') // 자막
+
   const { nextStep } = useReviewStore()
   return (
     <Container>
@@ -17,7 +19,9 @@ function PostDeployReview() {
         <div>
           {/* 포토카드 */}
           <PhotoWrap>
-            <BackImg $backImg={processPhotocard.step1} />
+            <BackImg $backImg={processPhotocard.step1}>
+              <SubtitlePreview>{subtitle}</SubtitlePreview>
+            </BackImg>
           </PhotoWrap>
 
           {/* 자막 */}
@@ -28,6 +32,8 @@ function PostDeployReview() {
             style={{ marginTop: '10px' }}
           >
             <SText.TextArea
+              value={subtitle}
+              onChange={(e) => setSubtitle(e.target.value)}
               placeholder='포토카드에 넣을 자막을 입력해보세요'
               $variant='md'
               $color='var(--gray-200)'
@@ -101,4 +107,21 @@ const BtnWrap = styled.div`
 
 const BtnText = styled(SText.Text)`
   text-shadow: 0px 0px 10px var(--primary-solid, #c77db5);
+`
+
+const SubtitlePreview = styled.div`
+  position: absolute;
+  bottom: 30px;
+  left: 0;
+  width: 100%;
+  text-align: center;
+  color: white;
+  font-size: 20px;
+  text-shadow: 2px 2px 2px rgba(0, 0, 0, 0.8);
+  z-index: 10;
+  padding: 0 10px;
+  word-wrap: break-word;
+  font-family: 'ASinemaB', sans-serif;
+
+  line-height: 1.3;
 `
