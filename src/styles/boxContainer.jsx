@@ -16,4 +16,5 @@ export const Box = styled.div`
   /* justify-content: center; */
   display: ${(props) => props.$display};
   justify-content: ${(props) => props.$justifyContent};
+  align-items: ${(props) => props.$alignItems};
 `

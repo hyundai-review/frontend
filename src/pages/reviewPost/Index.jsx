@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import { useParams, Outlet, useNavigate } from 'react-router-dom'
+import { useParams, Outlet } from 'react-router-dom'
 import styled from 'styled-components'
 import * as S from '@/styles/background'
 import useReviewStore from '@/store/reviewStore'
@@ -15,7 +15,6 @@ const movieData = {
 function ReviewPostPage() {
   const { movieId } = useParams()
   const { reviewStep, prevStep } = useReviewStore()
-  const navigate = useNavigate()
 
   return (
     <Container $image={movieData.image}>
@@ -25,7 +24,7 @@ function ReviewPostPage() {
             {/* 단계 바 */}
             <MobileStepper
               variant='progress'
-              steps={3}
+              steps={4}
               position='static'
               activeStep={reviewStep}
               sx={{

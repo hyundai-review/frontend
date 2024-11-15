@@ -15,23 +15,21 @@ const PostDeployReview = () => {
   const { generateImage } = useHtml2Canvas()
 
   const handleGeneratePhotocard = async () => {
-    if (isGenerating || !processPhotocard.step1 || !processPhotocard.step2) return
+    if (isGenerating || !processPhotocard.step1) return
     setIsGenerating(true)
 
     try {
-      const generatedImage = await generateImage(
-        canvasRef,
-        processPhotocard.step1, // File 객체 또는 이미지 URL
-        subtitle,
-      )
+      const generatedImage = await generateImage(canvasRef, processPhotocard.step1, subtitle)
 
       if (generatedImage) {
-        console.log('확인', generatedImage)
-        setProcessPhotocard((prev) => ({
-          ...prev,
-          step3: generatedImage,
-        }))
-        // nextStep()
+        console.log('dㅁㅁㅁ', generatedImage)
+
+        setProcessPhotocard({
+          step2: generatedImage,
+        })
+
+        console.log('ddddd', processPhotocard)
+        nextStep()
       } else {
         throw new Error('이미지 생성 실패')
       }

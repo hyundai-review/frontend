@@ -25,6 +25,10 @@ function PostPhotoReview() {
       setProcessPhotocard({
         step1: imageData,
       })
+      // setProcessPhotocard((prev) => ({
+      //   ...prev,
+      //   step1: imageData,
+      // }))
     }
   }
 

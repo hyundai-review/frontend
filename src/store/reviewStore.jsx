@@ -36,11 +36,11 @@ const useReviewStore = create(
 
       nextStep: () => {
         const state = get()
-        const nextStepValue = Math.min(state.reviewStep + 1, 4)
+        const nextStepValue = Math.min(state.reviewStep + 1, 5)
         set({ reviewStep: nextStepValue })
 
         // 라우팅
-        const paths = ['text', 'photo', 'deploy']
+        const paths = ['text', 'photo', 'deploy', 'upload']
         state.navi(paths[nextStepValue])
       },
 
@@ -50,7 +50,7 @@ const useReviewStore = create(
         set({ reviewStep: prevStepValue })
 
         // 라우팅
-        const paths = ['text', 'photo', 'deploy']
+        const paths = ['text', 'photo', 'deploy', 'upload']
         state.navi(paths[prevStepValue])
       },
 
@@ -76,6 +76,7 @@ const useReviewStore = create(
           },
         }),
     }),
+
     {
       name: 'review-storage', // 로컬 스토리지
       partialize: (state) => ({

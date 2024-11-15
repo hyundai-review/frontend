@@ -24,3 +24,27 @@ export const IconButton = styled.button`
   all: unset;
   cursor: pointer;
 `
+
+export const CircleIconWrapperBtn = styled.button`
+  width: 33px;
+  height: 33px;
+  border-radius: 50%;
+  border: 1px solid #b6b5ff;
+  background: rgba(0, 0, 0, 0.25);
+  box-shadow: 0px 0px 10px 0px var(--primary-solid-light, rgba(199, 125, 181, 0.5));
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: scale(1.05);
+  }
+
+  &:active {
+    transform: scale(0.95);
+  }
+`
