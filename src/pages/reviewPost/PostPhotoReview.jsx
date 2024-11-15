@@ -62,7 +62,7 @@ function PostPhotoReview() {
           <PHOTOBTN />
         </IconBtn>
 
-        <Preview hasImage={!!processPhotocard.step1}>
+        <Preview $hasImage={!!processPhotocard.step1}>
           <img src={processPhotocard.step1} />
         </Preview>
 
@@ -94,7 +94,7 @@ const Preview = styled.div`
   top: 3px;
   left: 10px;
   z-index: 10;
-  border: ${({ hasImage }) => (hasImage ? '1px solid white' : 'none')};
+  border: ${({ $hasImage }) => ($hasImage ? '1px solid white' : 'none')};
 
   img {
     max-width: 100px;
