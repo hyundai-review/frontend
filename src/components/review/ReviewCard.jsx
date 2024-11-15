@@ -131,6 +131,9 @@ const SpoilerText = styled.div`
   font-style: normal;
   font-weight: 200;
   line-height: 24px; /* 150% */
+  @media (max-width: 413px) {
+    font-size: 15px;
+  }
 `
 
 const SpoilerSubText = styled.div`

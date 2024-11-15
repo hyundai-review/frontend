@@ -16,8 +16,8 @@ function MyPage() {
   }, [])
   return (
     <>
-      <BackgroundContainer>
-        <Profile />
+      <Profile />
+      <div style={{ paddingLeft: '20px' }}>
         <ReviewTitleWrap>
           <ReviewTitle>리뷰({transformedData[0].commentCount})</ReviewTitle>
         </ReviewTitleWrap>
@@ -30,7 +30,7 @@ function MyPage() {
             <ReviewCard pageType='mypage' key={review.movieId} review={review} />
           ))}
         </ReviewContainer>
-      </BackgroundContainer>
+      </div>
     </>
   )
 }
@@ -38,7 +38,6 @@ function MyPage() {
 export default MyPage
 const ReviewTitleWrap = styled.div`
   margin-top: 20px;
-  padding-left: 20px;
 `
 const ReviewTitle = styled.div`
   color: var(--gray-200, #e4e4e7);
@@ -81,12 +80,11 @@ const ImageText = styled.div`
 `
 
 const ReviewContainer = styled.div`
-  background: rgba(255, 255, 255, 0.25);
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   justify-content: center;
-  padding: 20px;
   margin-top: 20px;
+  padding-right: 20px;
   gap: 10px;
 `

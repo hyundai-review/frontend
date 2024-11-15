@@ -16,26 +16,7 @@ function ReviewSwiper({ dataList, path }) {
   return (
     <div>
       <SwiperWrapper>
-        <Swiper
-          style={{ margin: 0 }}
-          breakpoints={{
-            1380: {
-              slidesPerView: Math.min(dataLength, 5.6),
-            },
-            1139: {
-              slidesPerView: Math.min(dataLength, 4.6),
-            },
-            900: {
-              slidesPerView: Math.min(dataLength, 3.6),
-            },
-            659: {
-              slidesPerView: Math.min(dataLength, 2.6),
-            },
-            402: {
-              slidesPerView: Math.min(dataLength, 1.6),
-            },
-          }}
-        >
+        <Swiper style={{ margin: 0 }} slidesPerView={'auto'}>
           {dataList.map((review, index) => (
             <SwiperSlide
               onClick={() => handleSlideClick(index, path, review)}

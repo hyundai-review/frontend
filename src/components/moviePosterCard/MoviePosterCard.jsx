@@ -1,7 +1,7 @@
 import React from 'react'
 import media from '@/styles/media'
 import styled from 'styled-components'
-
+import OverlayPosterCard from './OverlayPosterCard'
 /*moviePosterUrl, movieID */
 function MoviePosterCard({ moviePosterUrl, movieId }) {
   return (
@@ -13,6 +13,7 @@ function MoviePosterCard({ moviePosterUrl, movieId }) {
         }}
         className='hoverBright'
       >
+        <OverlayPosterCard />
         <MoviePosterCardImageWrapper>
           <MoviePosterCardImage src={`${moviePosterUrl}`} alt='moviePoster' />
         </MoviePosterCardImageWrapper>
@@ -54,6 +55,7 @@ const MoviePosterCardImageWrapper = styled.div`
 const MoviePosterCardImage = styled.img`
   width: 100%;
   height: 100%;
+  border-radius: 5px;
   object-fit: cover;
 `
 

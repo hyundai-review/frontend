@@ -18,11 +18,12 @@ function LoginPage() {
             <br />
             {'영화 추천을 받고 싶다면?'}
           </LoginPageParagraph>
-          <KakaoLoginButton>
-            <img src={kakao} />
-            <p style={{ flex: 1, paddingRight: '25px', fontWeight: '500' }}>{'카카오 로그인'}</p>
-            <Link to={link} />
-          </KakaoLoginButton>
+          <Link to={link}>
+            <KakaoLoginButton>
+              <img src={kakao} />
+              <p style={{ flex: 1, paddingRight: '25px', fontWeight: '500' }}>{'카카오 로그인'}</p>
+            </KakaoLoginButton>
+          </Link>
         </LoginPageWrapper>
       </LoginPageContainer>
     </div>
