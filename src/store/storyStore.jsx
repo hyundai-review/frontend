@@ -8,8 +8,8 @@ const useStoryStore = create((set) => ({
 
   setReviewList: (reviewList) => set({ reviewList }),
 
-  setFavoriteCoinList: (favoriteCoinList) => set({ favoriteCoinList }),
-  clearFavoriteCoinList: () => set({ favoriteCoinList: [] }),
+  // setFavoriteCoinList: (favoriteCoinList) => set({ favoriteCoinList }),
+  // clearFavoriteCoinList: () => set({ favoriteCoinList: [] }),
 
   /* 리뷰 데이터 가져오기 api */
   getReviewList: (memberId) => {

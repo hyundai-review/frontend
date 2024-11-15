@@ -5,7 +5,7 @@ import GlobalStyle from './styles/globalStyle.jsx'
 import styled from 'styled-components'
 
 function Root() {
-  const [width, setWidth] = useState(window.innerWidth)
+
 
   return (
     <StrictMode>
