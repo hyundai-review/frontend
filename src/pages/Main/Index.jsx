@@ -62,7 +62,11 @@ function MainPage() {
             <MainPageSliderWrapper>
               <MainPageWrapperTitle>{'최신 스토리'}</MainPageWrapperTitle>
               <Wrap>
-                <Stories dataList={reviewData} path={'/main/story'} />
+                {isLoggedIn ? (
+                  <Stories dataList={reviewData} path={'/main/story'} />
+                ) : (
+                  <Stories dataList={reviewData} path={'/user/login'} />
+                )}
               </Wrap>
             </MainPageSliderWrapper>
           </div>
