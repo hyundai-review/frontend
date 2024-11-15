@@ -8,10 +8,10 @@ function Root() {
   const [width, setWidth] = useState(window.innerWidth)
 
   return (
-    <StrictMode>
+    <>
       <GlobalStyle />
       <App />
-    </StrictMode>
+    </>
   )
 }
 

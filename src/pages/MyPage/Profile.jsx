@@ -2,28 +2,33 @@ import Button from '@/components/common/Button'
 import React from 'react'
 import styled from 'styled-components'
 import edit from '@/assets/icons/edit.svg'
+import useAuthStore from '@/store/authStore'
+import { useNavigate } from 'react-router-dom'
+
 function Profile() {
   //temp data
-  const nickname = '아보카도파김치'
+  const userData = JSON.parse(localStorage.getItem('userInfo'))
+  const navigate = useNavigate()
   const reviewCount = 32
-
+  const { logout } = useAuthStore()
   // 닉네임 수정 함수
   const handleEditNickname = () => {
     console.log('닉네임 수정 아이콘이 클릭되었습니다.')
     // 닉네임 수정 로직 추가
   }
   const handleLogout = () => {
-    console.log('로그아웃 클릭됨')
+    logout()
+    navigate('/')
   }
   return (
     <ProfileContainer>
-      <ProfileImage src='https://i.pinimg.com/564x/4f/82/6b/4f826b4c9b219eb74c55c29d21b0427e.jpg' />
+      <ProfileImage src={`${userData.profile}`} />
       <ProfileNicknameWrap>
-        <ProfileNickname>{nickname}</ProfileNickname>
+        <ProfileNickname>{`${userData.nickname}`}</ProfileNickname>
         <ProfileSuffix>님</ProfileSuffix>
-        <Icon onClick={handleEditNickname} src={edit} alt='아이콘' />
+        <Icon onClick={() => handleEditNickname} src={edit} alt='아이콘' />
       </ProfileNicknameWrap>
-      <Button text='로그아웃' onClick={handleLogout} />
+      <Button text='로그아웃' onClick={() => handleLogout()} />
     </ProfileContainer>
   )
 }
