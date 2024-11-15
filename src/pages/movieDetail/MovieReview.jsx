@@ -39,7 +39,7 @@ function MovieReview() {
       ) : (
         <>
           <ReviewContentsContainer>
-            <ReviewSwiper dataList={transformedData} path={'/mypage'} />
+            <ReviewSwiper dataList={transformedData} />
             {!isReviewWritten ? (
               <ButtonWrap className='hoverBright'>
                 <ReviewPostButton>스토리 & 리뷰 작성하기</ReviewPostButton>

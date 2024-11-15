@@ -1,4 +1,3 @@
-import PhotocardModal from '@/pages/MyPage/PhotocardModal'
 import React, { lazy, Suspense } from 'react'
 
 const loading = <div>loading...</div>
@@ -9,14 +8,6 @@ const mypageRouter = [
     element: (
       <Suspense fallback={loading}>
         <MyPage />
-      </Suspense>
-    ),
-  },
-  {
-    path: ':photocard',
-    element: (
-      <Suspense fallback={loading}>
-        <PhotocardModal />
       </Suspense>
     ),
   },

@@ -13,6 +13,8 @@ function MovieSummaryLarge() {
   const releaseDate = '2024.11.09'
   const runningTime = '1시간 50분'
   const status = '상영 중'
+  const summary = '손으로 설렘을 말하고 가슴으로 사랑을 느끼다'
+  const contents = '대학생활은 끝났지만 하고 싶은 것도, 되고 싶은 것도 없어 고민하던 용준. '
   return (
     <MovieSummaryContainer>
       <ImageWrap>
@@ -28,23 +30,35 @@ function MovieSummaryLarge() {
         </Header>
         <Wrap>
           <MovieInfo>
-            <InfoWrap>
-              <CalendarIcon src={calendar}></CalendarIcon>
-              <ReleaseDate>{releaseDate}</ReleaseDate>
-            </InfoWrap>
-            <InfoWrap>
-              <ClockIcon src={clock}></ClockIcon>
-              <RunningTime>{runningTime}</RunningTime>
-            </InfoWrap>
+            <InfoWrapLeft>
+              <InfoText>정보</InfoText>
+              <BlackBoxLeft>
+                <LineWrap>
+                  <CalendarIcon src={calendar}></CalendarIcon>
+                  <ReleaseDate>{releaseDate}</ReleaseDate>
+                </LineWrap>
+                <LineWrap>
+                  <ClockIcon src={clock}></ClockIcon>
+                  <RunningTime>{runningTime}</RunningTime>
+                </LineWrap>
+                <MovieGenreWrap>
+                  <GenreButton fontSize={14} radius={10} category='로맨스' />
+                  <GenreButton fontSize={14} radius={10} category='드라마' />
+                </MovieGenreWrap>
+                <MovieStatusWrap>
+                  <StatusCircle />
+                  <StatusText>{status}</StatusText>
+                </MovieStatusWrap>
+              </BlackBoxLeft>
+            </InfoWrapLeft>
+            <InfoWrapRight>
+              <InfoText>개요</InfoText>
+              <BlackBoxRight>
+                <Summary>{summary}</Summary>
+                <Contents>{contents}</Contents>
+              </BlackBoxRight>
+            </InfoWrapRight>
           </MovieInfo>
-          <MovieGenreWrap>
-            <GenreButton category='로맨스' />
-            <GenreButton category='드라마' />
-          </MovieGenreWrap>
-          <MovieStatusWrap>
-            <StatusCircle />
-            <StatusText>{status}</StatusText>
-          </MovieStatusWrap>
         </Wrap>
       </ContentsContainer>
     </MovieSummaryContainer>
@@ -53,19 +67,17 @@ function MovieSummaryLarge() {
 
 export default MovieSummaryLarge
 const MovieSummaryContainer = styled.div`
-  padding: 10px;
+  padding: 20px;
   border-radius: 10px;
   border: 1px solid rgba(255, 255, 255, 0.1);
   background: rgba(0, 0, 0, 0.25);
   display: flex;
   width: 100%;
-  gap: 10px;
+  gap: 15px;
 `
 const ImageWrap = styled.div`
   width: auto;
   display: inline-flex;
-  align-items: center;
-  justify-content: center;
 `
 
 const Poster = styled.div`
@@ -120,7 +132,7 @@ const Year = styled.div`
   font-size: 24px;
   font-style: normal;
   font-weight: 200;
-  line-height: 24px; /* 150% */
+  line-height: 36px;
   ${media.medium`
     font-size: calc(16px + 0.5vw);
   `}
@@ -135,24 +147,65 @@ const Rating = styled.div`
   font-size: 20px;
   font-style: normal;
   font-weight: 400;
-  line-height: 21px; /* 150% */
+  line-height: 30px;
   ${media.medium`
     font-size: calc(14px + 0.5vw);
   `}
 `
 const MovieInfo = styled.div`
+  width: 100%;
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  /* margin-bottom: 12px; */
+  gap: 10px;
 `
-const InfoWrap = styled.div`
+const InfoWrapLeft = styled.div`
+  width: 30%;
+  gap: 10px;
+`
+const InfoWrapRight = styled.div`
+  width: 70%;
+  gap: 10px;
+`
+const InfoText = styled.div`
+  color: var(--gray-200, #e4e4e7);
+  /* light/lg */
+  font-family: Pretendard;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 200;
+  line-height: 30px; /* 150% */
+`
+const BlackBoxLeft = styled.div`
+  width: 100%;
+  height: 176px;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(0, 0, 0, 0.25);
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+`
+const BlackBoxRight = styled.div`
+  width: 100%;
+  height: 176px;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(0, 0, 0, 0.25);
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+`
+
+const LineWrap = styled.div`
   display: flex;
   align-items: center;
+  gap: 10px;
 `
 const CalendarIcon = styled.img`
-  width: 16px;
-  height: 16px;
+  width: 20px;
+  height: 20px;
   justify-content: center;
   align-items: center;
   margin-right: 4px;
@@ -165,18 +218,18 @@ const ReleaseDate = styled.div`
   color: var(--gray-200, #e4e4e7);
   /* regular/sm */
   font-family: Pretendard;
-  font-size: 14px;
+  font-size: 16px;
   font-style: normal;
   font-weight: 400;
-  line-height: 21px; /* 150% */
+  line-height: 24px;
   ${media.medium`
     font-size: calc(14px + 0.5vw);
   `}
 `
 
 const ClockIcon = styled.img`
-  width: 16px;
-  height: 16px;
+  width: 20px;
+  height: 20px;
   margin-right: 4px;
   ${media.medium`
     width: 1em;
@@ -188,10 +241,10 @@ const RunningTime = styled.div`
   color: var(--gray-200, #e4e4e7);
   /* regular/sm */
   font-family: Pretendard;
-  font-size: 14px;
+  font-size: 16px;
   font-style: normal;
   font-weight: 400;
-  line-height: 21px; /* 150% */
+  line-height: 24px;
   ${media.medium`
     font-size: calc(14px + 0.5vw);
   `}
@@ -199,6 +252,7 @@ const RunningTime = styled.div`
 const MovieGenreWrap = styled.div`
   display: flex;
   gap: 10px;
+  margin-top: 6px;
 `
 const MovieStatusWrap = styled.div`
   display: flex;
@@ -224,4 +278,30 @@ const StatusText = styled.div`
   font-style: normal;
   font-weight: 400;
   line-height: 21px; /* 150% */
+`
+
+const Summary = styled.div`
+  color: var(--gray-50, #fafafa);
+
+  /* regular/sm */
+  font-family: Pretendard;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 21px; /* 150% */
+`
+
+const Contents = styled.div`
+  color: var(--gray-400, #a1a1aa);
+  /* regular/sm */
+  font-family: Pretendard;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 21px;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 5;
+  -webkit-box-orient: vertical;
+  text-overflow: ellipsis;
 `

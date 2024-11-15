@@ -5,13 +5,17 @@ import 'swiper/css'
 import Stories from '../story/Stories'
 import media from '@/styles/media'
 import { useNavigate } from 'react-router-dom'
+import useModalStore from '@/store/modalStore'
 
-function ReviewSwiper({ dataList, path }) {
+function ReviewSwiper({ dataList }) {
   const navigate = useNavigate()
   const dataLength = dataList.length
+  const openModal = useModalStore((state) => state.openModal)
 
-  const handleSlideClick = (index, path, item) => {
-    navigate(`${path}/${item.id}`)
+  const handleSlideClick = (item) => {
+    console.log(item)
+    // 모달 열기
+    openModal(item) // 선택된 포토카드를 상태에 전달하여 모달 열기
   }
   return (
     <div>
@@ -32,7 +36,7 @@ function ReviewSwiper({ dataList, path }) {
         </Swiper>
       </SwiperWrapper>
       <StoriesWrapper>
-        <Stories dataList={dataList} path={path} />
+        <Stories dataList={dataList} />
       </StoriesWrapper>
     </div>
   )
