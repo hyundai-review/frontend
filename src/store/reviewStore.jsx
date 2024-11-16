@@ -6,13 +6,14 @@ const useReviewStore = create(
   persist(
     (set, get) => ({
       reviewStep: 0,
+      navi: null,
+
       reviewPost: {
         rating: 0,
         textReview: '',
         photocard: '/assets/images/movie/poster1.png',
         isSpoil: false,
       },
-      navi: (path) => (window.location.href = `/review/2/post/${path}`),
       optionBackImg: {
         imgId: 0,
         imgURL: '',
@@ -22,6 +23,9 @@ const useReviewStore = create(
         step1: '',
         step2: '',
       },
+
+      /** 라우팅 */
+      setNavi: (navigate) => set({ navi: navigate }),
 
       /** 사진 background 선택 */
       setOptionBackImg: (backImg) => set({ optionBackImg: backImg }),
@@ -36,12 +40,16 @@ const useReviewStore = create(
 
       nextStep: () => {
         const state = get()
-        const nextStepValue = Math.min(state.reviewStep + 1, 5)
+        const nextStepValue = Math.min(state.reviewStep + 1, 3)
         set({ reviewStep: nextStepValue })
 
         // 라우팅
+        const movieId = window.location.pathname.split('/')[2]
         const paths = ['text', 'photo', 'deploy', 'upload']
-        state.navi(paths[nextStepValue])
+
+        if (state.navi) {
+          state.navi(`/review/${movieId}/post/${paths[nextStepValue]}`)
+        }
       },
 
       prevStep: () => {
@@ -50,18 +58,18 @@ const useReviewStore = create(
         set({ reviewStep: prevStepValue })
 
         // 라우팅
+        const movieId = window.location.pathname.split('/')[2]
         const paths = ['text', 'photo', 'deploy', 'upload']
-        state.navi(paths[prevStepValue])
+
+        if (state.navi) {
+          state.navi(`/review/${movieId}/post/${paths[prevStepValue]}`)
+        }
       },
 
       /** review post */
       setReviewPost: (post) =>
         set((state) => ({
           reviewPost: { ...state.reviewPost, ...post },
-        })),
-      updateReviewPost: (reviewPost) =>
-        set(() => ({
-          reviewPost: reviewPost,
         })),
 
       // 초기화

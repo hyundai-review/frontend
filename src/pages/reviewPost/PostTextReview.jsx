@@ -1,5 +1,5 @@
 import StarRating from '@/components/common/StarRating'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import styled from 'styled-components'
 
 import * as SBoxContainer from '@/styles/boxContainer'
@@ -7,21 +7,28 @@ import * as SText from '@/styles/text'
 import * as SBtn from '@/styles/button'
 import { Checkbox } from '@mui/material'
 import useReviewStore from '@/store/reviewStore'
-import { useNavigate } from 'react-router-dom'
 
 /** step 1. 텍스트 리뷰 작성 */
 function PostTextReview() {
-  const { reviewStep, nextStep } = useReviewStore()
+  const { nextStep, reviewPost, setReviewPost } = useReviewStore()
 
-  // TODO (Y) zustand로 state 값 변경
-  const [starRating, setStarRating] = useState(0)
-  const handleStarRating = (rating) => {
-    setStarRating(rating)
-  }
-  const [isChecked, setIsChecked] = useState(false)
+  const [starRating, setStarRating] = useState(reviewPost.rating)
+  const formRef = useRef({
+    rating: reviewPost.rating,
+    textReview: reviewPost.textReview,
+    isSpoil: reviewPost.isSpoil,
+  })
 
-  const handleChange = (e) => {
-    setIsChecked(e.target.checked)
+  // 리뷰만 올리기
+  const handleSubmitReview = () => {
+    if (!starRating || !formRef.current.textReview.trim()) {
+      alert('별점과 리뷰를 모두 작성해주세요.')
+      return
+    }
+
+    setReviewPost(formRef.current)
+    // TODO: API 호출하여 리뷰 제출
+    console.log('리뷰 제출:', formRef.current)
   }
 
   return (
@@ -34,7 +41,10 @@ function PostTextReview() {
               type='controlled'
               size={25}
               initialValue={starRating}
-              onChange={handleStarRating}
+              onChange={(rating) => {
+                setStarRating(rating) // 상태 업데이트
+                setReviewPost({ rating: rating })
+              }}
             />
           </StarWrap>
         </Wrap>
@@ -47,6 +57,10 @@ function PostTextReview() {
             placeholder='해당 영화에 대한 리뷰를 남겨주세요'
             $variant='md'
             $color='var(--gray-200)'
+            defaultValue={reviewPost.textReview}
+            onChange={(e) => {
+              formRef.current.textReview = e.target.value
+            }}
           />
         </SBoxContainer.Box>
       </div>
@@ -55,8 +69,10 @@ function PostTextReview() {
           <SpoWrap>
             <SText.Text>스포일러가 포함되어있나요?</SText.Text>
             <Checkbox
-              checked={isChecked}
-              onChange={handleChange}
+              defaultChecked={reviewPost.isSpoil}
+              onChange={(e) => {
+                formRef.current.isSpoil = e.target.checked
+              }}
               disableRipple // 애니 효과 제거
               sx={{
                 padding: '0',
@@ -73,9 +89,13 @@ function PostTextReview() {
         </SBoxContainer.Box>
 
         <BtnWrap>
-          <button style={{ all: 'unset', cursor: 'pointer', whiteSpace: 'nowrap' }}>
+          <button
+            style={{ all: 'unset', cursor: 'pointer', whiteSpace: 'nowrap' }}
+            onClick={handleSubmitReview}
+          >
             <BtnText style={{ padding: '0 50px' }}>리뷰만 올리기</BtnText>
           </button>
+
           <SBtn.ReviewPostBtn onClick={nextStep}>
             <BtnText>포토카드 만들기</BtnText>
           </SBtn.ReviewPostBtn>

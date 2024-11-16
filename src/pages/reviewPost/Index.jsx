@@ -1,5 +1,5 @@
-import React, { useEffect } from 'react'
-import { useParams, Outlet } from 'react-router-dom'
+import React, { useEffect, useRef } from 'react'
+import { useParams, Outlet, useNavigate, useLocation } from 'react-router-dom'
 import styled from 'styled-components'
 import * as S from '@/styles/background'
 import useReviewStore from '@/store/reviewStore'
@@ -14,7 +14,35 @@ const movieData = {
 
 function ReviewPostPage() {
   const { movieId } = useParams()
-  const { reviewStep, prevStep } = useReviewStore()
+  const { reviewStep, prevStep, resetStore, setNavi, setReviewStep } = useReviewStore()
+  const navigate = useNavigate()
+  const location = useLocation()
+
+  const prevMovieIdRef = useRef(movieId)
+
+  // store에 navigate 함수 저장
+  useEffect(() => {
+    setNavi(navigate)
+  }, [navigate, setNavi])
+
+  // 다른 영화의 리뷰 페이지로 이동할 때만 데이터 초기화
+  useEffect(() => {
+    if (movieId !== prevMovieIdRef.current) {
+      resetStore()
+      prevMovieIdRef.current = movieId
+    }
+  }, [movieId])
+
+  // URL에서 현재 step 확인하여 프로그레스 바 업데이트
+  useEffect(() => {
+    const paths = ['text', 'photo', 'deploy', 'upload']
+    const currentPath = location.pathname.split('/').pop()
+    const stepIndex = paths.indexOf(currentPath)
+
+    if (stepIndex !== -1) {
+      setReviewStep(stepIndex)
+    }
+  }, [location.pathname, setReviewStep])
 
   return (
     <Container $image={movieData.image}>
