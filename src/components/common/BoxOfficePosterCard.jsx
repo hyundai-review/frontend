@@ -1,25 +1,24 @@
 import React from 'react'
 import media from '@/styles/media'
 import styled from 'styled-components'
-
-/*movieInfo에는 imageUrl, rank, date가 들어가야 합니다. */
+import { useNavigate } from 'react-router-dom'
 
 function BoxOfficePosterCard({ movieInfo }) {
+  const navigate = useNavigate()
   return (
     <div>
       <BoxOfficePosterCardContainer
         onClick={() => {
-          //TODO(j) 영화 디테일페이지로 이동
-          console.log(movieInfo.id, '여기에 movie detailpage로 이동')
+          navigate(`/movie/${movieInfo.movieId}/detail`)
         }}
         className='hoverBright'
       >
         <BoxOfficePosterCardImageWrapper>
-          <BoxOfficePosterCardImage src={`${movieInfo.imageUrl}`} />
+          <BoxOfficePosterCardImage src={`https://image.tmdb.org/t/p/w300${movieInfo.poster}`} />
         </BoxOfficePosterCardImageWrapper>
         <BoxOfficePosterCardInfoWrapper>
           <BoxOfficePosterCardRank>{`${movieInfo.rank}`}</BoxOfficePosterCardRank>
-          <BoxOfficePosterCardDate>{`${movieInfo.date}`}</BoxOfficePosterCardDate>
+          <BoxOfficePosterCardDate>{`${movieInfo.releaseDate}`}</BoxOfficePosterCardDate>
         </BoxOfficePosterCardInfoWrapper>
       </BoxOfficePosterCardContainer>
     </div>

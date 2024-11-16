@@ -7,7 +7,7 @@ import styled from 'styled-components'
 import ReviewCard from '../../components/review/ReviewCard'
 import MyReview from './MyReview'
 import useAuthStore from '@/store/authStore'
-function MovieReview() {
+function MovieReview({ data }) {
   // data
   const reviewCount = 123
   const averageRating = 4.23
@@ -20,14 +20,14 @@ function MovieReview() {
     <Wrap>
       <TitleWrap>
         <Title>리뷰({reviewCount})</Title>
-        {!isLoggedIn && (
+        {isLoggedIn && (
           <RatingWrap>
             <StarRating type='readonly' initialValue='1' max={1} size={24} />
             <AverageRating>{averageRating}</AverageRating>
           </RatingWrap>
         )}
       </TitleWrap>
-      {isLoggedIn ? (
+      {!isLoggedIn ? (
         <Box>
           <TextWrap>
             <Text>

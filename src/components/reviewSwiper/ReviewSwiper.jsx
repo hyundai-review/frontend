@@ -27,7 +27,7 @@ function ReviewSwiper({ dataList }) {
               style={{ width: 250 }}
             >
               <ImageSlideWrap>
-                <ImageSlide imageUrl={review.photocard}>
+                <ImageSlide $imageurl={review.photocard}>
                   <ImageText>{'여기는 나중에 대체됨'}</ImageText>
                 </ImageSlide>
               </ImageSlideWrap>
@@ -54,7 +54,7 @@ const ImageSlide = styled.div`
   border-radius: 5px;
   width: 200px;
   height: 200px;
-  background: url(${(props) => props.imageUrl}) lightgray 50% / cover no-repeat;
+  background: url(${(props) => props.$imageurl}) lightgray 50% / cover no-repeat;
 `
 
 const ImageText = styled.div`
