@@ -11,7 +11,7 @@ import NoAppWrapperLayout from '@/components/layout/NoAppWrapperLayout'
 const loading = <div>loading</div>
 const MainPage = lazy(() => import('@/pages/Main/Index'))
 const SearchPage = lazy(() => import('@/pages/Search/Index'))
-
+const NotFoundPage = lazy(() => import('@/pages/NotFound'))
 const root = createBrowserRouter([
   {
     path: '/',
@@ -41,6 +41,14 @@ const root = createBrowserRouter([
         path: '/mypage',
         children: mypageRouter,
       },
+      {
+        path: '*',
+        element: (
+          <Suspense fallback={loading}>
+            <NotFoundPage />
+          </Suspense>
+        ),
+      },
     ],
   },
   {
@@ -57,23 +65,23 @@ const root = createBrowserRouter([
     children: [
       {
         path: '',
-        children: movieRouter,
+        children: movieRouter(),
       },
     ],
   },
-  {
-    path: '/main',
-    children: mainRouter(),
-  },
+  // {
+  //   path: '/main',
+  //   children: mainRouter(),
+  // },
 
   {
     path: '/user',
     children: userRouter(),
   },
-  {
-    path: '/movie',
-    children: movieRouter,
-  },
+  // {
+  //   path: '/movie',
+  //   children: movieRouter(),
+  // },
   {
     path: '/review',
     children: reviewRouter(),
