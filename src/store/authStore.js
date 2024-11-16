@@ -6,14 +6,13 @@ const useAuthStore = create((set) => ({
   token: localStorage.getItem('authToken') || '',
   login: (userData) => {
     set({ isLoggedIn: true })
-    console.log(userData)
     localStorage.setItem('userInfo', JSON.stringify(userData))
     localStorage.setItem('isLogIn', true)
   },
   logout: () => {
     set({ isLoggedIn: false })
     localStorage.removeItem('userInfo')
-    localStorage.setItem('isLogIn', false)
+    localStorage.removeItem('isLogIn')
     removeCookie('ACCESS_TOKEN')
   },
 }))

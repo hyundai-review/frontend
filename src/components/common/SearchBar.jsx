@@ -3,26 +3,24 @@ import searchBarIcon from '@/assets/icons/searchBarIcon.svg'
 import media from '@/styles/media'
 import styled from 'styled-components'
 import { useNavigate } from 'react-router-dom'
-
-function SearchBar({ handleSearch }) {
+//TODO(j) 훅으로 searchparams 연결하기
+function SearchBar({ defaultValue }) {
   const navigate = useNavigate()
   const inputRef = useRef(null)
   const [inputFieldFocus, setInputFieldFocus] = useState(false)
   const handleSubmit = (e) => {
     e.preventDefault()
-    navigate('/search', { state: { searchValue: inputRef.current.value } })
-    handleSearch(inputRef.current.value)
+    const removeBlankValue = encodeURIComponent(inputRef.current.value.trim())
+    if (removeBlankValue !== '') {
+      navigate(`/search?q=${removeBlankValue}`)
+    }
   }
   return (
     <div>
       <SearchBarContainer $isfocused={inputFieldFocus} className='hoverBright'>
-        <form onSubmit={handleSubmit} style={{ width: '100%', display: 'flex', height: '100%' }}>
+        <SearchBarForm onSubmit={handleSubmit}>
           <SearchBarIconButton type='submit'>
-            <img
-              src={searchBarIcon}
-              alt='searchBarIcon'
-              style={{ width: '24px', height: '24px' }}
-            />
+            <SearchBarIconButtonImage src={searchBarIcon} alt='searchBarIcon' />
           </SearchBarIconButton>
           <SearchBarInputFieldWrapper>
             <SearchBarInputField
@@ -30,9 +28,10 @@ function SearchBar({ handleSearch }) {
               placeholder='영화 제목, 배우, 감독 검색'
               onFocus={() => setInputFieldFocus(true)}
               onBlur={() => setInputFieldFocus(false)}
+              defaultValue={defaultValue}
             />
           </SearchBarInputFieldWrapper>
-        </form>
+        </SearchBarForm>
       </SearchBarContainer>
     </div>
   )
@@ -58,6 +57,12 @@ const SearchBarContainer = styled.div`
     box-shadow: 0 0 15px 5px rgba(255, 255, 255, 0.3);
   `}
 `
+const SearchBarForm = styled.form`
+  width: 100%;
+  display: flex;
+  height: 100%;
+`
+
 const SearchBarIconButton = styled.button`
   cursor: pointer;
   padding-left: 20px;
@@ -68,13 +73,17 @@ const SearchBarIconButton = styled.button`
   border: none;
 `
 
+const SearchBarIconButtonImage = styled.img`
+  width: 24px;
+  height: 24px;
+`
+
 const SearchBarInputFieldWrapper = styled.div`
   cursor: text;
   width: 100%;
   height: 100%;
 `
 
-//global style 설정하고 color, font 변경
 const SearchBarInputField = styled.input`
   width: 100%;
   height: 100%;
@@ -83,7 +92,10 @@ const SearchBarInputField = styled.input`
   padding-right: 20px;
   background-color: transparent;
   border: none;
-  color: gray;
+  font-size: 16px;
+  line-height: 24px;
+  color: var(--color-gray-50);
+  font-weight: 100;
   outline: none;
 `
 

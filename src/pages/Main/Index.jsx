@@ -65,8 +65,11 @@ function MainPage() {
     date: '2024.11.11',
   }))
   const suggestMovieData = [...Array(10)].map((_, index) => ({
-    moviePosterUrl: 'https://image.tmdb.org/t/p/w300/tKV0etz5OIsAjSNG1hJktsjbNJk.jpg',
-    movieId: index + 1,
+    movieId: index,
+    poster: 'https://image.tmdb.org/t/p/w300/tKV0etz5OIsAjSNG1hJktsjbNJk.jpg',
+    title: '청설',
+    releaseDate: '2024',
+    tagline: '',
   }))
   return (
     <div>

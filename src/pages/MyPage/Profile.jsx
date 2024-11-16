@@ -4,6 +4,7 @@ import styled from 'styled-components'
 import edit from '@/assets/icons/edit.svg'
 import useAuthStore from '@/store/authStore'
 import { useNavigate } from 'react-router-dom'
+import { authenticated } from '@/libs/axiosInstance'
 
 function Profile() {
   //temp data
@@ -11,14 +12,26 @@ function Profile() {
   const navigate = useNavigate()
   const reviewCount = 32
   const { logout } = useAuthStore()
-  // 닉네임 수정 함수
-  const handleEditNickname = () => {
+  //TODO(j) axios 요청 따로 모으기 + 로그아웃 로직 분리
+  const handleEditNickname = async () => {
     console.log('닉네임 수정 아이콘이 클릭되었습니다.')
-    // 닉네임 수정 로직 추가
+    try {
+      const ans = await authenticated.put('/members/nickname', {
+        nickname: `${userData.nickname}`,
+      })
+      console.log(ans)
+    } catch (e) {
+      console.log('닉네임 수정 실패')
+    }
   }
-  const handleLogout = () => {
-    logout()
-    navigate('/')
+  const handleLogout = async () => {
+    try {
+      await authenticated.post('/auth/logout')
+      logout()
+      navigate('/')
+    } catch (e) {
+      console.log(e)
+    }
   }
   return (
     <ProfileContainer>
@@ -26,7 +39,7 @@ function Profile() {
       <ProfileNicknameWrap>
         <ProfileNickname>{`${userData.nickname}`}</ProfileNickname>
         <ProfileSuffix>님</ProfileSuffix>
-        <Icon onClick={() => handleEditNickname} src={edit} alt='아이콘' />
+        <Icon onClick={() => handleEditNickname()} src={edit} alt='아이콘' />
       </ProfileNicknameWrap>
       <Button text='로그아웃' onClick={() => handleLogout()} />
     </ProfileContainer>
