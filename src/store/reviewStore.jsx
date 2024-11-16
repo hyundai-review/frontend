@@ -10,7 +10,7 @@ const useReviewStore = create(
 
       reviewPost: {
         rating: 0,
-        textReview: '',
+        content: '',
         photocard: '/assets/images/movie/poster1.png',
         isSpoil: false,
       },
@@ -78,7 +78,7 @@ const useReviewStore = create(
           reviewStep: 0,
           reviewPost: {
             rating: 0,
-            textReview: '',
+            content: '',
             photocard: '',
             isSpoil: false,
           },

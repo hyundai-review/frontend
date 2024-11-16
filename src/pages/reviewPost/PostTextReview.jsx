@@ -18,8 +18,7 @@ function PostTextReview() {
 
   const [starRating, setStarRating] = useState(reviewPost.rating)
   const formRef = useRef({
-    rating: reviewPost.rating,
-    content: reviewPost.textReview,
+    content: reviewPost.content,
     isSpoil: reviewPost.isSpoil,
   })
 
@@ -30,7 +29,10 @@ function PostTextReview() {
       return
     }
 
-    setReviewPost(formRef.current)
+    setReviewPost({
+      ...formRef.current,
+      rating: starRating,
+    })
 
     if (isPhotocard) {
       nextStep()
@@ -55,7 +57,6 @@ function PostTextReview() {
               initialValue={starRating}
               onChange={(rating) => {
                 setStarRating(rating)
-                setReviewPost({ rating: rating })
               }}
             />
           </StarWrap>
