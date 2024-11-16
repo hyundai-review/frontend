@@ -1,26 +1,50 @@
-import React from 'react'
-import MoviePosterBox from '@/components/moviePosterCard/MoviePosterCard.jsx'
+import React, { useEffect, useState } from 'react'
+import MoviePosterCard from '@/components/moviePosterCard/MoviePosterCard.jsx'
 import SearchBar from '@/components/common/SearchBar.jsx'
 import media from '@/styles/media'
 import styled from 'styled-components'
-
+import { useSearchParams } from 'react-router-dom'
+import { nonAuthenticated } from '@/libs/axiosInstance'
+import axios from 'axios'
+//TODO(j) axios 한군데 모으기
 function SearchPage() {
-  const movieDataArray = [...Array(10)].map((_, index) => ({
-    id: index,
-    imageUrl: 'https://image.tmdb.org/t/p/w300/tKV0etz5OIsAjSNG1hJktsjbNJk.jpg',
-  }))
-  const handleSearch = (inputValue) => {
-    console.log(`이 값으로 검색 시작${inputValue}`)
+  // const [movieDataArray, setMovieDataArray] = useState([])
+  const [searchParams] = useSearchParams()
+  const query = searchParams.get('q') || ''
+  const searchWihValue = async (inputValue) => {
+    const queryParams = { keyword: inputValue, page: 0 }
+    try {
+      const getMovieData = await nonAuthenticated.get('/api/movies/search', {
+        params: queryParams,
+      })
+      // setMovieDataArray(getMovieData.data.content)
+    } catch (e) {
+      console.log(error)
+    }
   }
+  const handleSearch = (inputValue) => {}
+  // useEffect(() => {
+  //   if (query !== '') {
+  //     handleSearch(query)
+  //   } else {
+  //     console.log(query)
+  //   }
+  // }, [query])
+  const movieDataArray = [...Array(10)].map((_, index) => ({
+    movieId: index,
+    poster: 'https://image.tmdb.org/t/p/w300/tKV0etz5OIsAjSNG1hJktsjbNJk.jpg',
+    title: '청설',
+    releaseDate: '2024',
+  }))
   return (
     <div>
       <SearchPageContainer>
-        <SearchBar handleSearch={handleSearch} />
+        <SearchBar defaultValue={query} />
         <SearchPageBodyWrapper>
           <SearchPageResultWrapper>{`검색결과 - ${movieDataArray.length}건`}</SearchPageResultWrapper>
           <MoviePosterWrapper>
             {movieDataArray.map((item, index) => (
-              <MoviePosterBox moviePosterUrl={item.imageUrl} movieId={item.id} key={index} />
+              <MoviePosterCard movieInfo={item} key={index} />
             ))}
           </MoviePosterWrapper>
         </SearchPageBodyWrapper>

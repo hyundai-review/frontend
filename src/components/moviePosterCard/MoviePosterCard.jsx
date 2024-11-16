@@ -3,7 +3,14 @@ import media from '@/styles/media'
 import styled from 'styled-components'
 import OverlayPosterCard from './OverlayPosterCard'
 /*moviePosterUrl, movieID */
-function MoviePosterCard({ moviePosterUrl, movieId }) {
+function MoviePosterCard({ movieInfo }) {
+  // const moviePosterUrl = `http://image.tmdb.org/t/p/w342${movieInfo.poster}`
+  const moviePosterUrl = `${movieInfo.poster}`
+  const movieId = movieInfo.movieId
+  const movieTitle = movieInfo.title
+  //설명 없으면 설명없다고 텍스트 넣을까?
+  const movieTagLine = movieInfo.tagline
+  const movieYear = movieInfo.releaseDate.slice(0, 4)
   return (
     <div>
       <MoviePosterCardContainer
@@ -13,7 +20,11 @@ function MoviePosterCard({ moviePosterUrl, movieId }) {
         }}
         className='hoverBright'
       >
-        <OverlayPosterCard />
+        <OverlayPosterCard
+          movieTitle={movieTitle}
+          movieTagLine={movieTagLine}
+          movieYear={movieYear}
+        />
         <MoviePosterCardImageWrapper>
           <MoviePosterCardImage src={`${moviePosterUrl}`} alt='moviePoster' />
         </MoviePosterCardImageWrapper>

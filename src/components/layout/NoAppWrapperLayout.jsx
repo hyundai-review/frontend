@@ -8,6 +8,7 @@ function HeaderLayout() {
     <div>
       <Header />
       <Outlet />
+      <MobileNavigationBar />
     </div>
   )
 }

@@ -2,16 +2,14 @@ import media from '@/styles/media'
 import React from 'react'
 import styled from 'styled-components'
 import arrow from '@/assets/icons/arrow-right.svg'
-function OverlayPosterCard() {
+function OverlayPosterCard({ movieTitle, movieTagLine, movieYear }) {
   return (
     <div>
       <OverlayPosterCardContainer>
         <OverlayPosterCardWrapper>
-          <OverlayPosterCardTitle>{'청설'}</OverlayPosterCardTitle>
-          <OverlayPosterCardDate>{'(2024)'}</OverlayPosterCardDate>
-          <OverlayPosterCardContent>
-            {'손으로 설렘을 말하고 가슴으로 사랑을 느끼다'}
-          </OverlayPosterCardContent>
+          <OverlayPosterCardTitle>{`${movieTitle}`}</OverlayPosterCardTitle>
+          <OverlayPosterCardDate>{`(${movieYear})`}</OverlayPosterCardDate>
+          <OverlayPosterCardContent>{`${movieTagLine}`}</OverlayPosterCardContent>
           <OverlayPosterCardArrow src={arrow} />
         </OverlayPosterCardWrapper>
       </OverlayPosterCardContainer>
@@ -95,7 +93,7 @@ const OverlayPosterCardDate = styled.div`
 `
 
 const OverlayPosterCardContent = styled.div`
-  width: 115px;
+  width: 125px;
   height: fit-content;
   color: var(--color-gray-50);
   font-size: 15px;

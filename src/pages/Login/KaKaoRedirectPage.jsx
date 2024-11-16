@@ -12,12 +12,11 @@ function KaKaoRedirectPage() {
   const authCode = searchParams.get('code')
   const { login } = useAuthStore()
   const navigate = useNavigate()
-  const loading = <div>loading</div>
   useEffect(() => {
     const fetchAccessToken = async () => {
       try {
         const userData = await GET_AccessToken(authCode)
-        setCookie(userData.accessToken, 'ACCESS_TOKEN', 7)
+        setCookie('ACCESS_TOKEN', userData.accessToken, 7)
         login(userData)
         navigate('/')
       } catch (e) {
