@@ -79,7 +79,10 @@ const BlurOverlay = styled.div`
   background: rgba(0, 0, 0, 0.5);
   backdrop-filter: blur(20px);
 `
-const Container = styled.div``
+const Container = styled.div`
+  max-width: 1440px;
+  margin: 0 auto;
+`
 const ContentsWrap = styled.div`
   display: flex;
   flex-direction: column;
