@@ -3,12 +3,12 @@ import axios from 'axios'
 
 // 인증 필요 없는 경우
 export const nonAuthenticated = axios.create({
-  baseURL: `${import.meta.env.VITE_BASE_URL}`,
+  baseURL: `${import.meta.env.VITE_BASE_URL}/api`,
 })
 
 // 인증 필요한 경우
 export const authenticated = axios.create({
-  baseURL: `${import.meta.env.VITE_BASE_URL}`,
+  baseURL: `${import.meta.env.VITE_BASE_URL}/api`,
 })
 
 /** 요청 인터셉터 : 헤더에 access token 추가 */

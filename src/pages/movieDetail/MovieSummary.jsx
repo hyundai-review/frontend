@@ -4,15 +4,22 @@ import clock from '@/assets/icons/clock.svg'
 import GenreButton from '@/components/common/GenreButton'
 import styled from 'styled-components'
 import media from '@/styles/media'
-function MovieSummary() {
-  const posterImageUrl =
-    'https://img.cgv.co.kr/Movie/Thumbnail/StillCut/000088/88847/88847230819_727.jpg'
-  const title = '청설'
-  const year = '2024'
-  const rating = 'all'
-  const releaseDate = '2024.11.09'
-  const runningTime = '1시간 50분'
-  const status = '상영 중'
+function MovieSummary({ data }) {
+  // const posterImageUrl =
+  //   'https://img.cgv.co.kr/Movie/Thumbnail/StillCut/000088/88847/88847230819_727.jpg'
+  // const title = '청설'
+  // const year = '2024'
+  // const rating = 'all'
+  // const releaseDate = '2024.11.09'
+  // const runningTime = '1시간 50분'
+  // const status = '상영 중'
+  const posterImageUrl = `https://image.tmdb.org/t/p/w500${data?.poster.filePath}`
+  const title = data?.title
+  const year = data?.releaseDate.split('-')[0] // "2024-11-13" → "2024"
+  const certification = data?.certification === '19' ? '19+' : 'all' // 예제에 따라 변환
+  const releaseDate = data?.releaseDate
+  const runningTime = `${Math.floor(data?.runtime / 60)}시간 ${data?.runtime % 60}분` // 148 → "2시간 28분"
+  const status = data?.status === 'NOW_PLAYING' ? '상영 중' : '상영 종료'
   return (
     <MovieSummaryContainer>
       <LeftSection>
@@ -24,7 +31,7 @@ function MovieSummary() {
             <RightTitle>{title}</RightTitle>
             <RightYear>({year})</RightYear>
           </RightTitleWrap>
-          <RightRating>{rating}</RightRating>
+          <RightRating>{certification}</RightRating>
         </RightHeader>
         <Wrap>
           <MovieInfo>
@@ -38,8 +45,9 @@ function MovieSummary() {
             </InfoWrap>
           </MovieInfo>
           <MovieGenreWrap>
-            <GenreButton category='로맨스' />
-            <GenreButton category='드라마' />
+            {data?.genres.map((genre) => (
+              <GenreButton key={genre.genreId} fontSize={14} radius={10} category={genre.name} />
+            ))}
           </MovieGenreWrap>
           <MovieStatusWrap>
             <StatusCircle />

@@ -6,25 +6,28 @@ import MovieReview from './MovieReview'
 import MovieSummary from './MovieSummary'
 import arrowLeft from '@/assets/icons/arrow-left.svg'
 import ActorCard from './ActorCard'
-import actorData from '@/assets/data/actorsData'
+// import actorData from '@/assets/data/actorsData'
 import useResponsive from '@/hooks/useResponsive'
 import MovieSummaryLarge from './MovieSummaryLarge'
 import { useParams } from 'react-router-dom'
 import { useApi } from '@/libs/useApi'
 function MovieDetailPage() {
   const { movieId } = useParams()
+  const screenSize = useResponsive()
+  useEffect(() => {
+    console.log(movieId)
+  }, [])
   // ----------------------  API 요청 ----------------------
   const { get, loading, error } = useApi(false)
-  const [movieDetailData, setMovieDetailData] = useState(null)
+  const [data, setData] = useState(null)
   const [tmp, setTmp] = useState('')
 
   useEffect(() => {
     const fetchMovieDetail = async () => {
       try {
-        const data = await get(`/api/movies/details/${movieId}`)
-        setMovieDetailData(data)
+        const data = await get(`/movies/details/${movieId}`)
+        setData(data)
         console.log(data)
-        console.log(data.poster.filePath)
       } catch (err) {
         console.error('영화 정보를 가져오는 중 오류가 발생했습니다:', err)
       }
@@ -32,13 +35,9 @@ function MovieDetailPage() {
     fetchMovieDetail()
   }, [])
 
-  const screenSize = useResponsive()
-  useEffect(() => {
-    console.log(movieId)
-  }, [])
   return (
     <>
-      <Wrap $imageurl={`https://image.tmdb.org/t/p/w300/`}>
+      <Wrap $imageurl={`https://image.tmdb.org/t/p/w300/${data?.poster.filePath}`}>
         <BlurOverlay>
           <Container>
             <Header>
@@ -46,14 +45,14 @@ function MovieDetailPage() {
             </Header>
             <ContentsWrap>
               {screenSize === 'medium' || screenSize === 'large' ? (
-                <MovieSummaryLarge />
+                <MovieSummaryLarge data={data} />
               ) : (
                 <>
-                  <MovieSummary />
-                  <MovieOverview />
+                  <MovieSummary data={data} />
+                  <MovieOverview data={data} />
                 </>
               )}
-              <ActorCard data={actorData} />
+              <ActorCard data={data} />
               <MovieReview />
             </ContentsWrap>
           </Container>

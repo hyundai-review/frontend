@@ -4,17 +4,27 @@ import clock from '@/assets/icons/clock.svg'
 import GenreButton from '@/components/common/GenreButton'
 import styled from 'styled-components'
 import media from '@/styles/media'
-function MovieSummaryLarge() {
-  const posterImageUrl =
-    'https://img.cgv.co.kr/Movie/Thumbnail/StillCut/000088/88847/88847230819_727.jpg'
-  const title = '청설'
-  const year = '2024'
-  const rating = 'all'
-  const releaseDate = '2024.11.09'
-  const runningTime = '1시간 50분'
-  const status = '상영 중'
-  const summary = '손으로 설렘을 말하고 가슴으로 사랑을 느끼다'
-  const contents = '대학생활은 끝났지만 하고 싶은 것도, 되고 싶은 것도 없어 고민하던 용준. '
+function MovieSummaryLarge({ data }) {
+  // const posterImageUrl =
+  //   'https://img.cgv.co.kr/Movie/Thumbnail/StillCut/000088/88847/88847230819_727.jpg'
+  // const title = '청설'
+  // const year = '2024'
+  // const rating = 'all'
+  // const releaseDate = '2024.11.09'
+  // const runningTime = '1시간 50분'
+  // const status = '상영 중'
+  // const summary = '손으로 설렘을 말하고 가슴으로 사랑을 느끼다'
+  // const contents = '대학생활은 끝났지만 하고 싶은 것도, 되고 싶은 것도 없어 고민하던 용준. '
+  // ----------------------  API 요청 ----------------------
+  const posterImageUrl = `https://image.tmdb.org/t/p/w500${data?.poster.filePath}`
+  const title = data?.title
+  const year = data?.releaseDate.split('-')[0] // "2024-11-13" → "2024"
+  const certification = data?.certification === '19' ? '19+' : 'all' // 예제에 따라 변환
+  const releaseDate = data?.releaseDate
+  const runningTime = `${Math.floor(data?.runtime / 60)}시간 ${data?.runtime % 60}분` // 148 → "2시간 28분"
+  const status = data?.status === 'NOW_PLAYING' ? '상영 중' : '상영 종료'
+  const summary = data?.tagline
+  const contents = data?.overview
   return (
     <MovieSummaryContainer>
       <ImageWrap>
@@ -26,7 +36,7 @@ function MovieSummaryLarge() {
             <Title>{title}</Title>
             <Year>({year})</Year>
           </TitleWrap>
-          <Rating>{rating}</Rating>
+          <Rating>{certification}</Rating>
         </Header>
         <Wrap>
           <MovieInfo>
@@ -42,8 +52,14 @@ function MovieSummaryLarge() {
                   <RunningTime>{runningTime}</RunningTime>
                 </LineWrap>
                 <MovieGenreWrap>
-                  <GenreButton fontSize={14} radius={10} category='로맨스' />
-                  <GenreButton fontSize={14} radius={10} category='드라마' />
+                  {data?.genres.map((genre) => (
+                    <GenreButton
+                      key={genre.genreId}
+                      fontSize={14}
+                      radius={10}
+                      category={genre.name}
+                    />
+                  ))}
                 </MovieGenreWrap>
                 <MovieStatusWrap>
                   <StatusCircle />
@@ -101,12 +117,7 @@ const Header = styled.div`
   justify-content: space-between;
   margin-bottom: 15px;
 `
-const Wrap = styled.div`
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-`
+const Wrap = styled.div``
 const TitleWrap = styled.div`
   display: flex;
   align-items: center;
@@ -154,8 +165,8 @@ const Rating = styled.div`
 `
 const MovieInfo = styled.div`
   width: 100%;
+  height: 100%;
   display: flex;
-  align-items: center;
   gap: 10px;
 `
 const InfoWrapLeft = styled.div`
@@ -177,7 +188,7 @@ const InfoText = styled.div`
 `
 const BlackBoxLeft = styled.div`
   width: 100%;
-  height: 176px;
+  min-height: 176px;
   border-radius: 10px;
   border: 1px solid rgba(255, 255, 255, 0.1);
   background: rgba(0, 0, 0, 0.25);
@@ -185,10 +196,11 @@ const BlackBoxLeft = styled.div`
   display: flex;
   flex-direction: column;
   gap: 10px;
+  height: 90%;
 `
 const BlackBoxRight = styled.div`
   width: 100%;
-  height: 176px;
+  min-height: 176px;
   border-radius: 10px;
   border: 1px solid rgba(255, 255, 255, 0.1);
   background: rgba(0, 0, 0, 0.25);
@@ -196,6 +208,7 @@ const BlackBoxRight = styled.div`
   display: flex;
   flex-direction: column;
   gap: 10px;
+  height: 90%;
 `
 
 const LineWrap = styled.div`
@@ -253,6 +266,7 @@ const MovieGenreWrap = styled.div`
   display: flex;
   gap: 10px;
   margin-top: 6px;
+  flex-wrap: wrap;
 `
 const MovieStatusWrap = styled.div`
   display: flex;
@@ -282,7 +296,6 @@ const StatusText = styled.div`
 
 const Summary = styled.div`
   color: var(--gray-50, #fafafa);
-
   /* regular/sm */
   font-family: Pretendard;
   font-size: 14px;
@@ -299,9 +312,9 @@ const Contents = styled.div`
   font-style: normal;
   font-weight: 400;
   line-height: 21px;
-  overflow: hidden;
+  /* overflow: hidden;
   display: -webkit-box;
   -webkit-line-clamp: 5;
   -webkit-box-orient: vertical;
-  text-overflow: ellipsis;
+  text-overflow: ellipsis; */
 `

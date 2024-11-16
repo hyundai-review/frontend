@@ -44,7 +44,7 @@ function MainPage() {
   useEffect(() => {
     const fetchBoxoffice = async () => {
       try {
-        const data = await get(`/api/movies/boxoffice`)
+        const data = await get(`/movies/boxoffice`)
         setBoxOfficeMovies(data.movies)
         console.log(data)
       } catch (err) {

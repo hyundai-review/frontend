@@ -2,17 +2,34 @@ import media from '@/styles/media'
 import React from 'react'
 import styled from 'styled-components'
 function ActorCard({ data }) {
+  // 배우 목록 앞에 감독 추가
+  const actorsWithDirector = [
+    {
+      img: data?.director?.profile
+        ? `https://image.tmdb.org/t/p/w500${data.director.profile}`
+        : '/images/default.png', // 감독 프로필이 없을 경우 빈 문자열
+      name: data?.director?.name || '감독 정보 없음', // 감독 이름 기본값 설정
+      role: '감독',
+    },
+    ...(data?.actors?.map((actor) => ({
+      img: actor?.profile
+        ? `https://image.tmdb.org/t/p/w500${actor.profile}`
+        : '/images/default.png',
+      name: actor?.name || '배우 정보 없음',
+      role: actor?.role || '단',
+    })) || []),
+  ]
   return (
     <>
       <Wrap>
         <Title>출연진</Title>
         <ActorCardContainer>
-          {data.map((data, index) => (
+          {actorsWithDirector?.map((person, index) => (
             <ActorCardWrap key={index}>
-              <ActorImg src={data.img} />
+              <ActorImg src={person.img} />
               <TextWrap>
-                <ActorName title={data.name}>{data.name}</ActorName>
-                <ActorRole title={data.role}>{data.role} 역</ActorRole>
+                <ActorName title={person.name}>{person.name}</ActorName>
+                <ActorRole title={person.role}>{person.role} 역</ActorRole>
               </TextWrap>
             </ActorCardWrap>
           ))}
