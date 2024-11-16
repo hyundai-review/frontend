@@ -24,7 +24,7 @@ function PostTextReview() {
   })
 
   // 리뷰만 올리기
-  const handleSubmitReview = async () => {
+  const handleSubmitReview = async (isPhotocard = false) => {
     if (!starRating || !formRef.current.content.trim()) {
       alert('별점과 리뷰를 모두 작성해주세요.')
       return
@@ -32,9 +32,14 @@ function PostTextReview() {
 
     setReviewPost(formRef.current)
 
-    const response = await post(`/reviews/${movieId}`, formRef.current)
-    if (response.status === 200) {
-      alert('리뷰가 등록되었습니다.')
+    if (isPhotocard) {
+      nextStep()
+    } else {
+      const response = await post(`/reviews/${movieId}`, formRef.current)
+      if (response.status === 200) {
+        alert('리뷰가 등록되었습니다.')
+        //TODO navigate
+      }
     }
   }
 
@@ -103,7 +108,7 @@ function PostTextReview() {
             <BtnText style={{ padding: '0 50px' }}>리뷰만 올리기</BtnText>
           </button>
 
-          <SBtn.ReviewPostBtn onClick={nextStep}>
+          <SBtn.ReviewPostBtn onClick={() => handleSubmitReview(true)}>
             <BtnText>포토카드 만들기</BtnText>
           </SBtn.ReviewPostBtn>
         </BtnWrap>
