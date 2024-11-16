@@ -1,9 +1,9 @@
 import styled from 'styled-components'
 /*사용 예시
  <Button text='로그아웃' onClick={handleLogout} />*/
-function Button({ text, onClick }) {
+function Button({ text, onClick, ispadding }) {
   return (
-    <ButtonContainer onClick={onClick}>
+    <ButtonContainer onClick={onClick} $ispadding={ispadding}>
       <ButtonText>{text}</ButtonText>
     </ButtonContainer>
   )
@@ -17,7 +17,8 @@ const ButtonContainer = styled.div`
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  padding: 4px 12px; /* 여백 설정 */
+  // padding: 4px 12px; /* 여백 설정 */
+  padding: ${({ $ispadding }) => ($ispadding ? '4px 20px' : '4px 12px')};
   background: rgba(0, 0, 0, 0.25);
   box-shadow: 0px 0px 10px rgba(199, 125, 181, 0.5);
   border-radius: 94px;
