@@ -77,6 +77,7 @@ const ActorCardWrap = styled.div`
   `}
 `
 const TextWrap = styled.div`
+  margin-top: 5px;
   padding: 0 10px;
 `
 const ActorImg = styled.img`
@@ -125,4 +126,5 @@ const ActorRole = styled.div`
   -webkit-line-clamp: 2; /* 최대 2줄 */
   overflow: hidden;
   text-overflow: ellipsis;
+  margin-bottom: 5px;
 `

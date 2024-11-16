@@ -4,6 +4,7 @@ import clock from '@/assets/icons/clock.svg'
 import GenreButton from '@/components/common/GenreButton'
 import styled from 'styled-components'
 import media from '@/styles/media'
+import { getStatusColor, mapMovieStatus } from '@/utils/\bstatusMapper'
 function MovieSummaryLarge({ data }) {
   // const posterImageUrl =
   //   'https://img.cgv.co.kr/Movie/Thumbnail/StillCut/000088/88847/88847230819_727.jpg'
@@ -22,7 +23,8 @@ function MovieSummaryLarge({ data }) {
   const certification = data?.certification === '19' ? '19+' : 'all' // 예제에 따라 변환
   const releaseDate = data?.releaseDate
   const runningTime = `${Math.floor(data?.runtime / 60)}시간 ${data?.runtime % 60}분` // 148 → "2시간 28분"
-  const status = data?.status === 'NOW_PLAYING' ? '상영 중' : '상영 종료'
+  const status = mapMovieStatus(data?.status)
+  const statusColor = getStatusColor(data?.status)
   const summary = data?.tagline
   const contents = data?.overview
   return (
@@ -62,7 +64,7 @@ function MovieSummaryLarge({ data }) {
                   ))}
                 </MovieGenreWrap>
                 <MovieStatusWrap>
-                  <StatusCircle />
+                  <StatusCircle $color={statusColor} />
                   <StatusText>{status}</StatusText>
                 </MovieStatusWrap>
               </BlackBoxLeft>
@@ -279,9 +281,10 @@ const StatusCircle = styled.div`
   width: 6px;
   height: 6px;
   border-radius: 50%;
-  background-color: var(--semantic-success, #7ed6a0);
-  // TODO(k) status에 따라 색 변경
-  box-shadow: 0px 0px 10px var(--semantic-success, #7ed6a0);
+  /* background-color: var(--semantic-success, #7ed6a0);
+  box-shadow: 0px 0px 10px var(--semantic-success, #7ed6a0); */
+  background-color: ${(props) => props.$color};
+  box-shadow: 0px 0px 10px ${(props) => props.$color};
 `
 const StatusText = styled.div`
   color: var(--gray-200, #e4e4e7);

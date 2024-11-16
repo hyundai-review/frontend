@@ -2,7 +2,7 @@ import { create } from 'zustand'
 
 const useAuthStore = create((set) => ({
   // isLoggedIn: !!localStorage.getItem('authToken'),
-  isLoggedIn: true,
+  isLoggedIn: false,
   token: localStorage.getItem('authToken') || '',
   login: (token) => {
     set({ isLoggedIn: true, token })

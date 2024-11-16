@@ -53,7 +53,7 @@ function MovieDetailPage() {
                 </>
               )}
               <ActorCard data={data} />
-              <MovieReview />
+              <MovieReview data={data} />
             </ContentsWrap>
           </Container>
         </BlurOverlay>

@@ -4,6 +4,7 @@ import clock from '@/assets/icons/clock.svg'
 import GenreButton from '@/components/common/GenreButton'
 import styled from 'styled-components'
 import media from '@/styles/media'
+import { mapMovieStatus } from '@/utils/\bstatusMapper'
 function MovieSummary({ data }) {
   // const posterImageUrl =
   //   'https://img.cgv.co.kr/Movie/Thumbnail/StillCut/000088/88847/88847230819_727.jpg'
@@ -19,7 +20,7 @@ function MovieSummary({ data }) {
   const certification = data?.certification === '19' ? '19+' : 'all' // 예제에 따라 변환
   const releaseDate = data?.releaseDate
   const runningTime = `${Math.floor(data?.runtime / 60)}시간 ${data?.runtime % 60}분` // 148 → "2시간 28분"
-  const status = data?.status === 'NOW_PLAYING' ? '상영 중' : '상영 종료'
+  const status = mapMovieStatus(data?.status)
   return (
     <MovieSummaryContainer>
       <LeftSection>
