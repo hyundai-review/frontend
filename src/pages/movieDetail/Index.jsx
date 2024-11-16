@@ -82,6 +82,13 @@ const BlurOverlay = styled.div`
 const Container = styled.div`
   max-width: 1440px;
   margin: 0 auto;
+  padding: 25px;
+  @media (min-width: 1440px) {
+    padding: 0; /* 1440px 이상일 때 패딩 제거 */
+  }
+  ${media.small`
+    padding: 20px;
+    `}
 `
 const ContentsWrap = styled.div`
   display: flex;

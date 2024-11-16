@@ -1,7 +1,9 @@
 import React, { useEffect } from 'react'
 import styled from 'styled-components'
 import close from '@/assets/icons/close.svg'
+import useModalStore from '@/store/modalStore'
 function PhotocardModal({ photocard }) {
+  const { closeModal } = useModalStore()
   return (
     <div>
       <CloseButton src={close} onClick={closeModal} />
