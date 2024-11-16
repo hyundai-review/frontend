@@ -2,37 +2,43 @@ import { myReviewData, review } from '@/assets/data/myReviewData'
 import StarRating from '@/components/common/StarRating'
 import ReviewSwiper from '@/components/reviewSwiper/ReviewSwiper'
 import { transformReviewData } from '@/utils/dataTransform'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import ReviewCard from '../../components/review/ReviewCard'
 import MyReview from './MyReview'
-import useAuthStore from '@/store/authStore'
+import { isLoggedIn } from '@/utils/logInManager'
+import { useNavigate } from 'react-router-dom'
 function MovieReview({ data }) {
+  const navigate = useNavigate()
   // data
   const reviewCount = 123
   const averageRating = 4.23
   const transformedData = transformReviewData(myReviewData)
-  //
-  const { isLoggedIn } = useAuthStore()
+  // 상태
   const [isReviewWritten, setIsReviewWritten] = useState(true)
+  // ---------------------------login---------------------------
+  const [isLogIn, setIsLogIn] = useState(isLoggedIn())
+  useEffect(() => {
+    setIsLogIn(isLoggedIn())
+  }, [])
 
   return (
     <Wrap>
       <TitleWrap>
         <Title>리뷰({reviewCount})</Title>
-        {isLoggedIn && (
+        {isLogIn && (
           <RatingWrap>
             <StarRating type='readonly' initialValue='1' max={1} size={24} />
             <AverageRating>{averageRating}</AverageRating>
           </RatingWrap>
         )}
       </TitleWrap>
-      {!isLoggedIn ? (
+      {!isLogIn ? (
         <Box>
           <TextWrap>
             <Text>
-              {/* TODO(k) 회원가입 누르면 로그인 페이지로 이동 */}
-              <BoldText>회원가입</BoldText>을 통해 리뷰를 확인하세요
+              <BoldText onClick={() => navigate('/user/login')}>회원가입</BoldText>을 통해 리뷰를
+              확인하세요
             </Text>
           </TextWrap>
         </Box>
@@ -112,6 +118,7 @@ const Text = styled.div`
 `
 const BoldText = styled.span`
   font-weight: 700;
+  cursor: pointer;
 `
 
 const RatingWrap = styled.div`

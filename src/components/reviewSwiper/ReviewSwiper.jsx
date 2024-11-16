@@ -23,6 +23,7 @@ function ReviewSwiper({ dataList }) {
         <Swiper style={{ margin: 0 }} slidesPerView={'auto'}>
           {dataList.map((review, index) => (
             <SwiperSlide
+              key={index}
               onClick={() => handleSlideClick(index, path, review)}
               style={{ width: 250 }}
             >
