@@ -82,6 +82,16 @@ const useReviewStore = create(
             photocard: '',
             isSpoil: false,
           },
+          processPhotocard: {
+            // processPhotocard도 초기화
+            step1: '',
+            step2: '',
+          },
+          optionBackImg: {
+            // optionBackImg도 초기화
+            imgId: 0,
+            imgURL: '',
+          },
         }),
     }),
 
