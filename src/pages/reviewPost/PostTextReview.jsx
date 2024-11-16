@@ -7,28 +7,35 @@ import * as SText from '@/styles/text'
 import * as SBtn from '@/styles/button'
 import { Checkbox } from '@mui/material'
 import useReviewStore from '@/store/reviewStore'
+import { useApi } from '@/libs/useApi'
+import { useParams } from 'react-router-dom'
 
 /** step 1. 텍스트 리뷰 작성 */
 function PostTextReview() {
   const { nextStep, reviewPost, setReviewPost } = useReviewStore()
+  const { post, error } = useApi()
+  const { movieId } = useParams()
 
   const [starRating, setStarRating] = useState(reviewPost.rating)
   const formRef = useRef({
     rating: reviewPost.rating,
-    textReview: reviewPost.textReview,
+    content: reviewPost.textReview,
     isSpoil: reviewPost.isSpoil,
   })
 
   // 리뷰만 올리기
-  const handleSubmitReview = () => {
-    if (!starRating || !formRef.current.textReview.trim()) {
+  const handleSubmitReview = async () => {
+    if (!starRating || !formRef.current.content.trim()) {
       alert('별점과 리뷰를 모두 작성해주세요.')
       return
     }
 
     setReviewPost(formRef.current)
-    // TODO: API 호출하여 리뷰 제출
-    console.log('리뷰 제출:', formRef.current)
+
+    const response = await post(`/reviews/${movieId}`, formRef.current)
+    if (response.status === 200) {
+      alert('리뷰가 등록되었습니다.')
+    }
   }
 
   return (
@@ -42,7 +49,7 @@ function PostTextReview() {
               size={25}
               initialValue={starRating}
               onChange={(rating) => {
-                setStarRating(rating) // 상태 업데이트
+                setStarRating(rating)
                 setReviewPost({ rating: rating })
               }}
             />
@@ -57,9 +64,9 @@ function PostTextReview() {
             placeholder='해당 영화에 대한 리뷰를 남겨주세요'
             $variant='md'
             $color='var(--gray-200)'
-            defaultValue={reviewPost.textReview}
+            defaultValue={reviewPost.content}
             onChange={(e) => {
-              formRef.current.textReview = e.target.value
+              formRef.current.content = e.target.value
             }}
           />
         </SBoxContainer.Box>
