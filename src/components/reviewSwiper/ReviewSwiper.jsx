@@ -24,7 +24,7 @@ function ReviewSwiper({ dataList }) {
           {dataList.map((review, index) => (
             <SwiperSlide
               key={index}
-              onClick={() => handleSlideClick(index, path, review)}
+              onClick={() => handleSlideClick(review)}
               style={{ width: 250 }}
             >
               <ImageSlideWrap>

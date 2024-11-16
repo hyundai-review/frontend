@@ -6,34 +6,51 @@ import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import ReviewCard from '../../components/review/ReviewCard'
 import MyReview from './MyReview'
-import { isLoggedIn } from '@/utils/logInManager'
-import { useNavigate } from 'react-router-dom'
-function MovieReview({ data }) {
+import { testisLoggedIn } from '@/utils/logInManager'
+import { useNavigate, useParams } from 'react-router-dom'
+import { useApi } from '@/libs/useApi'
+function MovieReview() {
   const navigate = useNavigate()
+  const { movieId } = useParams()
   // data
   const reviewCount = 123
   const averageRating = 4.23
   const transformedData = transformReviewData(myReviewData)
   // 상태
   const [isReviewWritten, setIsReviewWritten] = useState(true)
-  // ---------------------------login---------------------------
-  const [isLogIn, setIsLogIn] = useState(isLoggedIn())
-  useEffect(() => {
-    setIsLogIn(isLoggedIn())
-  }, [])
 
+  // ---------------------------login---------------------------
+  const [isLogin, setIsLogin] = useState(true)
+
+  // ---------------------------API---------------------------
+  const { get, loading, error } = useApi(false)
+  const [data, setData] = useState(null)
+  useEffect(() => {
+    // TODO(k) 틀만 잡아둠 완성 아직
+    if (!isLogin) return // 로그인 상태가 아니면 추가 요청 생략
+    const fetchReviewData = async () => {
+      try {
+        const data = await get(`/reviews/${movieId}`)
+        setData(data)
+        console.log(data)
+      } catch (err) {
+        console.error('리뷰 정보를 가져오는 중 오류가 발생했습니다:', err)
+      }
+    }
+    fetchReviewData()
+  }, [])
   return (
     <Wrap>
       <TitleWrap>
         <Title>리뷰({reviewCount})</Title>
-        {isLogIn && (
+        {isLogin && (
           <RatingWrap>
             <StarRating type='readonly' initialValue='1' max={1} size={24} />
             <AverageRating>{averageRating}</AverageRating>
           </RatingWrap>
         )}
       </TitleWrap>
-      {!isLogIn ? (
+      {!isLogin ? (
         <Box>
           <TextWrap>
             <Text>

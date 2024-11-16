@@ -20,7 +20,6 @@ function MovieDetailPage() {
   // ----------------------  API 요청 ----------------------
   const { get, loading, error } = useApi(false)
   const [data, setData] = useState(null)
-  const [tmp, setTmp] = useState('')
 
   useEffect(() => {
     const fetchMovieDetail = async () => {
@@ -53,7 +52,7 @@ function MovieDetailPage() {
                 </>
               )}
               <ActorCard data={data} />
-              <MovieReview data={data} />
+              <MovieReview />
             </ContentsWrap>
           </Container>
         </BlurOverlay>
