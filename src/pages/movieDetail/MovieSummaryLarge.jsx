@@ -18,7 +18,7 @@ function MovieSummaryLarge() {
   return (
     <MovieSummaryContainer>
       <ImageWrap>
-        <Poster imageUrl={posterImageUrl} />
+        <Poster $imageurl={posterImageUrl} />
       </ImageWrap>
       <ContentsContainer>
         <Header>
@@ -84,7 +84,7 @@ const Poster = styled.div`
   position: relative;
   border-radius: 5px;
   aspect-ratio: 94 / 141; /* 비율을 94:141로 고정 */
-  background: url(${(props) => props.imageUrl}) lightgray 50% / cover no-repeat;
+  background: url(${(props) => props.$imageurl}) lightgray 50% / cover no-repeat;
   /* 너비를 뷰포트 너비에 따라 서서히 변경 */
   width: clamp(94px, 20vw, 160px);
 `
