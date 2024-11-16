@@ -4,6 +4,14 @@ import reset from 'styled-reset'
 const globalStyle = createGlobalStyle`
 	${reset}
 
+    @font-face {
+        font-family: 'ASinemaB';
+        src: url('/assets/font/aSinemaB.ttf') format('truetype');
+        font-weight: normal;
+        font-style: normal;
+        font-display: swap;
+    }
+
     * {
         margin: 0;
         padding: 0;
@@ -37,7 +45,7 @@ const globalStyle = createGlobalStyle`
         * {
         font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
         }
-        
+
         /* Hover Class Name */
         /* 사용법
         className='hoverBright'

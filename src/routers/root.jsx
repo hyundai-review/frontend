@@ -1,11 +1,13 @@
-import { lazy, Suspense } from 'react'
+import { lazy, Suspense, useState } from 'react'
 import { createBrowserRouter } from 'react-router-dom'
 import userRouter from './userRouter'
 import mainRouter from './mainRouter'
 import movieRouter from './movieRouter'
+import reviewRouter from './reviewRouter'
 import mypageRouter from './mypageRouter'
 import MainLayout from '@/components/layout/MainLayout'
-import HeaderLayout from '@/components/layout/HeaderLayout'
+import NoAppWrapperLayout from '@/components/layout/NoAppWrapperLayout'
+
 const loading = <div>loading</div>
 const MainPage = lazy(() => import('@/pages/Main/Index'))
 const SearchPage = lazy(() => import('@/pages/Search/Index'))
@@ -42,10 +44,14 @@ const root = createBrowserRouter([
     ],
   },
   {
+    path: '/main',
+    children: mainRouter(),
+  },
+  {
     path: '/movie',
     element: (
       <Suspense fallback={loading}>
-        <HeaderLayout />
+        <NoAppWrapperLayout />
       </Suspense>
     ),
     children: [
@@ -63,6 +69,14 @@ const root = createBrowserRouter([
   {
     path: '/user',
     children: userRouter(),
+  },
+  {
+    path: '/movie',
+    children: movieRouter,
+  },
+  {
+    path: '/review',
+    children: reviewRouter(),
   },
 ])
 

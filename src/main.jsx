@@ -3,7 +3,7 @@ import { createRoot } from 'react-dom/client'
 import App from './App.jsx'
 import GlobalStyle from './styles/globalStyle.jsx'
 function Root() {
-  const [width, setWidth] = useState(window.innerWidth)
+
 
   return (
     <>

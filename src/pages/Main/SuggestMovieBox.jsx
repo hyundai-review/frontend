@@ -39,7 +39,7 @@ function SuggestMovieBox({ isLogin, suggestMovieData }) {
           </MainPageButtonWrapper>
           <MainPageSuggestMovieWrapper>
             {suggestMovieData.map((item, index) => (
-              <MoviePosterCard moviePosterUrl={item.moviePosterUrl} movieId={index} key={index} />
+              <MoviePosterCard movieInfo={item} key={index} />
             ))}
           </MainPageSuggestMovieWrapper>
         </div>
