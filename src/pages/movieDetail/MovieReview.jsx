@@ -23,7 +23,7 @@ function MovieReview() {
   const [isLogin, setIsLogin] = useState(true)
 
   // ---------------------------API---------------------------
-  const { get, loading, error } = useApi(false)
+  const { get, loading, error } = useApi(false) // 테스트중 true로 바꿔야함
   const [data, setData] = useState(null)
   useEffect(() => {
     // TODO(k) 틀만 잡아둠 완성 아직
