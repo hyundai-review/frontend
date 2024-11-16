@@ -1,23 +1,37 @@
 import { GET_AccessToken } from '@/apis/loginApi'
+import useAuthStore from '@/store/authStore'
+import { getCookie, setCookie } from '@/utils/cookie'
 import React, { useEffect } from 'react'
-import { useSearchParams } from 'react-router-dom'
+import { useNavigate, useSearchParams } from 'react-router-dom'
+import { lazy, Suspense } from 'react'
+import MainLayout from '@/components/layout/MainLayout'
 
+const MainPage = lazy(() => import('@/pages/Main/Index'))
 function KaKaoRedirectPage() {
   const [searchParams] = useSearchParams()
   const authCode = searchParams.get('code')
-
+  const { login } = useAuthStore()
+  const navigate = useNavigate()
   useEffect(() => {
     const fetchAccessToken = async () => {
       try {
-        await GET_AccessToken(authCode)
+        const userData = await GET_AccessToken(authCode)
+        setCookie('ACCESS_TOKEN', userData.accessToken, 7)
+        login(userData)
+        navigate('/')
       } catch (e) {
-        alert('accesstoken 가져오기 axios 연결 실패')
+        console.log(e)
       }
     }
-
     fetchAccessToken()
-  })
-  return <div>KaKaoRedirectPage - 인가코드: ${authCode}</div>
+  }, [])
+  return (
+    <div>
+      <MainLayout>
+        <MainPage />
+      </MainLayout>
+    </div>
+  )
 }
 
 export default KaKaoRedirectPage

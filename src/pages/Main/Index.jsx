@@ -15,14 +15,15 @@ import MobileNavigationBar from '@/components/common/MobileNavigationBar'
 import useAuthStore from '@/store/authStore'
 import { authenticated, nonAuthenticated } from '@/libs/axiosInstance'
 import OverlayPosterCard from '@/components/moviePosterCard/OverlayPosterCard'
+import { isLoggedIn, userData } from '@/utils/logInManager'
 
 /*boxOfficeMovieData - url, rank, date
 suggestMovieData - moviePosterUrl, movieID */
-// TODO(j) 로그인시 isLogin에 상태 저장할것
+// TODO(j) 로컬 스토리지로 불러오는 값 훅으로 빼기 + 시간 계산도 util로 빼기
 function MainPage() {
   const navigate = useNavigate()
-  const { isLoggedIn } = useAuthStore()
-  const userName = '테스트'
+  const [isLogIn, setIsLogIn] = useState(isLoggedIn())
+  const [data, setData] = useState(userData())
   const nowDate = new Date()
   const chkTime = (time) => {
     if (time < 5) {
@@ -48,10 +49,11 @@ function MainPage() {
     }
   }
   useEffect(() => {
+    setIsLogIn(isLoggedIn())
+    setData(userData())
     const handleResize = () => {
       setScreenWidth(document.documentElement.clientWidth)
     }
-    // res()
     window.addEventListener('resize', handleResize)
     return () => {
       window.removeEventListener('resize', handleResize)
@@ -63,15 +65,18 @@ function MainPage() {
     date: '2024.11.11',
   }))
   const suggestMovieData = [...Array(10)].map((_, index) => ({
-    moviePosterUrl: 'https://image.tmdb.org/t/p/w300/tKV0etz5OIsAjSNG1hJktsjbNJk.jpg',
-    movieId: index + 1,
+    movieId: index,
+    poster: 'https://image.tmdb.org/t/p/w300/tKV0etz5OIsAjSNG1hJktsjbNJk.jpg',
+    title: '청설',
+    releaseDate: '2024',
+    tagline: '',
   }))
   return (
     <div>
       <MainPageTopContainer>
         <MainPageTopWrapper>
-          <MainPageTitle>{!isLoggedIn ? '로그인이 필요합니다.' : `${userName}님,`}</MainPageTitle>
-          {!isLoggedIn ? (
+          <MainPageTitle>{!isLogIn ? '로그인이 필요합니다.' : `${data.nickname}님,`}</MainPageTitle>
+          {!isLogIn ? (
             ''
           ) : (
             <MainPageSubTitle>
@@ -108,7 +113,7 @@ function MainPage() {
         </MainPageBodyTopWrapper>
         <MainPageSliderWrapper>
           <MainPageWrapperTitle>{'추천영화'}</MainPageWrapperTitle>
-          <SuggestMovieBox isLogin={isLoggedIn} suggestMovieData={suggestMovieData} />
+          <SuggestMovieBox isLogin={isLogIn} suggestMovieData={suggestMovieData} />
         </MainPageSliderWrapper>
       </MainPageBodyContainer>
     </div>

@@ -6,7 +6,7 @@ import movieRouter from './movieRouter'
 import reviewRouter from './reviewRouter'
 import mypageRouter from './mypageRouter'
 import MainLayout from '@/components/layout/MainLayout'
-import HeaderLayout from '@/components/layout/HeaderLayout'
+import NoAppWrapperLayout from '@/components/layout/NoAppWrapperLayout'
 
 const loading = <div>loading</div>
 const MainPage = lazy(() => import('@/pages/Main/Index'))
@@ -51,7 +51,7 @@ const root = createBrowserRouter([
     path: '/movie',
     element: (
       <Suspense fallback={loading}>
-        <HeaderLayout />
+        <NoAppWrapperLayout />
       </Suspense>
     ),
     children: [
