@@ -20,7 +20,6 @@ function MovieDetailPage() {
   // ----------------------  API 요청 ----------------------
   const { get, loading, error } = useApi(false)
   const [data, setData] = useState(null)
-  const [tmp, setTmp] = useState('')
 
   useEffect(() => {
     const fetchMovieDetail = async () => {
@@ -53,7 +52,7 @@ function MovieDetailPage() {
                 </>
               )}
               <ActorCard data={data} />
-              <MovieReview data={data} />
+              <MovieReview />
             </ContentsWrap>
           </Container>
         </BlurOverlay>
@@ -80,7 +79,17 @@ const BlurOverlay = styled.div`
   background: rgba(0, 0, 0, 0.5);
   backdrop-filter: blur(20px);
 `
-const Container = styled.div``
+const Container = styled.div`
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 25px;
+  @media (min-width: 1440px) {
+    padding: 0; /* 1440px 이상일 때 패딩 제거 */
+  }
+  ${media.small`
+    padding: 20px;
+    `}
+`
 const ContentsWrap = styled.div`
   display: flex;
   flex-direction: column;

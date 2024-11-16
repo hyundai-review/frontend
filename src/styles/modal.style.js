@@ -35,9 +35,3 @@ export const CloseButton = styled.img`
   height: 24px;
   cursor: pointer;
 `
-export const PhotocardImage = styled.img`
-  margin-top: 20px;
-  width: 100%;
-  height: auto;
-  border-radius: 8px;
-`

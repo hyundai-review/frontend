@@ -88,15 +88,15 @@ function MyReview() {
             <CardCommentLeft>
               <Icon
                 src={isCommentOpen ? commentWhite : comment}
-                isCommentOpen={isCommentOpen}
+                $iscommentopen={isCommentOpen}
                 onClick={handleCommentClick}
               />
               <CardCommentCount>{totalComments}</CardCommentCount>
             </CardCommentLeft>
             <CardCommentRight>
               <CardDate>{createdAt.substring(0, 10)}</CardDate>
-              <Icon src={edit} isEdit={isEdit} onClick={handleEditClick} />
-              <Icon src={trash} isDelete={isDelete} onClick={handleDeleteClick} />
+              <Icon src={edit} $isedit={isEdit} onClick={handleEditClick} />
+              <Icon src={trash} $isdelete={isDelete} onClick={handleDeleteClick} />
             </CardCommentRight>
           </CardCommentWrap>
         </CardFooter>
@@ -231,12 +231,12 @@ const Icon = styled.img`
   height: 24px;
   margin-right: 5px;
   cursor: pointer;
-  ${({ isCommentOpen }) =>
-    isCommentOpen && 'filter: drop-shadow(0px 0px 10px var(--primary-light-red, #ffd7d7));'}
-  ${({ isEdit }) =>
-    isEdit && 'filter: drop-shadow(0px 0px 10px var(--primary-light-red, #ffd7d7));'}
-      ${({ isDelete }) =>
-    isDelete && 'filter: drop-shadow(0px 0px 10px var(--primary-light-red, #ffd7d7));'}
+  ${({ $iscommentopen }) =>
+    $iscommentopen && 'filter: drop-shadow(0px 0px 10px var(--primary-light-red, #ffd7d7));'}
+  ${({ $isedit }) =>
+    $isedit && 'filter: drop-shadow(0px 0px 10px var(--primary-light-red, #ffd7d7));'}
+      ${({ $isdelete }) =>
+    $isdelete && 'filter: drop-shadow(0px 0px 10px var(--primary-light-red, #ffd7d7));'}
 `
 const CardCommentCount = styled.span`
   color: var(--gray-50, #fafafa);

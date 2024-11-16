@@ -281,8 +281,6 @@ const StatusCircle = styled.div`
   width: 6px;
   height: 6px;
   border-radius: 50%;
-  /* background-color: var(--semantic-success, #7ed6a0);
-  box-shadow: 0px 0px 10px var(--semantic-success, #7ed6a0); */
   background-color: ${(props) => props.$color};
   box-shadow: 0px 0px 10px ${(props) => props.$color};
 `

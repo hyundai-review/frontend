@@ -17,17 +17,19 @@ import OverlayPosterCard from '@/components/moviePosterCard/OverlayPosterCard'
 import { chkTime } from '@/utils/timeUtils'
 import { useApi } from '@/libs/useApi'
 import { isLoggedIn, userData } from '@/utils/logInManager'
+import { Button } from '@mui/material'
+import useModalStore from '@/store/modalStore'
 
 /*boxOfficeMovieData - url, rank, date
 suggestMovieData - moviePosterUrl, movieID */
 // TODO(j) 로컬 스토리지로 불러오는 값 훅으로 빼기 + 시간 계산도 util로 빼기 > 혜정이가 뺐다
 function MainPage() {
   const navigate = useNavigate()
-  const [isLogIn, setIsLogIn] = useState(isLoggedIn())
   const [data, setData] = useState(userData())
   const nowDate = new Date()
   const timeText = chkTime(nowDate.getHours())
   const [screenWidth, setScreenWidth] = useState(document.documentElement.clientWidth)
+  const [isLogIn, setIsLogIn] = useState(isLoggedIn())
   useEffect(() => {
     setIsLogIn(isLoggedIn())
     setData(userData())
@@ -62,10 +64,20 @@ function MainPage() {
     }
     fetchBoxoffice()
   }, [])
+  // ---------------------------모달 테스트중---------------------
+  const { openModal } = useModalStore()
+  const handleModalClick = () => {
+    console.log('모달 클릭')
+    // 모달 열기
+    openModal('alert', {
+      message: '리뷰가 등록되었습니다.',
+    })
+  }
   return (
     <div>
       <MainPageTopContainer>
         <MainPageTopWrapper>
+          <Button onClick={handleModalClick}>모달 테스트 중</Button>
           <MainPageTitle>{!isLogIn ? '로그인이 필요합니다.' : `${data.nickname}님,`}</MainPageTitle>
           {!isLogIn ? (
             ''
@@ -83,7 +95,7 @@ function MainPage() {
             <MainPageSliderWrapper>
               <MainPageWrapperTitle>{'최신 스토리'}</MainPageWrapperTitle>
               <Wrap>
-                {isLoggedIn ? (
+                {isLogIn ? (
                   <Stories dataList={reviewData} path={'/main/story'} />
                 ) : (
                   <Stories dataList={reviewData} path={'/user/login'} />
