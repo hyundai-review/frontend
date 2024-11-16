@@ -15,7 +15,7 @@ import MobileNavigationBar from '@/components/common/MobileNavigationBar'
 import useAuthStore from '@/store/authStore'
 import OverlayPosterCard from '@/components/moviePosterCard/OverlayPosterCard'
 import { chkTime } from '@/utils/timeUtils'
-import useMovieData from '@/hooks/useMovieData'
+import { useApi } from '@/libs/useApi'
 
 function MainPage() {
   const navigate = useNavigate()
@@ -24,11 +24,7 @@ function MainPage() {
   const nowDate = new Date()
   const timeText = chkTime(nowDate.getHours())
   const [screenWidth, setScreenWidth] = useState(document.documentElement.clientWidth)
-  // API
-  const { dataArray: boxOfficeMovies, isLoading, isError } = useMovieData('boxOffice')
-
   useEffect(() => {
-    console.log(boxOfficeMovies)
     const handleResize = () => {
       setScreenWidth(document.documentElement.clientWidth)
     }
@@ -36,12 +32,27 @@ function MainPage() {
     return () => {
       window.removeEventListener('resize', handleResize)
     }
+    console.log(boxOfficeMovies)
   }, [])
-
   const suggestMovieData = [...Array(10)].map((_, index) => ({
     moviePosterUrl: 'https://image.tmdb.org/t/p/w300/tKV0etz5OIsAjSNG1hJktsjbNJk.jpg',
     movieId: index + 1,
   }))
+  // ----------------------  API 요청 ----------------------
+  const [boxOfficeMovies, setBoxOfficeMovies] = useState([])
+  const { get, loading, error } = useApi(false)
+  useEffect(() => {
+    const fetchBoxoffice = async () => {
+      try {
+        const data = await get(`/api/movies/boxoffice`)
+        setBoxOfficeMovies(data.movies)
+        console.log(data)
+      } catch (err) {
+        console.error('영화 정보를 가져오는 중 오류가 발생했습니다:', err)
+      }
+    }
+    fetchBoxoffice()
+  }, [])
   return (
     <div>
       <MainPageTopContainer>
