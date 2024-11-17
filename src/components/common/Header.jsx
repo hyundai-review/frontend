@@ -4,19 +4,20 @@ import Button from './Button'
 import Logo from '/squareLogo.svg'
 import { useLocation, useNavigate } from 'react-router-dom'
 import media from '@/styles/media'
-import useAuthStore from '@/store/authStore'
 import { isLoggedIn, getUserData } from '@/utils/logInManager'
+import useNavigateStore from '@/store/navigateStore'
 
 function Header() {
   //TODO(j) 로컬 스토리지로 불러오는 값 훅으로 빼기
   const navigate = useNavigate()
   const [isLogIn, setIsLogIn] = useState(isLoggedIn())
   const [data, setData] = useState(getUserData())
+  const nameChanged = useNavigateStore((state) => state.nameChanged)
   const location = useLocation()
   useEffect(() => {
     setIsLogIn(isLoggedIn())
     setData(getUserData())
-  }, [location.pathname])
+  }, [location.pathname, nameChanged])
   return (
     <div>
       <HeaderContainer>

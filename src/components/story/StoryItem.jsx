@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import block from '@/assets/icons/block.svg'
-import useAuthStore from '@/store/authStore'
 import { isLoggedIn } from '@/utils/logInManager'
 
 //TODO(j) 로컬 스토리지 사용자 정보 훅으로 빼기

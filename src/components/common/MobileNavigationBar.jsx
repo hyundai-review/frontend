@@ -6,15 +6,15 @@ import searchIcon from '@/assets/icons/navSearchIcon.svg'
 import myIcon from '@/assets/icons/navMyIcon.svg'
 import loginIcon from '@/assets/icons/navLoginIcon.svg'
 import { useLocation, useNavigate } from 'react-router-dom'
-import useAuthStore from '@/store/authStore'
 import useNavigateStore from '@/store/navigateStore'
+import { isLoggedIn } from '@/utils/logInManager'
 
 function MobileNavigationBar() {
   const navigate = useNavigate()
   const setNavigatePage = useNavigateStore((state) => state.setNowPage)
   const nowPage = useNavigateStore((state) => state.nowPage)
   const [selectedItem, setSelectedItem] = useState(nowPage)
-  const { isLoggedIn } = useAuthStore()
+  const [isLogIn, setisLogIn] = useState(isLoggedIn())
   const location = useLocation()
   const logInMenuItems = [
     { icon: `${homeIcon}`, url: '/' },
@@ -33,30 +33,25 @@ function MobileNavigationBar() {
   }
   useEffect(() => {
     setSelectedItem(nowPage)
-    console.log(nowPage)
-  }, [])
+    setisLogIn(isLoggedIn())
+  }, [nowPage])
   //TODO(j) 코드 수정하기
   useEffect(() => {
-    console.log(location.pathname, nowPage)
     if (location.pathname === '/') {
       setNavigatePage(0)
-      setSelectedItem(0)
     } else if (location.pathname === '/search') {
       setNavigatePage(1)
-      setSelectedItem(1)
     } else if (location.pathname === '/mypage') {
       setNavigatePage(2)
-      setSelectedItem(2)
     } else {
       setNavigatePage(-1)
-      setSelectedItem(-1)
     }
   }, [location, setNavigatePage])
   return (
     <div>
       <MobileNavigationBarContainer>
         <SelectedButtonSlider $index={selectedItem} />
-        {isLoggedIn
+        {isLogIn
           ? logInMenuItems.map((item, index) => (
               <MobileNavigationBarItemWrapper
                 onClick={() => {
