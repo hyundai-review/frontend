@@ -2,35 +2,48 @@ import BackgroundContainer from '@/components/common/BackgroundContainer'
 import Stories from '@/components/story/Stories'
 import Profile from './Profile'
 import ReviewCard from '../../components/review/ReviewCard'
-import { myReviewData } from '@/assets/data/myReviewData'
+import { myReviewDataTest } from '@/assets/data/myReviewData'
 import { transformReviewData } from '@/utils/dataTransform'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import ReviewSwiper from '@/components/reviewSwiper/ReviewSwiper'
+import { useApi } from '@/libs/useApi'
 
 // myReviewData에서 데이터를 변환
 function MyPage() {
-  const transformedData = transformReviewData(myReviewData)
+  const [data, setData] = useState([])
+  // const transformedData = transformReviewData(myReviewDataTest)
+  // useEffect(() => {
+  //   console.log(transformedData)
+  // }, [])
+  // ----------------------  API 요청 ----------------------
+  const { get } = useApi(true)
   useEffect(() => {
-    console.log(transformedData)
+    const fetchMyReviews = async () => {
+      try {
+        const response = await get(`/reviews/my?page=0&size=10&sort=date`)
+        setData(response.contents)
+        console.log(response.contents)
+      } catch (err) {
+        console.error('내 리뷰 정보를 가져오는 중 오류가 발생했습니다:', err)
+      }
+    }
+    fetchMyReviews()
   }, [])
   return (
     <>
       <Profile />
-      <div style={{ paddingLeft: '20px' }}>
+      {/* <div style={{ paddingLeft: '20px' }}>
         <ReviewTitleWrap>
           <ReviewTitle>리뷰({transformedData[0].commentCount})</ReviewTitle>
         </ReviewTitleWrap>
-        {/* TODO(k) 경로설정 */}
-        {/* <Stories dataList={transformedData} path={'/mypage'} /> */}
         <ReviewSwiper dataList={transformedData} path={'/mypage'} />
         <ReviewContainer>
-          {/* <ReviewCard /> */}
           {transformedData.map((review) => (
             <ReviewCard pageType='mypage' key={review.movieId} review={review} />
           ))}
         </ReviewContainer>
-      </div>
+      </div> */}
     </>
   )
 }

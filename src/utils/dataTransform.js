@@ -7,7 +7,7 @@ export function transformReviewData(data) {
     movieId: review.movieId || '', // 영화 ID
     movieTitle: review.movieTitle || '', // 영화 제목
     // otherReviewList
-    reviewdId: review.reviewId,
+    reviewId: review.reviewId,
     rating: review.rating, // 별점
     reviewContent: review.content, // 리뷰 내용
     commentCount: review.totalComments, // 댓글 수
