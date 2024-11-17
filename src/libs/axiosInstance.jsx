@@ -16,7 +16,7 @@ authenticated.interceptors.request.use((config) => {
   // const ACCESS_TOKEN = getCookie('ACCESS_TOKEN')
   // TODO(k) 임시 엑세스 토큰
   const ACCESS_TOKEN =
-    'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiI0IiwiaWF0IjoxNzMxODQ3MDc3LCJleHAiOjE3MzE4NDg4Nzd9.8PbnFvNbZUsw-0hW0tG-24VOMISEW5ZnvaPV3oQ1QL8yxeMEDYKDXQt33awxpom3UqvkiULWErfkgJUbzwugEg'
+    'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiI0IiwiaWF0IjoxNzMxODU5NTQ4LCJleHAiOjE3MzE4NjEzNDh9.Pz_Qv1YoAe9su-828zFbJrkwp_N9DK40_-K3RYC8HYfupro-WSClmrJMZMt-UCtPj_16c59GI2eVep7iNCJzow'
 
   if (ACCESS_TOKEN) {
     config.headers['Authorization'] = `Bearer ${ACCESS_TOKEN}`

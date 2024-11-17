@@ -14,6 +14,8 @@ import SearchBar from '@/components/common/SearchBar'
 import * as SText from '@/styles/text'
 import { Checkbox } from '@mui/material'
 import { useApi } from '@/libs/useApi'
+import useModalStore from '@/store/modalStore'
+import { validateReviewForm } from '@/utils/myReviewHandlers'
 // import { review } from '@/assets/data/myReviewData'
 function MyReview({ myReviewData = {} }) {
   // ----------data----------
@@ -28,8 +30,8 @@ function MyReview({ myReviewData = {} }) {
   } = myReviewData
   // ----------API----------
   const { put } = useApi(true)
-
-  // const navigate = useNavigate()
+  const { openModal } = useModalStore()
+  // ---------- State ----------
   const [isCommentOpen, setIsCommentOpen] = useState(false)
   const [isEdit, setIsEdit] = useState(false)
   const [isDelete, setIsDelete] = useState(false)
@@ -46,7 +48,7 @@ function MyReview({ myReviewData = {} }) {
     }
   }, [myReviewData])
 
-  // 함수
+  // // 함수
   const handleCheckboxChange = (e) => {
     const checked = e.target.checked
     formRef.current.isSpoil = checked // Ref 업데이트
@@ -56,30 +58,33 @@ function MyReview({ myReviewData = {} }) {
     setRating(newRating) // 별점 상태 업데이트
     formRef.current.rating = newRating // 폼 데이터 업데이트
   }
-  const handleCommentClick = (e) => {
-    console.log('댓글 열려라 참깨')
-    setIsCommentOpen(true)
-    e.stopPropagation()
-  }
   const handleEditClick = async (e) => {
+    e.stopPropagation()
     console.log('편집 열려라 참깨')
     if (isEdit) {
       // 제출 클릭
+      openModal('alert', { message: '수정하시겠습니까?' })
       const formData = {
         rating: formRef.current.rating,
         content: formRef.current.content,
         isSpoil: formRef.current.isSpoil,
       }
-      console.log('제출된 데이터nkm: ', formData) // 제출 데이터 확인
+      // 유효성 검사 호출
+      const isValid = validateReviewForm(formData, openModal)
+      if (!isValid) return
+      console.log('제출된 데이터 : ', formData) // 제출 데이터 확인
       const response = await put(`/reviews/${reviewId}`, formData)
       console.log('-----------------------------------------')
       console.log('수정 성공:', response)
-      // onSubmit(formData) // 부모 컴포넌트에 데이터 전달
       setIsEdit(false) // 편집 모드 종료
       e.stopPropagation()
       return
     }
     setIsEdit(true)
+  }
+  const handleCommentClick = (e) => {
+    console.log('댓글 열려라 참깨')
+    setIsCommentOpen(true)
     e.stopPropagation()
   }
   const handleDeleteClick = (e) => {
