@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import 'swiper/css'
 import 'swiper/css/navigation'
 import 'swiper/css/pagination'
@@ -9,6 +9,9 @@ import { Navigation } from 'swiper/modules'
 import OptionBackItem from './OptionBackItem'
 import useReviewStore from '@/store/reviewStore'
 import { useWindowSize } from '@/utils/useWindowSize'
+import { useApi } from '@/libs/useApi'
+import { useParams } from 'react-router-dom'
+import { transformStillcut } from '@/utils/dataTransform'
 
 const movieData = {
   id: 1,
@@ -49,6 +52,9 @@ function OptionBackList() {
   const { setOptionBackImg } = useReviewStore()
   const { width } = useWindowSize() // 윈도우 크기 추적
   const isMobile = width <= 752
+  const { get } = useApi()
+  const [stillcut, setStillcut] = useState([])
+  const { movieId } = useParams()
 
   useEffect(() => {
     if (movieData.image.length > 0) {
@@ -57,6 +63,10 @@ function OptionBackList() {
         imgURL: movieData.image[0].imgURL,
       })
     }
+    // movie 포스터, 스틸컷 가져오기
+    get(`/movies/images/${movieId}`).then((response) => {
+      setStillcut(transformStillcut(response.data))
+    })
   }, [])
 
   return (
@@ -67,7 +77,7 @@ function OptionBackList() {
         slidesPerView={isMobile ? 3.5 : 5.5}
         spaceBetween={isMobile ? 10 : 0}
       >
-        {movieData.image.map((item, index) => (
+        {stillcut?.map((item, index) => (
           <SwiperSlide key={index}>
             <OptionBackItem backImg={item.imgURL} backImgId={item.imgId} />
           </SwiperSlide>
