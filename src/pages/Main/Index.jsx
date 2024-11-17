@@ -57,7 +57,6 @@ function MainPage() {
       try {
         const data = await get(`/movies/boxoffice`)
         setBoxOfficeMovies(data.data.movies)
-        console.log(data)
       } catch (err) {
         console.error('영화 정보를 가져오는 중 오류가 발생했습니다:', err)
       }

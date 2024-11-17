@@ -22,48 +22,32 @@ export const useModel = () => {
 
 /** 웹캠 */
 export const useCamera = () => {
-  //   const [dimensions, setDimensions] = useState({ width: 0, height: 0 }) // 비디오 크기(가로, 세로)를 추적
-  const [dimensions, setDimensions] = useState({ width: 362, height: 429.75 })
+  const [dimensions] = useState({ width: 362, height: 429.75 })
+  const videoRef = useRef(null)
 
-  const videoRef = useRef(null) // 웹캠 비디오 스트림을 담을 <video> 요소
-
-  //   // 웹캠을 활성화하여 비디오 스트림을 설정
   const setupCamera = async () => {
     try {
-      // 웹캠 스트림을 요청
+      // 먼저 기본 스트림을 가져옴
       const stream = await navigator.mediaDevices.getUserMedia({
-        video: {
-          width: { ideal: dimensions.width },
-          height: { ideal: dimensions.height },
-          aspectRatio: dimensions.width / dimensions.height,
-        },
+        video: true,
         audio: false,
       })
-      //   const stream = await navigator.mediaDevices.getUserMedia({
-      //     video: true,
-      //     audio: false,
-      //   })
 
-      // <video> 요소가 웹캠 영상을 표시
-      videoRef.current.srcObject = stream
+      if (videoRef.current) {
+        videoRef.current.srcObject = stream
 
-      return new Promise((resolve) => {
-        videoRef.current.onloadedmetadata = () => {
-          resolve(videoRef.current)
-        }
-      })
-      //   return new Promise((resolve) => {
-      //     videoRef.current.onloadedmetadata = () => {
-      //       // 비디오의 실제 크기를 dimensions에 설정
-      //       setDimensions({
-      //         width: videoRef.current.videoWidth,
-      //         height: videoRef.current.videoHeight,
-      //       })
-      //       resolve(videoRef.current)
-      //     }
-      //   })
+        // 비디오 요소의 크기를 CSS로 조정
+        videoRef.current.style.width = `${dimensions.width}px`
+        videoRef.current.style.height = `${dimensions.height}px`
+
+        return new Promise((resolve) => {
+          videoRef.current.onloadedmetadata = () => {
+            resolve(videoRef.current)
+          }
+        })
+      }
     } catch (error) {
-      console.error('카메라 셋업 실패', error)
+      console.error('카메라 셋업 실패:', error)
     }
   }
 
