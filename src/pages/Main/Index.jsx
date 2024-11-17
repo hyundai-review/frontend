@@ -66,7 +66,7 @@ function MainPage() {
       }
     }
     fetchBoxoffice()
-  }, [boxOfficeMovies])
+  }, [])
   // ---------------------------모달 테스트중---------------------
   const { openModal } = useModalStore()
   const handleModalClick = () => {
