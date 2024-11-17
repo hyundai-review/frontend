@@ -11,7 +11,7 @@ const SBackgroundContainer = styled.div`
     height: 100%;
     object-fit: cover;
     z-index: -1; /* 비디오를 배경으로 배치 */
-    filter: blur(5px);
+    filter: blur(10px);
   }
 `
 
@@ -21,7 +21,7 @@ const ContentWrapper = styled.div`
 `
 //TODO(j) 비디오랑 이미지 url store로 받아서 제공할것 + 비디오는 이미지 값 없으면 자동으로 선택되게 할것
 function BackgroundContainer({ children }) {
-  const videoUrl = '/video/ver2.mp4'
+  const videoUrl = '/video/ver3.mp4'
 
   return (
     <SBackgroundContainer>

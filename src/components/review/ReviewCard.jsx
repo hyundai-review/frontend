@@ -40,7 +40,7 @@ function ReviewCard({ review, pageType }) {
     }
   }, [pageType])
   return (
-    <ReviewCardContainer className='hoverBright' onClick={handleReviewClick} pageType={pageType}>
+    <ReviewCardContainer className='hoverBright' onClick={handleReviewClick}>
       <Wrap>
         {isSpoiler ? (
           <SpoilerWrap>
@@ -77,7 +77,7 @@ function ReviewCard({ review, pageType }) {
             <CardCommentLeft>
               <CardCommentIcon
                 src={isCommentOpen ? commentWhite : comment}
-                isCommentOpen={isCommentOpen}
+                $iscommentopen={isCommentOpen}
                 onClick={handleCommentClick}
               />
               <CardCommentCount>{commentCount}</CardCommentCount>
@@ -85,9 +85,9 @@ function ReviewCard({ review, pageType }) {
             <FooterRightWrap>
               <CardDate>{cardDate.substring(0, 10)}</CardDate>
               {!isLike ? (
-                <LikeIcon src={heart} isLike={isLike} onClick={handleLikeClick} />
+                <LikeIcon src={heart} $islike={isLike} onClick={handleLikeClick} />
               ) : (
-                <LikeIcon src={heartActive} isLike={isLike} onClick={handleLikeClick} />
+                <LikeIcon src={heartActive} $islike={isLike} onClick={handleLikeClick} />
               )}
             </FooterRightWrap>
           </CardCommentWrap>
@@ -112,7 +112,6 @@ const ReviewCardContainer = styled.div`
   width: 100%;
   padding: 0 19px;
   padding-top: 19px;
-  // padding-top: ${({ pageType }) => (pageType === 'mypage' ? '19px' : '19px')};
   border-radius: 10px;
   border: 1px solid rgba(255, 255, 255, 0.1);
   background: rgba(0, 0, 0, 0.25);
@@ -252,8 +251,8 @@ const CardCommentIcon = styled.img`
   height: 24px;
   margin-right: 5px;
   cursor: pointer;
-  ${({ isCommentOpen }) =>
-    isCommentOpen && 'filter: drop-shadow(0px 0px 10px var(--primary-light-red, #ffd7d7));'}
+  ${({ $iscommentopen }) =>
+    $iscommentopen && 'filter: drop-shadow(0px 0px 10px var(--primary-light-red, #ffd7d7));'}
 `
 const CardCommentCount = styled.span`
   color: var(--gray-50, #fafafa);
@@ -270,8 +269,8 @@ const LikeIcon = styled.img`
   width: 24px;
   height: 24px;
   cursor: pointer;
-  ${({ isLike }) =>
-    isLike && 'filter: drop-shadow(0px 0px 10px var(--primary-light-red, #ffd7d7));'}
+  ${({ $islike }) =>
+    $islike && 'filter: drop-shadow(0px 0px 10px var(--primary-light-red, #ffd7d7));'}
 `
 const FooterRightWrap = styled.div`
   display: flex;

@@ -9,14 +9,16 @@ import OptionBackList from '@/components/reviewPost/OptionBackList'
 import Photography from '@/components/reviewPost/Photography'
 import PHOTOBTN from '@/assets/icons/photoBtn.svg?react'
 import { useNavigate } from 'react-router-dom'
+import { useReviewValidation } from '@/utils/useValidation'
 
 // TODO (Y)촬영 버튼 클릭 시 소리 & 타이머 넣기
 
 /** step 2. 사진 촬영 */
 function PostPhotoReview() {
-  const { optionBackImg, processPhotocard, setProcessPhotocard } = useReviewStore()
+  const { reviewStep, nextStep } = useReviewStore()
+  const { processPhotocard, setProcessPhotocard } = useReviewStore()
   const [takePhoto, setTakePhoto] = useState(null) // takePhoto 함수 저장용 state
-
+  const { isReviewDataValid } = useReviewValidation()
   const handleTakePhoto = () => {
     if (takePhoto) {
       const imageData = takePhoto()
@@ -31,8 +33,6 @@ function PostPhotoReview() {
       // }))
     }
   }
-
-  const { reviewStep, nextStep } = useReviewStore()
 
   return (
     <Container>
@@ -66,7 +66,13 @@ function PostPhotoReview() {
           <img src={processPhotocard.step1} />
         </Preview>
 
-        <NextBtn onClick={nextStep} disabled={!processPhotocard.step1}>
+        <NextBtn
+          onClick={() => {
+            if (!isReviewDataValid()) return
+            nextStep()
+          }}
+          disabled={!processPhotocard.step1}
+        >
           <BtnText>다음</BtnText>
         </NextBtn>
       </SBoxContainer.Box>
@@ -84,10 +90,16 @@ const Container = styled.div`
 const MainWrap = styled.div`
   display: flex;
   justify-content: center;
+  align-items: center;
   gap: 40px;
 
   width: 100%;
   height: 610px;
+
+  @media (max-width: 752px) {
+    flex-direction: column;
+    gap: 0;
+  }
 `
 const Preview = styled.div`
   position: absolute;
@@ -108,7 +120,15 @@ const PhotoWrap = styled.div`
   height: 610px;
   background-color: black;
 `
-const OptionWrap = styled.div``
+const OptionWrap = styled.div`
+  /* width: 100%; */
+  height: 100%;
+
+  @media (max-width: 752px) {
+    width: 100%;
+    height: auto;
+  }
+`
 
 const IconBtn = styled(SBtn.IconButton)`
   circle[fill='#FAFAFA'] {
@@ -132,4 +152,8 @@ const NextBtn = styled(SBtn.ReviewPostBtn)`
 
   cursor: ${(props) => (props.disabled ? 'not-allowed' : 'pointer')};
   opacity: ${(props) => (props.disabled ? 0.5 : 1)};
+
+  @media (max-width: 752px) {
+    padding: 10px;
+  }
 `

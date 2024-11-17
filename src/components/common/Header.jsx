@@ -5,17 +5,17 @@ import Logo from '/logo.svg'
 import { useLocation, useNavigate } from 'react-router-dom'
 import media from '@/styles/media'
 import useAuthStore from '@/store/authStore'
-import { isLoggedIn, userData } from '@/utils/logInManager'
+import { isLoggedIn, getUserData } from '@/utils/logInManager'
 
 function Header() {
   //TODO(j) 로컬 스토리지로 불러오는 값 훅으로 빼기
   const navigate = useNavigate()
   const [isLogIn, setIsLogIn] = useState(isLoggedIn())
-  const [data, setData] = useState(userData())
+  const [data, setData] = useState(getUserData())
   const location = useLocation()
   useEffect(() => {
     setIsLogIn(isLoggedIn())
-    setData(userData())
+    setData(getUserData())
   }, [location.pathname])
   return (
     <div>
@@ -104,6 +104,7 @@ const HeaderUserProfileImage = styled.img`
   border-radius: 50%;
   width: 32px;
   height: 32px;
+  background: linear-gradient(0deg, #d9d9d9 0%, #d9d9d9 100%);
 `
 
 const HeaderUserName = styled.p`
