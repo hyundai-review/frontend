@@ -1,12 +1,19 @@
 import useReviewStore from '@/store/reviewStore'
-import { Navigate, useLocation } from 'react-router-dom'
+import { Navigate, useLocation, useParams } from 'react-router-dom'
 
 function ProtectedReviewRoute({ children }) {
   const { backgroundImg, currentMovieId, reviewStep, reviewPost, processPhotocard } =
     useReviewStore()
   const location = useLocation()
+  const { movieId } = useParams()
 
   const path = location.pathname.split('/').pop() // URL의 마지막 부분 가져오기
+
+  // movieId가 다른 경우 체크
+  if (movieId !== currentMovieId) {
+    console.log('MovieId mismatch:', { urlMovieId: movieId, storeMovieId: currentMovieId })
+    return <Navigate to={`/movie/${currentMovieId}/detail`} replace />
+  }
 
   // 단계별 필요한 데이터 검증
   const isValidStep = () => {
