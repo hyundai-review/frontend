@@ -64,11 +64,10 @@ function Photography({ setTakePhotoFunc }) {
         <div>model 로딩중</div>
       ) : (
         <Wrap>
-          <VideoWrap>
-            {/* 웹캠 비디오 : ML 모델이 해당 비디오 데이터를 분석해서 사람 인식 */}
+          Copy
+          <VideoWrap width={dimensions.width} height={dimensions.height}>
             <video ref={videoRef} autoPlay playsInline />
           </VideoWrap>
-
           <CanvasWrap>
             {/* 합성 결과 캔버스 */}
             <canvas ref={canvasRef} />
@@ -98,8 +97,8 @@ const Wrap = styled.div`
 
 const VideoWrap = styled.div`
   display: none;
-  width: 100%;
-  height: 100%;
+  width: ${(props) => props.width}px; // dimensions.width
+  height: ${(props) => props.height}px; // dimensions.height
   position: relative;
 
   video {
