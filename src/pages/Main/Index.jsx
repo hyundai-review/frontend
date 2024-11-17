@@ -19,6 +19,7 @@ import { chkTime } from '@/utils/timeUtils'
 import { useApi } from '@/libs/useApi'
 import { Button } from '@mui/material'
 import useModalStore from '@/store/modalStore'
+import useNavigateStore from '@/store/navigateStore'
 
 /*boxOfficeMovieData - url, rank, date
 suggestMovieData - moviePosterUrl, movieID */
@@ -30,6 +31,7 @@ function MainPage() {
   const nowDate = new Date()
   const timeText = chkTime(nowDate.getHours())
   const [screenWidth, setScreenWidth] = useState(document.documentElement.clientWidth)
+  const setNavigatePage = useNavigateStore((state) => state.setNowPage)
   useEffect(() => {
     setIsLogIn(isLoggedIn())
     setData(getUserData())
@@ -40,8 +42,10 @@ function MainPage() {
     return () => {
       window.removeEventListener('resize', handleResize)
     }
-    console.log(boxOfficeMovies)
   }, [])
+  useEffect(() => {
+    setNavigatePage(0)
+  }, [setNavigatePage])
   const suggestMovieData = [...Array(10)].map((_, index) => ({
     movieId: index,
     poster: 'https://image.tmdb.org/t/p/w300/tKV0etz5OIsAjSNG1hJktsjbNJk.jpg',

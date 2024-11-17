@@ -5,6 +5,7 @@ import media from '@/styles/media'
 import styled from 'styled-components'
 import { useSearchParams } from 'react-router-dom'
 import { nonAuthenticated } from '@/libs/axiosInstance'
+import useNavigateStore from '@/store/navigateStore'
 //TODO(j) axios 한군데 모으기
 function SearchPage() {
   const [movieDataArray, setMovieDataArray] = useState([])
@@ -12,6 +13,7 @@ function SearchPage() {
   const [isLoading, setIsLoading] = useState(false)
   const [checkMoreData, setCheckMoreData] = useState(true)
   const [nowPage, setNowPage] = useState(0)
+  const setNavigatePage = useNavigateStore((state) => state.setNowPage)
   const query = searchParams.get('q') || ''
   const searchWihValue = async (inputValue, page, fetch) => {
     const queryParams = { keyword: inputValue, page: 0, size: 24, fetch: fetch }
@@ -52,6 +54,10 @@ function SearchPage() {
     },
     [isLoading, checkMoreData], // 필요한 값만 종속성으로 추가
   )
+  //네비게이션 페이지 설정
+  useEffect(() => {
+    setNavigatePage(1)
+  }, [setNavigatePage])
   //검색 쿼리 변경되면 첫 페이지 가져오기
   useEffect(() => {
     if (query) {

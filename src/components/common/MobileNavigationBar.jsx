@@ -1,5 +1,5 @@
 import media from '@/styles/media'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import styled, { css } from 'styled-components'
 import homeIcon from '@/assets/icons/navHomeIcon.svg'
 import searchIcon from '@/assets/icons/navSearchIcon.svg'
@@ -7,11 +7,14 @@ import myIcon from '@/assets/icons/navMyIcon.svg'
 import loginIcon from '@/assets/icons/navLoginIcon.svg'
 import { useNavigate } from 'react-router-dom'
 import useAuthStore from '@/store/authStore'
+import useNavigateStore from '@/store/navigateStore'
 
 //TODO(j) 다른 버튼 눌러서 이동해도 아래 네비게이션바가 따라오게하기 (store로 저장)
 function MobileNavigationBar() {
   const navigate = useNavigate()
-  const [selectedItem, setSelectedItem] = useState(0)
+  const setNavigatePage = useNavigateStore((state) => state.setNowPage)
+  const nowPage = useNavigateStore((state) => state.nowPage)
+  const [selectedItem, setSelectedItem] = useState(nowPage)
   const { isLoggedIn } = useAuthStore()
   const logInMenuItems = [
     { icon: `${homeIcon}`, url: '/' },
@@ -24,9 +27,26 @@ function MobileNavigationBar() {
     { icon: `${loginIcon}`, url: '/user/login' },
   ]
   const handleClick = (url, index) => {
-    navigate(`${url}`)
     setSelectedItem(index)
+    setNavigatePage(index)
+    navigate(`${url}`)
   }
+  useEffect(() => {
+    setSelectedItem(nowPage)
+  }, [])
+  useEffect(() => {
+    console.log(location.pathname, setNavigatePage)
+    if (location.pathname === '/') {
+      setNavigatePage(0)
+      setSelectedItem(0)
+    } else if (location.pathname === '/search') {
+      setNavigatePage(1)
+      setSelectedItem(1)
+    } else if (location.pathname === '/mypage') {
+      setNavigatePage(2)
+      setSelectedItem(2)
+    }
+  }, [location, setNavigatePage])
   return (
     <div>
       <MobileNavigationBarContainer>
