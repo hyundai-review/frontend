@@ -14,6 +14,7 @@ import useModalStore from '@/store/modalStore'
 function ReviewCard({ review, pageType }) {
   const {
     reviewId,
+    movieTitle,
     rating,
     reviewContent,
     commentCount,
@@ -32,8 +33,8 @@ function ReviewCard({ review, pageType }) {
   const [isLike, setIsLike] = useState(false)
   const [isSpoiler, setIsSpoiler] = useState(true)
   useEffect(() => {
-    console.log('reviewCard >>> ', review)
-    console.log('reviewLike >>> ', reviewIsLike)
+    // console.log('reviewCard >>> ', review)
+    // console.log('reviewLike >>> ', reviewIsLike)
     setIsSpoiler(isSpoil)
     setIsLike(reviewIsLike)
   }, [review])

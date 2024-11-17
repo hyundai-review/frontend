@@ -3,7 +3,7 @@ import Stories from '@/components/story/Stories'
 import Profile from './Profile'
 import ReviewCard from '../../components/review/ReviewCard'
 import { myReviewDataTest } from '@/assets/data/myReviewData'
-import { transformReviewData } from '@/utils/dataTransform'
+import { transformMyReviewData } from '@/utils/dataTransform'
 import { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import ReviewSwiper from '@/components/reviewSwiper/ReviewSwiper'
@@ -11,31 +11,31 @@ import { useApi } from '@/libs/useApi'
 
 // myReviewData에서 데이터를 변환
 function MyPage() {
-  const [data, setData] = useState([])
-  // const transformedData = transformReviewData(myReviewDataTest)
-  // useEffect(() => {
-  //   console.log(transformedData)
-  // }, [])
   // ----------------------  API 요청 ----------------------
   const { get } = useApi(true)
   useEffect(() => {
     const fetchMyReviews = async () => {
       try {
         const response = await get(`/reviews/my?page=0&size=10&sort=date`)
-        setData(response.contents)
-        console.log(response.contents)
+        setData(response.data.contents)
+        console.log(response.data.contents)
       } catch (err) {
         console.error('내 리뷰 정보를 가져오는 중 오류가 발생했습니다:', err)
       }
     }
     fetchMyReviews()
   }, [])
+  const [data, setData] = useState([])
+  const transformedData = transformMyReviewData(data)
+  useEffect(() => {
+    console.log(transformedData)
+  }, [])
   return (
     <>
       <Profile />
-      {/* <div style={{ paddingLeft: '20px' }}>
+      <div style={{ paddingLeft: '20px' }}>
         <ReviewTitleWrap>
-          <ReviewTitle>리뷰({transformedData[0].commentCount})</ReviewTitle>
+          <ReviewTitle>리뷰(999)</ReviewTitle>
         </ReviewTitleWrap>
         <ReviewSwiper dataList={transformedData} path={'/mypage'} />
         <ReviewContainer>
@@ -43,7 +43,7 @@ function MyPage() {
             <ReviewCard pageType='mypage' key={review.movieId} review={review} />
           ))}
         </ReviewContainer>
-      </div> */}
+      </div>
     </>
   )
 }
