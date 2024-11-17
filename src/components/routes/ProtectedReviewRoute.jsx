@@ -9,10 +9,12 @@ function ProtectedReviewRoute({ children }) {
 
   const path = location.pathname.split('/').pop() // URL의 마지막 부분 가져오기
 
-  // movieId가 다른 경우 체크
+  // currentMovieId가 없거나 URL의 movieId와 다르면 상세 페이지로
+  if (currentMovieId == null) {
+    return children
+  }
   if (movieId !== currentMovieId) {
-    console.log('MovieId mismatch:', { urlMovieId: movieId, storeMovieId: currentMovieId })
-    return <Navigate to={`/movie/${currentMovieId}/detail`} replace />
+    return <Navigate to={`/movie/${movieId}/detail`} replace />
   }
 
   // 단계별 필요한 데이터 검증
