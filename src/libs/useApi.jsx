@@ -14,11 +14,19 @@ export const useApi = (requireAuth = true) => {
 
   const api = requireAuth ? authenticated : nonAuthenticated
 
-  const request = async (method, url, data = null) => {
+  /**
+   * @param {*} data // post 시 보낼 데이터
+   * @param {*} isMultipart 데이터가 multipart/form-data 형식인지 여부
+   */
+  const request = async (method, url, data = null, isMultipart = false) => {
     try {
       setLoading(true)
       setError(null)
-      const response = await api({ method, url, data })
+
+      const config = isMultipart ? { headers: { 'Content-Type': 'multipart/form-data' } } : {}
+
+      const response = await api({ method, url, data, ...config })
+
       return response
       //
     } catch (err) {

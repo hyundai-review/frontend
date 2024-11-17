@@ -7,6 +7,8 @@ import * as SBoxContainer from '@/styles/boxContainer'
 import DOWNLOAD from '@/assets/icons/download.svg?react'
 import { useApi } from '@/libs/useApi'
 import { useParams } from 'react-router-dom'
+import { transformReviewPost } from '@/utils/dataTransform'
+import { objectToFormData } from '@/utils/objectToFormdata'
 
 function PostUploadReview() {
   const { processPhotocard, reviewPost } = useReviewStore()
@@ -38,7 +40,17 @@ function PostUploadReview() {
       }
     } else {
       // 스토리 게시
-      console.log('확인', reviewPost, processPhotocard.step2)
+      const transformData = transformReviewPost(reviewPost, processPhotocard.step2)
+      const formData = objectToFormData(transformData, {
+        fileKeys: {
+          photocard: 'photocard.jpg',
+        },
+      })
+      const response = await post(`/reviews/photo/${movieId}`, formData, true)
+      if (response.status === 200) {
+        alert('포토 리뷰가 등록되었습니다.')
+        //TODO navigate
+      }
     }
   }
 
