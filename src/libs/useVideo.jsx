@@ -87,10 +87,6 @@ export const useBackgroundImage = (imageUrl, dimensions) => {
     img.crossOrigin = 'anonymous'
 
     // TMDB 이미지 URL에서 파일 경로만 추출
-    const imagePath = imageUrl.replace('https://image.tmdb.org/t/p/w500', '')
-
-    // 프록시 URL 사용
-    const proxyUrl = `/tmdb-images${imagePath}`
 
     img.onload = () => {
       backgroundImageObj.current = img
@@ -99,8 +95,7 @@ export const useBackgroundImage = (imageUrl, dimensions) => {
       img.height = dimensions.height
     }
 
-    // img.src = imageUrl
-    img.src = proxyUrl
+    img.src = imageUrl
   }, [imageUrl, dimensions])
 
   return backgroundImageObj
