@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 // import StarRating from './StarRating'
 import styled from 'styled-components'
 import commentWhite from '@/assets/icons/commentWhite.svg'
@@ -11,38 +11,75 @@ import ReviewComment from '@/components/review/ReviewComment'
 import edit from '@/assets/icons/edit.svg'
 import trash from '@/assets/icons/trash.svg'
 import SearchBar from '@/components/common/SearchBar'
-const review = {
-  movieId: 1,
-  movieTitle: '명탐정 코난-시한장치의 마천루',
-  reviewId: 101,
-  rating: 5,
-  reviewContent: '5월 3일 토요일 밤 10시! 베이카 시네마 로비에서 만나는 거다! 잊지 마!',
-  photocard: 'https://img.cgv.co.kr/Movie/Thumbnail/Poster/000088/88769/88769_320.jpg',
-  totalComments: 12,
-  createdAt: '2023-11-01T12:00:00Z',
-  updatedAt: '2023-11-02T10:00:00Z',
-}
-function MyReview() {
-  const { movieId, movieTitle, rating, reviewContent, totalComments, createdAt } = review
-  const navigate = useNavigate()
+import * as SText from '@/styles/text'
+import { Checkbox } from '@mui/material'
+import { useApi } from '@/libs/useApi'
+// import { review } from '@/assets/data/myReviewData'
+function MyReview({ myReviewData = {} }) {
+  // ----------data----------
+  const {
+    reviewId = 0,
+    rating: reviewRating = 0,
+    content: reviewContent = '작성된 리뷰가 없습니다.',
+    photocard = null,
+    updatedAt = '정보 없음',
+    totalComments = 0,
+    isSpoil: reviewIsSpoil = false,
+  } = myReviewData
+  // ----------API----------
+  const { put } = useApi(true)
+
+  // const navigate = useNavigate()
   const [isCommentOpen, setIsCommentOpen] = useState(false)
   const [isEdit, setIsEdit] = useState(false)
   const [isDelete, setIsDelete] = useState(false)
-  const [content, setContent] = useState(reviewContent)
-  const [initrating, setRating] = useState(3)
-  const handleRatingChange = (newRating) => {
-    setRating(newRating) // 별점 변경 시 상태 업데이트
-  }
+  const [isSpoil, setIsSpoil] = useState(false)
+  const [content, setContent] = useState('')
+  const [rating, setRating] = useState(0)
+  const formRef = useRef({ isSpoil, rating, content })
+  useEffect(() => {
+    if (myReviewData) {
+      console.log('myReviewData >>> ', myReviewData)
+      setRating(reviewRating)
+      setContent(reviewContent)
+      setIsSpoil(reviewIsSpoil)
+    }
+  }, [myReviewData])
 
   // 함수
+  const handleCheckboxChange = (e) => {
+    const checked = e.target.checked
+    formRef.current.isSpoil = checked // Ref 업데이트
+    setIsSpoil(checked) // 상태 업데이트
+  }
+  const handleRatingChange = (newRating) => {
+    setRating(newRating) // 별점 상태 업데이트
+    formRef.current.rating = newRating // 폼 데이터 업데이트
+  }
   const handleCommentClick = (e) => {
     console.log('댓글 열려라 참깨')
-    setIsCommentOpen((prev) => !prev)
+    setIsCommentOpen(true)
     e.stopPropagation()
   }
-  const handleEditClick = (e) => {
+  const handleEditClick = async (e) => {
     console.log('편집 열려라 참깨')
-    setIsEdit((prev) => !prev)
+    if (isEdit) {
+      // 제출 클릭
+      const formData = {
+        rating: formRef.current.rating,
+        content: formRef.current.content,
+        isSpoil: formRef.current.isSpoil,
+      }
+      console.log('제출된 데이터nkm: ', formData) // 제출 데이터 확인
+      const response = await put(`/reviews/${reviewId}`, formData)
+      console.log('-----------------------------------------')
+      console.log('수정 성공:', response)
+      // onSubmit(formData) // 부모 컴포넌트에 데이터 전달
+      setIsEdit(false) // 편집 모드 종료
+      e.stopPropagation()
+      return
+    }
+    setIsEdit(true)
     e.stopPropagation()
   }
   const handleDeleteClick = (e) => {
@@ -50,7 +87,11 @@ function MyReview() {
     setIsDelete((prev) => !prev)
     e.stopPropagation()
   }
-  const handleContentChange = (e) => setContent(e.target.value)
+  // 리뷰 내용 변경
+  const handleContentChange = (e) => {
+    setContent(e.target.value) // 내용 상태 업데이트
+    formRef.current.content = e.target.value // 폼 데이터 업데이트
+  }
   return (
     <Container>
       <Wrap>
@@ -62,24 +103,67 @@ function MyReview() {
           </CardHeader>
           {isEdit ? (
             <EditWrap>
-              <StarRating
-                type='controlled'
-                initialValue={initrating}
-                onChange={handleRatingChange}
-                size={16}
-                max={5}
-              />
+              <EditContents>
+                <StarRating
+                  type='controlled'
+                  initialValue={rating}
+                  onChange={handleRatingChange}
+                  size={16}
+                  max={5}
+                />
+                <SpoWrap>
+                  <SText.Text>스포일러가 포함되어 있나요?</SText.Text>
+                  <Checkbox
+                    checked={isSpoil}
+                    onChange={handleCheckboxChange}
+                    disableRipple // 애니 효과 제거
+                    sx={{
+                      padding: '0',
+                      color: 'var(--color-gray-50)',
+                      filter: 'drop-shadow(0px 0px 10px var(--primary-light-red, #ffd7d7))',
+
+                      '&.Mui-checked': {
+                        color: 'var(--color-gray-50)',
+                      },
+                      '& .MuiSvgIcon-root': {},
+                    }}
+                  />
+                </SpoWrap>
+              </EditContents>
               <EditInput type='text' value={content} onChange={handleContentChange} />
             </EditWrap>
           ) : (
             <>
-              <StarRating type='readonly' initialValue={rating} max={5} size={16} />
+              <EditContents>
+                <StarRating type='readonly' initialValue={rating} max={5} size={16} />
+                <SpoWrap>
+                  <SText.Text>
+                    스포
+                    <Checkbox
+                      // defaultChecked={!isSpoil}
+                      checked={isSpoil}
+                      disableRipple // 애니 효과 제거
+                      disabled // 체크박스를 읽기 전용으로 설정
+                      sx={{
+                        padding: '0',
+                        color: 'var(--color-gray-50)',
+                        filter: 'drop-shadow(0px 0px 10px var(--primary-light-red, #ffd7d7))',
+
+                        '&.Mui-checked': {
+                          color: 'var(--color-gray-50)',
+                        },
+                        '& .MuiSvgIcon-root': {},
+                      }}
+                    />
+                  </SText.Text>
+                </SpoWrap>
+              </EditContents>
               <CardContent>{content}</CardContent>
             </>
           )}
         </LeftWrap>
         <RightWrap>
-          <Photocard src={review.photocard} />
+          <Photocard src={photocard} />
         </RightWrap>
       </Wrap>
       <CommentWrap>
@@ -94,7 +178,7 @@ function MyReview() {
               <CardCommentCount>{totalComments}</CardCommentCount>
             </CardCommentLeft>
             <CardCommentRight>
-              <CardDate>{createdAt.substring(0, 10)}</CardDate>
+              <CardDate>{updatedAt.slice(0, 10)}</CardDate>
               <Icon src={edit} $isedit={isEdit} onClick={handleEditClick} />
               <Icon src={trash} $isdelete={isDelete} onClick={handleDeleteClick} />
             </CardCommentRight>
@@ -284,4 +368,16 @@ const EditWrap = styled.div`
   ${media.medium`
   height:86px;
 `}
+`
+const EditContents = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 5px;
+`
+const SpoWrap = styled.div`
+  padding: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 `

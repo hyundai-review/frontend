@@ -10,12 +10,25 @@ import * as S from '@/styles/review/comment.style'
 import heart from '@/assets/icons/heart.svg'
 import heartActive from '@/assets/icons/heartActive.svg'
 function ReviewCard({ review, pageType }) {
-  const { movieId, movieTitle, rating, reviewContent, commentCount, cardDate } = review
+  const {
+    rating,
+    reviewContent,
+    commentCount,
+    cardDate,
+    photocard,
+    authorProfile,
+    authorNickname,
+    isLike,
+    isSpoil,
+  } = review
+  //
   const navigate = useNavigate()
   const [isCommentOpen, setIsCommentOpen] = useState(false)
-  const [isLike, setIsLike] = useState(false)
+  const [_isLike, setIsLike] = useState(false)
   const [isSpoiler, setIsSpoiler] = useState(true)
-
+  useEffect(() => {
+    console.log('reviewCard >>> ', review)
+  }, [review])
   // 함수
   const handleCommentClick = (e) => {
     console.log('댓글 열려라 참깨')
