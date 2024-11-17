@@ -7,7 +7,6 @@ function OptionBackItem({ backImg, backImgId }) {
 
   const handleImgClick = () => {
     setOptionBackImg({
-      imgId: backImgId,
       imgURL: backImg,
     })
   }

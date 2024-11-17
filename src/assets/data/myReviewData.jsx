@@ -1,4 +1,4 @@
-export const review = {
+export const reviewTest = {
   movieId: 1,
   movieTitle: '명탐정 코난-시한장치의 마천루',
   reviewId: 101,
@@ -10,7 +10,7 @@ export const review = {
   createdAt: '2023-11-01T12:00:00Z',
   updatedAt: '2023-11-02T10:00:00Z',
 }
-export const myReviewData = {
+export const myReviewDataTest = {
   contents: [
     {
       movieId: 1,

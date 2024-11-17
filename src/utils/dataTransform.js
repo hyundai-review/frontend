@@ -1,12 +1,22 @@
-export function transformReviewData(myReviewData) {
-  return myReviewData.contents.map((review) => ({
-    movieId: review.movieId, // 영화 ID
-    movieTitle: review.movieTitle, // 영화 제목
+export function transformReviewData(data) {
+  console.log('data : ', data)
+  if (!data) {
+    return []
+  }
+  return data.map((review) => ({
+    movieId: review.movieId || '', // 영화 ID
+    movieTitle: review.movieTitle || '', // 영화 제목
+    // otherReviewList
+    reviewdId: review.reviewId,
     rating: review.rating, // 별점
     reviewContent: review.content, // 리뷰 내용
     commentCount: review.totalComments, // 댓글 수
-    cardDate: review.createdAt, // 리뷰 작성 날짜
+    cardDate: review.updatedAt.slice(0, 10), // 리뷰 작성 날짜
     photocard: review.photocard, // 포토카드 이미지 URL
+    authorProfile: review.author.profile, // 작성자 프로필
+    authorNickname: review.author.nickname, // 작성자 닉네임
+    isLike: review.isLike, // 좋아요 여부
+    isSpoil: review.isSpoil, // 스포일러 여부
   }))
 }
 
@@ -18,4 +28,26 @@ export const transformReviewPost = (reviewPost, photocard) => {
     isSpoil: reviewPost.isSpoil,
     photocard: photocard,
   }
+}
+
+/** 포스터 & 스토리 사진 리스트 데이터 transform */
+export const transformStillcut = (imageData) => {
+  const { posters = [], stillcuts = [] } = imageData
+  // const IMG_BASE_URL = 'https://image.tmdb.org/t/p/w500'
+  const IMG_BASE_URL = '/tmdb-images'
+
+  let id = 0
+  const transformedPosters = posters.slice(0, 5).map((poster, index) => ({
+    imgId: id++,
+    imgURL: IMG_BASE_URL + poster.filePath, // filePath 사용
+  }))
+
+  const transformedStillcuts = stillcuts.slice(0, 5).map((stillcut, index) => ({
+    imgId: id++,
+    imgURL: IMG_BASE_URL + stillcut.filePath, // filePath 사용
+  }))
+
+  const allImages = [...transformedPosters, ...transformedStillcuts]
+
+  return allImages
 }
