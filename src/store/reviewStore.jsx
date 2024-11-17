@@ -8,13 +8,14 @@ const useReviewStore = create(
       reviewStep: 0,
       navi: null,
       currentMovieId: null,
-
+      backgroundImg: '', // 리뷰 생성 페이지 background
       reviewPost: {
         rating: 0,
         content: '',
         isSpoil: false,
       },
       optionBackImg: {
+        // 선택된 스틸컷
         imgId: 0,
         imgURL: '',
       },
@@ -30,6 +31,7 @@ const useReviewStore = create(
 
       /** 사진 background 선택 */
       setOptionBackImg: (backImg) => set({ optionBackImg: backImg }),
+      setBackgroundImg: (backImg) => set({ backgroundImg: backImg }),
       /** 이미지 처리 단계 업로드 */
       setProcessPhotocard: (img) =>
         set((state) => ({
@@ -78,6 +80,7 @@ const useReviewStore = create(
         set({
           reviewStep: 0,
           currentMovieId: null,
+          backgroundImg: '',
           reviewPost: {
             rating: 0,
             content: '',
@@ -103,6 +106,7 @@ const useReviewStore = create(
         reviewPost: state.reviewPost,
         processPhotocard: state.processPhotocard,
         optionBackImg: state.optionBackImg,
+        backgroundImg: state.backgroundImg,
       }),
     },
   ),

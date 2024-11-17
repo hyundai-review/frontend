@@ -11,9 +11,13 @@ import useResponsive from '@/hooks/useResponsive'
 import MovieSummaryLarge from './MovieSummaryLarge'
 import { useParams } from 'react-router-dom'
 import { useApi } from '@/libs/useApi'
+import useReviewStore from '@/store/reviewStore'
+
 function MovieDetailPage() {
   const { movieId } = useParams()
   const screenSize = useResponsive()
+  const { setBackgroundImg } = useReviewStore()
+
   useEffect(() => {
     console.log(movieId)
   }, [])
@@ -26,7 +30,7 @@ function MovieDetailPage() {
       try {
         const data = await get(`/movies/details/${movieId}`)
         setData(data.data)
-        console.log(data)
+        setBackgroundImg(`https://image.tmdb.org/t/p/w300/${data.data.poster.filePath}`)
       } catch (err) {
         console.error('영화 정보를 가져오는 중 오류가 발생했습니다:', err)
       }

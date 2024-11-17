@@ -13,43 +13,8 @@ import { useApi } from '@/libs/useApi'
 import { useParams } from 'react-router-dom'
 import { transformStillcut } from '@/utils/dataTransform'
 
-const movieData = {
-  id: 1,
-  image: [
-    {
-      imgId: 1,
-      imgURL: '/assets/images/movie/poster2.jpg',
-    },
-    {
-      imgId: 2,
-      imgURL: '/assets/images/movie/poster1.png',
-    },
-    {
-      imgId: 3,
-      imgURL:
-        'https://cors-anywhere.herokuapp.com/https://image.tmdb.org/t/p/w780/xTE7Aba7nzFl9ldeD1erhbXYxkg.jpg',
-    },
-    {
-      imgId: 4,
-      imgURL: '/assets/images/movie/poster1.png',
-    },
-    {
-      imgId: 5,
-      imgURL: '/assets/images/movie/poster2.jpg',
-    },
-    {
-      imgId: 6,
-      imgURL: '/assets/images/movie/poster1.png',
-    },
-    {
-      imgId: 7,
-      imgURL: '/assets/images/movie/poster2.jpg',
-    },
-  ],
-}
-
 function OptionBackList() {
-  const { setOptionBackImg } = useReviewStore()
+  const { setOptionBackImg, optionBackImg } = useReviewStore()
   const { width } = useWindowSize() // 윈도우 크기 추적
   const isMobile = width <= 752
   const { get } = useApi()
@@ -57,12 +22,6 @@ function OptionBackList() {
   const { movieId } = useParams()
 
   useEffect(() => {
-    if (movieData.image.length > 0) {
-      setOptionBackImg({
-        imgId: movieData.image[0].imgId,
-        imgURL: movieData.image[0].imgURL,
-      })
-    }
     // movie 포스터, 스틸컷 가져오기
     get(`/movies/images/${movieId}`).then((response) => {
       setStillcut(transformStillcut(response.data))

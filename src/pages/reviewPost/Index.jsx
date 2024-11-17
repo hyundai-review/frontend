@@ -7,11 +7,6 @@ import MobileStepper from '@mui/material/MobileStepper'
 import BACK from '@/assets/icons/arrow-left.svg?react'
 import media from '@/styles/media'
 
-const movieData = {
-  id: 1,
-  image: '/assets/images/movie/poster1.png',
-}
-
 function ReviewPostPage() {
   const { movieId } = useParams()
   const {
@@ -22,6 +17,7 @@ function ReviewPostPage() {
     setReviewStep,
     setCurrentMovieId,
     currentMovieId,
+    backgroundImg,
   } = useReviewStore()
   const navigate = useNavigate()
   const location = useLocation()
@@ -55,7 +51,7 @@ function ReviewPostPage() {
   }, [location.pathname, setReviewStep])
 
   return (
-    <Container $image={movieData.image}>
+    <Container $image={backgroundImg}>
       <S.BlurOverlay>
         <Wrap>
           <TopWrap>

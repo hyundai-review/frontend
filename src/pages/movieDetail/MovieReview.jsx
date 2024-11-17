@@ -17,7 +17,7 @@ function MovieReview() {
   const averageRating = 4.23
   const transformedData = transformReviewData(myReviewData)
   // 상태
-  const [isReviewWritten, setIsReviewWritten] = useState(true)
+  const [isReviewWritten, setIsReviewWritten] = useState(false)
 
   // ---------------------------login---------------------------
   const [isLogin, setIsLogin] = useState(true)
@@ -64,7 +64,10 @@ function MovieReview() {
           <ReviewContentsContainer>
             <ReviewSwiper dataList={transformedData} />
             {!isReviewWritten ? (
-              <ButtonWrap className='hoverBright'>
+              <ButtonWrap
+                className='hoverBright'
+                onClick={() => navigate(`/review/${movieId}/post`)}
+              >
                 <ReviewPostButton>스토리 & 리뷰 작성하기</ReviewPostButton>
               </ButtonWrap>
             ) : (
