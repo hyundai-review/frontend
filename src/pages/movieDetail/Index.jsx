@@ -16,7 +16,7 @@ import useReviewStore from '@/store/reviewStore'
 function MovieDetailPage() {
   const { movieId } = useParams()
   const screenSize = useResponsive()
-  const { setBackgroundImg } = useReviewStore()
+  const { backgroundImg, setBackgroundImg, setCurrentMovieId } = useReviewStore()
 
   useEffect(() => {
     console.log(movieId)
@@ -30,13 +30,15 @@ function MovieDetailPage() {
       try {
         const data = await get(`/movies/details/${movieId}`)
         setData(data.data)
-        setBackgroundImg(`https://image.tmdb.org/t/p/w300/${data.data.poster.filePath}`)
+        setCurrentMovieId(movieId)
+        setBackgroundImg(`https://image.tmdb.org/t/p/w500${data.data.poster.filePath}`)
+        console.log('dfadsafasdf', backgroundImg)
       } catch (err) {
         console.error('영화 정보를 가져오는 중 오류가 발생했습니다:', err)
       }
     }
     fetchMovieDetail()
-  }, [])
+  }, [backgroundImg, movieId])
 
   return (
     <>

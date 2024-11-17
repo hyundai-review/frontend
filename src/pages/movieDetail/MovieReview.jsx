@@ -23,16 +23,16 @@ function MovieReview() {
   const [isLogin, setIsLogin] = useState(true)
 
   // ---------------------------API---------------------------
-  const { get, loading, error } = useApi(false) // 테스트중 true로 바꿔야함
+  const { get, loading, error } = useApi(true) // 테스트중 true로 바꿔야함
   const [data, setData] = useState(null)
   useEffect(() => {
-    // TODO(k) 틀만 잡아둠 완성 아직
     if (!isLogin) return // 로그인 상태가 아니면 추가 요청 생략
     const fetchReviewData = async () => {
       try {
-        const data = await get(`/reviews/${movieId}`)
-        setData(data)
-        console.log(data)
+        const response = await get(`/reviews/${movieId}?page=0&size=10&sort=date`)
+        setData(response.data)
+        setIsReviewWritten(response.data.myReview !== null)
+        console.log('movie review >>> ', response.data)
       } catch (err) {
         console.error('리뷰 정보를 가져오는 중 오류가 발생했습니다:', err)
       }

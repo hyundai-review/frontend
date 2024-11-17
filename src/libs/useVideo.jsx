@@ -86,19 +86,53 @@ export const useBackgroundImage = (imageUrl, dimensions) => {
     const img = new Image()
     img.crossOrigin = 'anonymous'
 
+    // TMDB 이미지 URL에서 파일 경로만 추출
+    const imagePath = imageUrl.replace('https://image.tmdb.org/t/p/w500', '')
+
+    // 프록시 URL 사용
+    const proxyUrl = `/tmdb-images${imagePath}`
+
     img.onload = () => {
+      backgroundImageObj.current = img
       // 이미지 크기를 부모 컨테이너 크기로 설정
       img.width = dimensions.width
       img.height = dimensions.height
-
-      backgroundImageObj.current = img
     }
 
-    img.src = imageUrl
+    // img.src = imageUrl
+    img.src = proxyUrl
   }, [imageUrl, dimensions])
 
   return backgroundImageObj
 }
+// export const useBackgroundImage = (imageUrl, dimensions) => {
+//   const backgroundImageObj = useRef(null)
+
+//   useEffect(() => {
+//     if (!imageUrl || !dimensions.width || !dimensions.height) {
+//       console.log('Missing required props:', { imageUrl, dimensions })
+//       return
+//     }
+
+//     const img = new Image()
+//     img.crossOrigin = 'anonymous'
+
+//     img.onload = () => {
+//       console.log('Image loaded successfully')
+//       backgroundImageObj.current = img
+//     }
+
+//     img.onerror = (error) => {
+//       console.error('Error loading image:', error)
+//     }
+
+//     // 이미지 로드 시작 전에 로그
+//     console.log('Starting to load image from URL:', imageUrl)
+//     img.src = imageUrl
+//   }, [imageUrl, dimensions])
+
+//   return backgroundImageObj
+// }
 
 /** 비디오 처리 통합 */
 export const useVideoProcessing = (

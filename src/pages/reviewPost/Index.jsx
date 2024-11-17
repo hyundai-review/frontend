@@ -33,6 +33,7 @@ function ReviewPostPage() {
 
     // 새로운 movieId가 현재 저장된 movieId와 다르면 리셋
     if (currentMovieId && newMovieId !== currentMovieId) {
+      console.log('지금 리셋되고있는가??????')
       resetStore()
       window.location.reload() // TODO 나중에 수정할 것
     }

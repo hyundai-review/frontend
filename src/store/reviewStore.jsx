@@ -16,7 +16,6 @@ const useReviewStore = create(
       },
       optionBackImg: {
         // 선택된 스틸컷
-        imgId: 0,
         imgURL: '',
       },
       // 이미지 처리 단계
@@ -31,7 +30,16 @@ const useReviewStore = create(
 
       /** 사진 background 선택 */
       setOptionBackImg: (backImg) => set({ optionBackImg: backImg }),
-      setBackgroundImg: (backImg) => set({ backgroundImg: backImg }),
+      setBackgroundImg: (
+        url, // 리뷰 생성 페이지 background
+      ) =>
+        set((state) => ({
+          backgroundImg: url,
+          optionBackImg: {
+            imgURL: url,
+          },
+        })),
+
       /** 이미지 처리 단계 업로드 */
       setProcessPhotocard: (img) =>
         set((state) => ({
