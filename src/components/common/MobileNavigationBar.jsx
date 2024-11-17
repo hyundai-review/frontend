@@ -9,7 +9,6 @@ import { useLocation, useNavigate } from 'react-router-dom'
 import useAuthStore from '@/store/authStore'
 import useNavigateStore from '@/store/navigateStore'
 
-//TODO(j) 다른 버튼 눌러서 이동해도 아래 네비게이션바가 따라오게하기 (store로 저장)
 function MobileNavigationBar() {
   const navigate = useNavigate()
   const setNavigatePage = useNavigateStore((state) => state.setNowPage)
@@ -36,6 +35,7 @@ function MobileNavigationBar() {
     setSelectedItem(nowPage)
     console.log(nowPage)
   }, [])
+  //TODO(j) 코드 수정하기
   useEffect(() => {
     console.log(location.pathname, nowPage)
     if (location.pathname === '/') {
@@ -85,19 +85,16 @@ function MobileNavigationBar() {
 }
 
 const MobileNavigationBarContainer = styled.div`
-  //TODO(j) 이후 outlet연결시 제거
   position: fixed;
   bottom: 10px;
   left: 50%;
   transform: translateX(-50%);
-  //여기까지
   height: 30px;
   z-index: 100;
   border-radius: 10px;
   margin: 0 auto;
   background: rgba(0, 0, 0, 0.5);
   backdrop-filter: blur(10px);
-  /* background: gray; */
   display: none;
   justify-content: space-between;
   ${media.small`
@@ -130,14 +127,6 @@ const SelectedButtonSlider = styled.div`
   border-radius: 10px;
   transition: left 0.3s ease;
   display: ${(props) => (props.$index === -1 ? 'none' : 'flex')};
-`
-
-const SelectedStyle = css`
-  background: rgba(255, 255, 255, 0.2);
-  border: 1px solid rgba(255, 255, 255, 0.6);
-  backdrop-filter: blur(10px);
-  box-shadow: 0 0 15px 5px rgba(255, 255, 255, 0.3);
-  /* animation: slideEffect 0.3 ease; */
 `
 
 export default MobileNavigationBar
