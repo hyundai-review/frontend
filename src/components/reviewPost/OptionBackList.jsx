@@ -8,6 +8,7 @@ import { Swiper, SwiperSlide } from 'swiper/react'
 import { Navigation } from 'swiper/modules'
 import OptionBackItem from './OptionBackItem'
 import useReviewStore from '@/store/reviewStore'
+import { useWindowSize } from '@/utils/useWindowSize'
 
 const movieData = {
   id: 1,
@@ -46,6 +47,8 @@ const movieData = {
 
 function OptionBackList() {
   const { setOptionBackImg } = useReviewStore()
+  const { width } = useWindowSize() // 윈도우 크기 추적
+  const isMobile = width <= 752
 
   useEffect(() => {
     if (movieData.image.length > 0) {
@@ -59,10 +62,10 @@ function OptionBackList() {
   return (
     <SwiperContainer>
       <Swiper
-        direction='vertical'
+        direction={isMobile ? 'horizontal' : 'vertical'}
         modules={[Navigation]}
-        slidesPerView={5.5}
-        // spaceBetween={10}
+        slidesPerView={isMobile ? 3.5 : 5.5}
+        spaceBetween={isMobile ? 10 : 0}
       >
         {movieData.image.map((item, index) => (
           <SwiperSlide key={index}>
@@ -78,8 +81,20 @@ export default OptionBackList
 
 const SwiperContainer = styled.div`
   height: 100%;
+  width: 100%;
 
   .swiper {
     height: 100%; // !! Swiper 자체의 높이를 100%로 설정
+  }
+  .swiper-slide {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  @media (max-width: 752px) {
+    width: 100%;
+    .swiper {
+      height: 120px; // !! Swiper 자체의 높이를 100%로 설정
+    }
   }
 `

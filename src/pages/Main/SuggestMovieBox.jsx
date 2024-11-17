@@ -33,7 +33,7 @@ function SuggestMovieBox({ isLogin, suggestMovieData }) {
                 key={genre.id}
                 text={genre.name}
                 onClick={() => handleGenreClick(genre.id)}
-                isActive={selectedGenre === genre.id}
+                $isactive={selectedGenre === genre.id}
               />
             ))}
           </MainPageButtonWrapper>

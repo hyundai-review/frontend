@@ -14,14 +14,16 @@ export const getUserData = () => {
     return { memberId: ' ', nickname: ' ', profile: ' ' }
   }
 }
+export const testisLoggedIn = true
 
 export const isLoggedIn = () => {
-  const checkLogIn = localStorage.getItem('isLogIn')
-  if (checkLogIn === null) {
-    return false
-  } else if (checkLogIn === 'true') {
-    return true
-  } else {
-    return false
-  }
+  // const checkLogIn = localStorage.getItem('isLogIn')
+  // if (checkLogIn === null) {
+  //   return false
+  // } else if (checkLogIn === 'true') {
+  //   return true
+  // } else {
+  //   return false
+  // }
+  return false
 }

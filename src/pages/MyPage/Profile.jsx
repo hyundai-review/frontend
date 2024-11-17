@@ -6,6 +6,9 @@ import useAuthStore from '@/store/authStore'
 import { useNavigate } from 'react-router-dom'
 import { authenticated } from '@/libs/axiosInstance'
 import { getUserData } from '@/utils/logInManager'
+import { isLoggedIn } from '@/utils/logInManager'
+import { useApi } from '@/libs/useApi'
+// import { getUserData } from '@/utils/getUserData'
 
 function Profile() {
   const [userinfo, setUserInfo] = useState(getUserData())
@@ -15,6 +18,16 @@ function Profile() {
   const reviewCount = 32
   const [isEdit, setIsEdit] = useState(true)
   const { logout, setuserNickname } = useAuthStore()
+
+
+function Profile() {
+  const navigate = useNavigate()
+  //-------------------------------Data---------------------------
+  const userData = getUserData()
+  const reviewCount = 32 // TODO(k) 응답 배열 개수 세야할듯 > util로 뺴야할지도?
+  //TODO(j) axios 요청 따로 모으기 + 로그아웃 로직 분리
+  // ------------------------------login---------------------------
+  const { isLoggedIn } = useAuthStore()
   const handleEditNickname = async () => {
     setIsEdit(!isEdit)
     if (userinfo.nickname !== inputRef.current.value) {
@@ -41,6 +54,24 @@ function Profile() {
     }
   }
   //TODO(j) input에 자동포커스 가게하기
+  // ------------------------------API---------------------------
+  const isLogin = true // 임시
+  const { get, loading, error } = useApi(false) // 테스트중 true로 바꿔야함
+  const [data, setData] = useState(null)
+  useEffect(() => {
+    // TODO(k) 틀만 잡아둠 완성 아직
+    if (!isLogin) return // 로그인 상태가 아니면 추가 요청 생략
+    const fetchMypageData = async () => {
+      try {
+        const data = await get(`/reviews/my`)
+        setData(data)
+        console.log(data)
+      } catch (err) {
+        console.error('마이페이지 정보를 가져오는 중 오류가 발생했습니다:', err)
+      }
+    }
+    fetchMypageData()
+  }, [])
   return (
     <ProfileContainer>
       <ProfileImage src={`${userinfo.profile}`} />

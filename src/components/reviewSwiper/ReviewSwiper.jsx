@@ -10,12 +10,17 @@ import useModalStore from '@/store/modalStore'
 function ReviewSwiper({ dataList }) {
   const navigate = useNavigate()
   const dataLength = dataList.length
-  const openModal = useModalStore((state) => state.openModal)
+  const { openModal } = useModalStore()
 
   const handleSlideClick = (item) => {
-    console.log(item)
+    console.log('슬라이드클릭 >>> ', item)
     // 모달 열기
-    openModal(item) // 선택된 포토카드를 상태에 전달하여 모달 열기
+    openModal('photoCard', {
+      photocard: {
+        image: item.photocard,
+        name: item.movieTitle,
+      },
+    })
   }
   return (
     <div>
@@ -23,11 +28,12 @@ function ReviewSwiper({ dataList }) {
         <Swiper style={{ margin: 0 }} slidesPerView={'auto'}>
           {dataList.map((review, index) => (
             <SwiperSlide
-              onClick={() => handleSlideClick(index, path, review)}
+              key={index}
+              onClick={() => handleSlideClick(review)}
               style={{ width: 250 }}
             >
               <ImageSlideWrap>
-                <ImageSlide imageUrl={review.photocard}>
+                <ImageSlide $imageurl={review.photocard}>
                   <ImageText>{'여기는 나중에 대체됨'}</ImageText>
                 </ImageSlide>
               </ImageSlideWrap>
@@ -54,7 +60,7 @@ const ImageSlide = styled.div`
   border-radius: 5px;
   width: 200px;
   height: 200px;
-  background: url(${(props) => props.imageUrl}) lightgray 50% / cover no-repeat;
+  background: url(${(props) => props.$imageurl}) lightgray 50% / cover no-repeat;
 `
 
 const ImageText = styled.div`
