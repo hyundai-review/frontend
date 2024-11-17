@@ -1,6 +1,6 @@
 export const validateReviewForm = (formData, openModal) => {
   // 별점이 0점인 경우
-  if (formData.rating === 0) {
+  if (formData.rating === 0 || !formData.rating) {
     openModal('alert', { message: '별점을 입력해주세요.' })
     return false
   }
