@@ -1,11 +1,11 @@
 import { RouterProvider } from 'react-router-dom'
 import root from '@/routers/root'
-import Modal from './components/common/Modal'
+import ModalContainer from './components/modal/ModalContainer'
 function App() {
   return (
     <>
       <RouterProvider router={root} />
-      <Modal />
+      <ModalContainer />
     </>
   )
 }

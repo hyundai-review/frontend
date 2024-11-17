@@ -90,10 +90,16 @@ const Container = styled.div`
 const MainWrap = styled.div`
   display: flex;
   justify-content: center;
+  align-items: center;
   gap: 40px;
 
   width: 100%;
   height: 610px;
+
+  @media (max-width: 752px) {
+    flex-direction: column;
+    gap: 0;
+  }
 `
 const Preview = styled.div`
   position: absolute;
@@ -114,7 +120,15 @@ const PhotoWrap = styled.div`
   height: 610px;
   background-color: black;
 `
-const OptionWrap = styled.div``
+const OptionWrap = styled.div`
+  /* width: 100%; */
+  height: 100%;
+
+  @media (max-width: 752px) {
+    width: 100%;
+    height: auto;
+  }
+`
 
 const IconBtn = styled(SBtn.IconButton)`
   circle[fill='#FAFAFA'] {
@@ -138,4 +152,8 @@ const NextBtn = styled(SBtn.ReviewPostBtn)`
 
   cursor: ${(props) => (props.disabled ? 'not-allowed' : 'pointer')};
   opacity: ${(props) => (props.disabled ? 0.5 : 1)};
+
+  @media (max-width: 752px) {
+    padding: 10px;
+  }
 `

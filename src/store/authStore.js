@@ -1,16 +1,19 @@
+import { removeCookie } from '@/utils/cookie'
 import { create } from 'zustand'
 
 const useAuthStore = create((set) => ({
-  // isLoggedIn: !!localStorage.getItem('authToken'),
   isLoggedIn: false,
   token: localStorage.getItem('authToken') || '',
-  login: (token) => {
-    set({ isLoggedIn: true, token })
-    localStorage.setItem('authToken', token)
+  login: (userData) => {
+    set({ isLoggedIn: true })
+    localStorage.setItem('userInfo', JSON.stringify(userData))
+    localStorage.setItem('isLogIn', true)
   },
   logout: () => {
-    set({ isLoggedIn: false, token: '' })
-    localStorage.removeItem('authToken')
+    set({ isLoggedIn: false })
+    localStorage.removeItem('userInfo')
+    localStorage.removeItem('isLogIn')
+    removeCookie('ACCESS_TOKEN')
   },
 }))
 export default useAuthStore

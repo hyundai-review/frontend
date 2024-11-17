@@ -46,7 +46,7 @@ function Stories({ dataList, path }) {
       >
         {dataList.map((review, index) => (
           <SwiperSlide
-            key={review.id}
+            key={index}
             // onClick={() => handleSlideClick(index, '/main/story', review)}
             onClick={() => handleClick(index, path, review)}
           >

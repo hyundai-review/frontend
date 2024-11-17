@@ -126,10 +126,11 @@ const BottomWrap = styled.div`
   display: flex;
   justify-content: space-between;
 
-  /* @media (max-width: 933px) {
+  @media (max-width: 886px) {
     flex-direction: column;
     gap: 20px;
-  } */
+    align-items: end;
+  }
 `
 const BtnText = styled(SText.Text)`
   text-shadow: 0px 0px 10px var(--primary-solid, #c77db5);

@@ -1,5 +1,5 @@
-import { authenticated, nonAuthenticated } from '@/libs/axiosInstance'
 import { useState } from 'react'
+import { authenticated, nonAuthenticated } from './axiosInstance'
 
 const ERROR_MESSAGES = {
   409: '이미 리뷰를 작성하셨습니다.',

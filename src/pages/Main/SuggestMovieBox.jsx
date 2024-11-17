@@ -33,13 +33,13 @@ function SuggestMovieBox({ isLogin, suggestMovieData }) {
                 key={genre.id}
                 text={genre.name}
                 onClick={() => handleGenreClick(genre.id)}
-                isActive={selectedGenre === genre.id}
+                $isactive={selectedGenre === genre.id}
               />
             ))}
           </MainPageButtonWrapper>
           <MainPageSuggestMovieWrapper>
             {suggestMovieData.map((item, index) => (
-              <MoviePosterCard moviePosterUrl={item.moviePosterUrl} movieId={index} key={index} />
+              <MoviePosterCard movieInfo={item} key={index} />
             ))}
           </MainPageSuggestMovieWrapper>
         </div>
