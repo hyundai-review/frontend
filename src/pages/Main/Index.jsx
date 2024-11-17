@@ -17,7 +17,6 @@ import OverlayPosterCard from '@/components/moviePosterCard/OverlayPosterCard'
 import { isLoggedIn, getUserData } from '@/utils/logInManager'
 import { chkTime } from '@/utils/timeUtils'
 import { useApi } from '@/libs/useApi'
-import { isLoggedIn, userData } from '@/utils/logInManager'
 import { Button } from '@mui/material'
 import useModalStore from '@/store/modalStore'
 
@@ -31,7 +30,6 @@ function MainPage() {
   const nowDate = new Date()
   const timeText = chkTime(nowDate.getHours())
   const [screenWidth, setScreenWidth] = useState(document.documentElement.clientWidth)
-  const [isLogIn, setIsLogIn] = useState(isLoggedIn())
   useEffect(() => {
     setIsLogIn(isLoggedIn())
     setData(getUserData())
@@ -58,14 +56,14 @@ function MainPage() {
     const fetchBoxoffice = async () => {
       try {
         const data = await get(`/movies/boxoffice`)
-        setBoxOfficeMovies(data.movies)
+        setBoxOfficeMovies(data.data.movies)
         console.log(data)
       } catch (err) {
         console.error('영화 정보를 가져오는 중 오류가 발생했습니다:', err)
       }
     }
     fetchBoxoffice()
-  }, [])
+  }, [boxOfficeMovies])
   // ---------------------------모달 테스트중---------------------
   const { openModal } = useModalStore()
   const handleModalClick = () => {
@@ -110,7 +108,7 @@ function MainPage() {
               <MainPageWrapperTitle>{`${nowDate.getMonth() + 1}월 ${nowDate.getDate()}일 박스오피스 순위`}</MainPageWrapperTitle>
               <MainPageBoxOfficeSwiperWrapper $width={screenWidth - 402}>
                 <Swiper spaceBetween={7} slidesPerView={'auto'}>
-                  {boxOfficeMovies.map((item, index) => (
+                  {boxOfficeMovies?.map((item, index) => (
                     <MainPageSwiperSlide key={index}>
                       <BoxOfficePosterCard movieInfo={item} />
                     </MainPageSwiperSlide>

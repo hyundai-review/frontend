@@ -11,17 +11,12 @@ import { useApi } from '@/libs/useApi'
 // import { getUserData } from '@/utils/getUserData'
 
 function Profile() {
+  const navigate = useNavigate()
   const [userinfo, setUserInfo] = useState(getUserData())
   const userNicknameLength = userinfo.nickname.length
   const inputRef = useRef(null)
-  const navigate = useNavigate()
-  const reviewCount = 32
   const [isEdit, setIsEdit] = useState(true)
   const { logout, setuserNickname } = useAuthStore()
-
-
-function Profile() {
-  const navigate = useNavigate()
   //-------------------------------Data---------------------------
   const userData = getUserData()
   const reviewCount = 32 // TODO(k) 응답 배열 개수 세야할듯 > util로 뺴야할지도?

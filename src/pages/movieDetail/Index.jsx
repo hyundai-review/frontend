@@ -25,7 +25,7 @@ function MovieDetailPage() {
     const fetchMovieDetail = async () => {
       try {
         const data = await get(`/movies/details/${movieId}`)
-        setData(data)
+        setData(data.data)
         console.log(data)
       } catch (err) {
         console.error('영화 정보를 가져오는 중 오류가 발생했습니다:', err)
