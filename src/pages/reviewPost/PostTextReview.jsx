@@ -1,5 +1,5 @@
 import StarRating from '@/components/common/StarRating'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import styled from 'styled-components'
 
 import * as SBoxContainer from '@/styles/boxContainer'
@@ -7,21 +7,44 @@ import * as SText from '@/styles/text'
 import * as SBtn from '@/styles/button'
 import { Checkbox } from '@mui/material'
 import useReviewStore from '@/store/reviewStore'
-import { useNavigate } from 'react-router-dom'
+import { useApi } from '@/libs/useApi'
+import { useParams } from 'react-router-dom'
 
 /** step 1. 텍스트 리뷰 작성 */
 function PostTextReview() {
-  const { reviewStep, nextStep } = useReviewStore()
+  const { nextStep, reviewPost, setReviewPost } = useReviewStore()
+  const { post, error } = useApi()
+  const { movieId } = useParams()
 
-  // TODO (Y) zustand로 state 값 변경
-  const [starRating, setStarRating] = useState(0)
-  const handleStarRating = (rating) => {
-    setStarRating(rating)
-  }
-  const [isChecked, setIsChecked] = useState(false)
+  const [starRating, setStarRating] = useState(reviewPost.rating)
+  const formRef = useRef({
+    content: reviewPost.content,
+    isSpoil: reviewPost.isSpoil,
+  })
 
-  const handleChange = (e) => {
-    setIsChecked(e.target.checked)
+  // 리뷰만 올리기
+  const handleSubmitReview = async (isPhotocard = false) => {
+    if (!starRating || !formRef.current.content.trim()) {
+      alert('별점과 리뷰를 모두 작성해주세요.')
+      return
+    }
+
+    setReviewPost({
+      ...formRef.current,
+      rating: starRating,
+    })
+
+    if (isPhotocard) {
+      nextStep()
+    } else {
+      console.log('확인용', formRef.current)
+
+      const response = await post(`/reviews/${movieId}`, reviewPost)
+      if (response.status === 200) {
+        alert('리뷰가 등록되었습니다.')
+        //TODO navigate
+      }
+    }
   }
 
   return (
@@ -34,7 +57,9 @@ function PostTextReview() {
               type='controlled'
               size={25}
               initialValue={starRating}
-              onChange={handleStarRating}
+              onChange={(rating) => {
+                setStarRating(rating)
+              }}
             />
           </StarWrap>
         </Wrap>
@@ -47,6 +72,10 @@ function PostTextReview() {
             placeholder='해당 영화에 대한 리뷰를 남겨주세요'
             $variant='md'
             $color='var(--gray-200)'
+            defaultValue={reviewPost.content}
+            onChange={(e) => {
+              formRef.current.content = e.target.value
+            }}
           />
         </SBoxContainer.Box>
       </div>
@@ -55,8 +84,10 @@ function PostTextReview() {
           <SpoWrap>
             <SText.Text>스포일러가 포함되어있나요?</SText.Text>
             <Checkbox
-              checked={isChecked}
-              onChange={handleChange}
+              defaultChecked={reviewPost.isSpoil}
+              onChange={(e) => {
+                formRef.current.isSpoil = e.target.checked
+              }}
               disableRipple // 애니 효과 제거
               sx={{
                 padding: '0',
@@ -74,9 +105,12 @@ function PostTextReview() {
 
         <BtnWrap>
           <button style={{ all: 'unset', cursor: 'pointer', whiteSpace: 'nowrap' }}>
-            <BtnText style={{ padding: '0 50px' }}>리뷰만 올리기</BtnText>
+            <BtnText style={{ padding: '0 50px' }} onClick={() => handleSubmitReview()}>
+              리뷰만 올리기
+            </BtnText>
           </button>
-          <SBtn.ReviewPostBtn onClick={nextStep}>
+
+          <SBtn.ReviewPostBtn onClick={() => handleSubmitReview(true)}>
             <BtnText>포토카드 만들기</BtnText>
           </SBtn.ReviewPostBtn>
         </BtnWrap>

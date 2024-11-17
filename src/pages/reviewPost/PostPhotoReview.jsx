@@ -9,14 +9,16 @@ import OptionBackList from '@/components/reviewPost/OptionBackList'
 import Photography from '@/components/reviewPost/Photography'
 import PHOTOBTN from '@/assets/icons/photoBtn.svg?react'
 import { useNavigate } from 'react-router-dom'
+import { useReviewValidation } from '@/utils/useValidation'
 
 // TODO (Y)촬영 버튼 클릭 시 소리 & 타이머 넣기
 
 /** step 2. 사진 촬영 */
 function PostPhotoReview() {
-  const { optionBackImg, processPhotocard, setProcessPhotocard } = useReviewStore()
+  const { reviewStep, nextStep } = useReviewStore()
+  const { processPhotocard, setProcessPhotocard } = useReviewStore()
   const [takePhoto, setTakePhoto] = useState(null) // takePhoto 함수 저장용 state
-
+  const { isReviewDataValid } = useReviewValidation()
   const handleTakePhoto = () => {
     if (takePhoto) {
       const imageData = takePhoto()
@@ -31,8 +33,6 @@ function PostPhotoReview() {
       // }))
     }
   }
-
-  const { reviewStep, nextStep } = useReviewStore()
 
   return (
     <Container>
@@ -66,7 +66,13 @@ function PostPhotoReview() {
           <img src={processPhotocard.step1} />
         </Preview>
 
-        <NextBtn onClick={nextStep} disabled={!processPhotocard.step1}>
+        <NextBtn
+          onClick={() => {
+            if (!isReviewDataValid()) return
+            nextStep()
+          }}
+          disabled={!processPhotocard.step1}
+        >
           <BtnText>다음</BtnText>
         </NextBtn>
       </SBoxContainer.Box>

@@ -6,13 +6,14 @@ const useReviewStore = create(
   persist(
     (set, get) => ({
       reviewStep: 0,
+      navi: null,
+      currentMovieId: null,
+
       reviewPost: {
         rating: 0,
-        textReview: '',
-        photocard: '/assets/images/movie/poster1.png',
+        content: '',
         isSpoil: false,
       },
-      navi: (path) => (window.location.href = `/review/2/post/${path}`),
       optionBackImg: {
         imgId: 0,
         imgURL: '',
@@ -22,6 +23,10 @@ const useReviewStore = create(
         step1: '',
         step2: '',
       },
+
+      /** 라우팅 */
+      setNavi: (navigate) => set({ navi: navigate }),
+      setCurrentMovieId: (movieId) => set({ currentMovieId: movieId }),
 
       /** 사진 background 선택 */
       setOptionBackImg: (backImg) => set({ optionBackImg: backImg }),
@@ -36,12 +41,16 @@ const useReviewStore = create(
 
       nextStep: () => {
         const state = get()
-        const nextStepValue = Math.min(state.reviewStep + 1, 5)
+        const nextStepValue = Math.min(state.reviewStep + 1, 3)
         set({ reviewStep: nextStepValue })
 
         // 라우팅
+        const movieId = window.location.pathname.split('/')[2]
         const paths = ['text', 'photo', 'deploy', 'upload']
-        state.navi(paths[nextStepValue])
+
+        if (state.navi) {
+          state.navi(`/review/${movieId}/post/${paths[nextStepValue]}`)
+        }
       },
 
       prevStep: () => {
@@ -50,8 +59,12 @@ const useReviewStore = create(
         set({ reviewStep: prevStepValue })
 
         // 라우팅
+        const movieId = window.location.pathname.split('/')[2]
         const paths = ['text', 'photo', 'deploy', 'upload']
-        state.navi(paths[prevStepValue])
+
+        if (state.navi) {
+          state.navi(`/review/${movieId}/post/${paths[prevStepValue]}`)
+        }
       },
 
       /** review post */
@@ -59,28 +72,34 @@ const useReviewStore = create(
         set((state) => ({
           reviewPost: { ...state.reviewPost, ...post },
         })),
-      updateReviewPost: (reviewPost) =>
-        set(() => ({
-          reviewPost: reviewPost,
-        })),
 
       // 초기화
-      resetStore: () =>
+      resetStore: () => {
         set({
           reviewStep: 0,
+          currentMovieId: null,
           reviewPost: {
             rating: 0,
-            textReview: '',
-            photocard: '',
+            content: '',
             isSpoil: false,
           },
-        }),
+          processPhotocard: {
+            step1: '',
+            step2: '',
+          },
+          optionBackImg: {
+            imgId: 0,
+            imgURL: '',
+          },
+        })
+      },
     }),
 
     {
       name: 'review-storage', // 로컬 스토리지
       partialize: (state) => ({
         reviewStep: state.reviewStep,
+        currentMovieId: state.currentMovieId,
         reviewPost: state.reviewPost,
         processPhotocard: state.processPhotocard,
         optionBackImg: state.optionBackImg,
