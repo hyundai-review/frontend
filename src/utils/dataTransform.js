@@ -9,3 +9,13 @@ export function transformReviewData(myReviewData) {
     photocard: review.photocard, // 포토카드 이미지 URL
   }))
 }
+
+/** 스토리 게시 리뷰 생성 시 서버로 보낼 데이터 transform */
+export const transformReviewPost = (reviewPost, photocard) => {
+  return {
+    rating: reviewPost.rating,
+    content: reviewPost.content,
+    isSpoil: reviewPost.isSpoil,
+    photocard: photocard,
+  }
+}

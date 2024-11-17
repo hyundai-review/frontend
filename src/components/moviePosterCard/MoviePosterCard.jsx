@@ -4,8 +4,8 @@ import styled from 'styled-components'
 import OverlayPosterCard from './OverlayPosterCard'
 /*moviePosterUrl, movieID */
 function MoviePosterCard({ movieInfo }) {
-  // const moviePosterUrl = `http://image.tmdb.org/t/p/w342${movieInfo.poster}`
-  const moviePosterUrl = `${movieInfo.poster}`
+  const moviePosterUrl = `http://image.tmdb.org/t/p/w342${movieInfo.poster}`
+  // const moviePosterUrl = `${movieInfo.poster}`
   const movieId = movieInfo.movieId
   const movieTitle = movieInfo.title
   //설명 없으면 설명없다고 텍스트 넣을까?

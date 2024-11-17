@@ -6,31 +6,38 @@ import styled from 'styled-components'
 import { useSearchParams } from 'react-router-dom'
 import { nonAuthenticated } from '@/libs/axiosInstance'
 import axios from 'axios'
+import Button from '@/components/common/Button'
 //TODO(j) axios 한군데 모으기
 function SearchPage() {
   // const [movieDataArray, setMovieDataArray] = useState([])
   const [searchParams] = useSearchParams()
   const query = searchParams.get('q') || ''
-  const searchWihValue = async (inputValue) => {
-    const queryParams = { keyword: inputValue, page: 0 }
-    try {
-      const getMovieData = await nonAuthenticated.get('/api/movies/search', {
-        params: queryParams,
-      })
-      // setMovieDataArray(getMovieData.data.content)
-    } catch (e) {
-      console.log(error)
-    }
-  }
-  const handleSearch = (inputValue) => {}
+  // const searchWihValue = async (inputValue, page, fetch) => {
+  //   const queryParams = { keyword: inputValue, page: 0, size: 24, fetch: true }
+  //   try {
+  //     const getMovieData = await nonAuthenticated.get('/api/movies/search', {
+  //       params: queryParams,
+  //     })
+  //     // if (getMovieData.data.content.length === 0) {
+  //     //   const getMovieData = searchWihValue(inputValue, 0, true)
+  //     // }
+  //     setMovieDataArray(getMovieData.data.content)
+  //     console.log(getMovieData)
+  //   } catch (e) {
+  //     console.log(error)
+  //   }
+  // }
+  // const firstSearch = (inputValue) => {
+  //   searchWihValue(inputValue)
+  // }
   // useEffect(() => {
   //   if (query !== '') {
-  //     handleSearch(query)
+  //     firstSearch(query)
   //   } else {
   //     console.log(query)
   //   }
   // }, [query])
-  const movieDataArray = [...Array(10)].map((_, index) => ({
+  const movieDataArray = [...Array(100)].map((_, index) => ({
     movieId: index,
     poster: 'https://image.tmdb.org/t/p/w300/tKV0etz5OIsAjSNG1hJktsjbNJk.jpg',
     title: '청설',
