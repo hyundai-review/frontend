@@ -85,10 +85,11 @@ const useReviewStore = create(
 
       // 초기화
       resetStore: () => {
-        set({
+        set((state) => ({
           reviewStep: 0,
           currentMovieId: null,
-          backgroundImg: '',
+          // backgroundImg는 이전 값 유지
+          backgroundImg: state.backgroundImg, // 기존 값 유지
           reviewPost: {
             rating: 0,
             content: '',
@@ -99,10 +100,9 @@ const useReviewStore = create(
             step2: '',
           },
           optionBackImg: {
-            imgId: 0,
-            imgURL: '',
+            imgURL: state.backgroundImg, // backgroundImg와 동일한 값으로 설정
           },
-        })
+        }))
       },
     }),
 

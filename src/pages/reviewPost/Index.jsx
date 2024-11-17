@@ -29,15 +29,12 @@ function ReviewPostPage() {
 
   // 다른 영화의 리뷰 페이지로 이동할 때만 데이터 초기화
   useEffect(() => {
-    const newMovieId = location.pathname.split('/')[2]
-
     // 새로운 movieId가 현재 저장된 movieId와 다르면 리셋
-    if (currentMovieId && newMovieId !== currentMovieId) {
-      console.log('지금 리셋되고있는가??????')
+    if (currentMovieId && movieId !== currentMovieId) {
       resetStore()
-      window.location.reload() // TODO 나중에 수정할 것
+      // window.location.reload() // TODO 나중에 수정할 것
     }
-    setCurrentMovieId(newMovieId)
+    setCurrentMovieId(movieId)
   }, [location.pathname])
 
   // URL에서 현재 step 확인하여 프로그레스 바 업데이트
