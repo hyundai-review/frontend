@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import Button from './Button'
-import Logo from '/logo.svg'
+import Logo from '/squareLogo.svg'
 import { useLocation, useNavigate } from 'react-router-dom'
 import media from '@/styles/media'
 import useAuthStore from '@/store/authStore'
