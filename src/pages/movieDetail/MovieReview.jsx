@@ -8,14 +8,22 @@ import ReviewCard from '../../components/review/ReviewCard'
 import MyReview from './MyReview'
 import { useNavigate, useParams } from 'react-router-dom'
 import { useApi } from '@/libs/useApi'
+
 function MovieReview() {
   const navigate = useNavigate()
+  
+  // data
+  const reviewCount = 123
+  const averageRating = 4.23
+
+  // ---------------------------login---------------------------
   const [isLogin, setIsLogin] = useState(true)
   const { movieId } = useParams()
   const [isReviewWritten, setIsReviewWritten] = useState(false)
   const [transformedData, setTransformedData] = useState([])
   // ---------------------------API---------------------------
-  const { get, loading, error } = useApi(true)
+  const { get, loading, error } = useApi(true) // 테스트중 true로 바꿔야함
+
   const [data, setData] = useState(null)
   useEffect(() => {
     if (!isLogin) return // 로그인 상태가 아니면 추가 요청 생략
@@ -70,7 +78,10 @@ function MovieReview() {
           <ReviewContentsContainer>
             <ReviewSwiper dataList={transformedData} />
             {!isReviewWritten ? (
-              <ButtonWrap className='hoverBright'>
+              <ButtonWrap
+                className='hoverBright'
+                onClick={() => navigate(`/review/${movieId}/post`)}
+              >
                 <ReviewPostButton>스토리 & 리뷰 작성하기</ReviewPostButton>
               </ButtonWrap>
             ) : (

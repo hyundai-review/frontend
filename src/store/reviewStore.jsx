@@ -7,15 +7,16 @@ const useReviewStore = create(
     (set, get) => ({
       reviewStep: 0,
       navi: null,
-      currentMovieId: null,
-
+      currentMovieId: null, // 영화상세페이지 movieId
+      reviewPostMovieId: null, // 리뷰를 작성한 movieId
+      backgroundImg: '', // 리뷰 생성 페이지 background
       reviewPost: {
         rating: 0,
         content: '',
         isSpoil: false,
       },
       optionBackImg: {
-        imgId: 0,
+        // 선택된 스틸컷
         imgURL: '',
       },
       // 이미지 처리 단계
@@ -27,9 +28,20 @@ const useReviewStore = create(
       /** 라우팅 */
       setNavi: (navigate) => set({ navi: navigate }),
       setCurrentMovieId: (movieId) => set({ currentMovieId: movieId }),
+      setReviewPostMovieId: (movieId) => set({ reviewPostMovieId: movieId }),
 
       /** 사진 background 선택 */
       setOptionBackImg: (backImg) => set({ optionBackImg: backImg }),
+      setBackgroundImg: (
+        url, // 리뷰 생성 페이지 background
+      ) =>
+        set((state) => ({
+          backgroundImg: url,
+          optionBackImg: {
+            imgURL: url,
+          },
+        })),
+
       /** 이미지 처리 단계 업로드 */
       setProcessPhotocard: (img) =>
         set((state) => ({
@@ -75,9 +87,12 @@ const useReviewStore = create(
 
       // 초기화
       resetStore: () => {
-        set({
+        set((state) => ({
           reviewStep: 0,
-          currentMovieId: null,
+          currentMovieId: state.currentMovieId,
+          reviewPostMovieId: state.currentMovieId,
+          // backgroundImg는 이전 값 유지
+          backgroundImg: state.backgroundImg, // 기존 값 유지
           reviewPost: {
             rating: 0,
             content: '',
@@ -88,10 +103,9 @@ const useReviewStore = create(
             step2: '',
           },
           optionBackImg: {
-            imgId: 0,
-            imgURL: '',
+            imgURL: state.backgroundImg, // backgroundImg와 동일한 값으로 설정
           },
-        })
+        }))
       },
     }),
 
@@ -100,9 +114,11 @@ const useReviewStore = create(
       partialize: (state) => ({
         reviewStep: state.reviewStep,
         currentMovieId: state.currentMovieId,
+        reviewPostMovieId: state.reviewPostMovieId,
         reviewPost: state.reviewPost,
         processPhotocard: state.processPhotocard,
         optionBackImg: state.optionBackImg,
+        backgroundImg: state.backgroundImg,
       }),
     },
   ),

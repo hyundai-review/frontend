@@ -7,11 +7,6 @@ import MobileStepper from '@mui/material/MobileStepper'
 import BACK from '@/assets/icons/arrow-left.svg?react'
 import media from '@/styles/media'
 
-const movieData = {
-  id: 1,
-  image: '/assets/images/movie/poster1.png',
-}
-
 function ReviewPostPage() {
   const { movieId } = useParams()
   const {
@@ -20,8 +15,10 @@ function ReviewPostPage() {
     resetStore,
     setNavi,
     setReviewStep,
-    setCurrentMovieId,
     currentMovieId,
+    backgroundImg,
+    reviewPostMovieId,
+    setReviewPostMovieId,
   } = useReviewStore()
   const navigate = useNavigate()
   const location = useLocation()
@@ -33,14 +30,12 @@ function ReviewPostPage() {
 
   // 다른 영화의 리뷰 페이지로 이동할 때만 데이터 초기화
   useEffect(() => {
-    const newMovieId = location.pathname.split('/')[2]
-
-    // 새로운 movieId가 현재 저장된 movieId와 다르면 리셋
-    if (currentMovieId && newMovieId !== currentMovieId) {
+    if (reviewPostMovieId == null) {
+      setReviewPostMovieId(currentMovieId)
+    } else if (reviewPostMovieId !== currentMovieId) {
       resetStore()
-      window.location.reload() // TODO 나중에 수정할 것
+      // window.location.reload() // TODO 나중에 수정할 것
     }
-    setCurrentMovieId(newMovieId)
   }, [location.pathname])
 
   // URL에서 현재 step 확인하여 프로그레스 바 업데이트
@@ -55,7 +50,7 @@ function ReviewPostPage() {
   }, [location.pathname, setReviewStep])
 
   return (
-    <Container $image={movieData.image}>
+    <Container $image={backgroundImg}>
       <S.BlurOverlay>
         <Wrap>
           <TopWrap>
