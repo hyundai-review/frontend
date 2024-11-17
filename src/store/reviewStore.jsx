@@ -12,7 +12,6 @@ const useReviewStore = create(
       reviewPost: {
         rating: 0,
         content: '',
-        photocard: '/assets/images/movie/poster1.png',
         isSpoil: false,
       },
       optionBackImg: {
@@ -82,7 +81,6 @@ const useReviewStore = create(
           reviewPost: {
             rating: 0,
             content: '',
-            photocard: '',
             isSpoil: false,
           },
           processPhotocard: {

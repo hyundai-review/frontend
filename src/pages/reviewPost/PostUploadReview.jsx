@@ -5,9 +5,13 @@ import * as SText from '@/styles/text'
 import * as SBtn from '@/styles/button'
 import * as SBoxContainer from '@/styles/boxContainer'
 import DOWNLOAD from '@/assets/icons/download.svg?react'
+import { useApi } from '@/libs/useApi'
+import { useParams } from 'react-router-dom'
 
 function PostUploadReview() {
-  const { processPhotocard } = useReviewStore()
+  const { processPhotocard, reviewPost } = useReviewStore()
+  const { post, error } = useApi()
+  const { movieId } = useParams()
 
   const handleDownload = async () => {
     try {
@@ -21,6 +25,20 @@ function PostUploadReview() {
     } catch (error) {
       console.error('이미지 다운로드 실패:', error)
       alert('이미지 다운로드 실패')
+    }
+  }
+
+  const handleSubmitReview = async (includeStory = false) => {
+    if (!includeStory) {
+      // 리뷰만 올리기
+      const response = await post(`/reviews/${movieId}`, reviewPost)
+      if (response.status === 200) {
+        alert('리뷰가 등록되었습니다.')
+        //TODO navigate
+      }
+    } else {
+      // 스토리 게시
+      console.log('확인', reviewPost, processPhotocard.step2)
     }
   }
 
@@ -50,9 +68,11 @@ function PostUploadReview() {
 
           <BtnWrap>
             <button style={{ all: 'unset', cursor: 'pointer', whiteSpace: 'nowrap' }}>
-              <BtnText style={{ padding: '0 50px' }}>리뷰만 올리기</BtnText>
+              <BtnText style={{ padding: '0 50px' }} onClick={() => handleSubmitReview()}>
+                리뷰만 올리기
+              </BtnText>
             </button>
-            <SBtn.ReviewPostBtn>
+            <SBtn.ReviewPostBtn onClick={() => handleSubmitReview(true)}>
               <BtnText>스토리 게시</BtnText>
             </SBtn.ReviewPostBtn>
           </BtnWrap>
