@@ -5,13 +5,11 @@ import GlobalStyle from './styles/globalStyle.jsx'
 import styled from 'styled-components'
 
 function Root() {
-
-
   return (
-    <StrictMode>
+    <>
       <GlobalStyle />
       <App />
-    </StrictMode>
+    </>
   )
 }
 

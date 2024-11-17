@@ -7,6 +7,7 @@ const useReviewStore = create(
     (set, get) => ({
       reviewStep: 0,
       navi: null,
+      currentMovieId: null,
 
       reviewPost: {
         rating: 0,
@@ -26,6 +27,7 @@ const useReviewStore = create(
 
       /** 라우팅 */
       setNavi: (navigate) => set({ navi: navigate }),
+      setCurrentMovieId: (movieId) => set({ currentMovieId: movieId }),
 
       /** 사진 background 선택 */
       setOptionBackImg: (backImg) => set({ optionBackImg: backImg }),
@@ -73,9 +75,10 @@ const useReviewStore = create(
         })),
 
       // 초기화
-      resetStore: () =>
+      resetStore: () => {
         set({
           reviewStep: 0,
+          currentMovieId: null,
           reviewPost: {
             rating: 0,
             content: '',
@@ -83,22 +86,22 @@ const useReviewStore = create(
             isSpoil: false,
           },
           processPhotocard: {
-            // processPhotocard도 초기화
             step1: '',
             step2: '',
           },
           optionBackImg: {
-            // optionBackImg도 초기화
             imgId: 0,
             imgURL: '',
           },
-        }),
+        })
+      },
     }),
 
     {
       name: 'review-storage', // 로컬 스토리지
       partialize: (state) => ({
         reviewStep: state.reviewStep,
+        currentMovieId: state.currentMovieId,
         reviewPost: state.reviewPost,
         processPhotocard: state.processPhotocard,
         optionBackImg: state.optionBackImg,
