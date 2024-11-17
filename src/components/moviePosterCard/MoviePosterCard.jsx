@@ -4,7 +4,7 @@ import styled from 'styled-components'
 import OverlayPosterCard from './OverlayPosterCard'
 /*moviePosterUrl, movieID */
 function MoviePosterCard({ movieInfo }) {
-  const moviePosterUrl = `http://image.tmdb.org/t/p/w342${movieInfo.poster}`
+  const moviePosterUrl = `http://image.tmdb.org/t/p/w500${movieInfo.poster}`
   // const moviePosterUrl = `${movieInfo.poster}`
   const movieId = movieInfo.movieId
   const movieTitle = movieInfo.title
