@@ -63,16 +63,24 @@ function MainPage() {
       }
     }
     fetchBoxoffice()
-  }, [boxOfficeMovies])
+  }, [])
   // ---------------------------모달 테스트중---------------------
   const { openModal } = useModalStore()
   const handleModalClick = () => {
     console.log('모달 클릭')
     // 모달 열기
-    openModal('alert', {
-      message: '리뷰가 등록되었습니다.',
-    })
+    openModal(
+      'confirm',
+      {
+        message: '계속 진행하시겠습니까?',
+      },
+      // 확인 버튼 클릭 시 실행될 콜백 함수
+      () => {
+        console.log('확인 누름')
+      },
+    )
   }
+
   return (
     <div>
       <MainPageTopContainer>
