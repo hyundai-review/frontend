@@ -15,7 +15,7 @@ import MobileNavigationBar from '@/components/common/MobileNavigationBar'
 import useAuthStore from '@/store/authStore'
 import { authenticated, nonAuthenticated } from '@/libs/axiosInstance'
 import OverlayPosterCard from '@/components/moviePosterCard/OverlayPosterCard'
-import { isLoggedIn, userData } from '@/utils/logInManager'
+import { isLoggedIn, getUserData } from '@/utils/logInManager'
 
 /*boxOfficeMovieData - url, rank, date
 suggestMovieData - moviePosterUrl, movieID */
@@ -23,7 +23,7 @@ suggestMovieData - moviePosterUrl, movieID */
 function MainPage() {
   const navigate = useNavigate()
   const [isLogIn, setIsLogIn] = useState(isLoggedIn())
-  const [data, setData] = useState(userData())
+  const [data, setData] = useState(getUserData())
   const nowDate = new Date()
   const chkTime = (time) => {
     if (time < 5) {
@@ -50,7 +50,7 @@ function MainPage() {
   }
   useEffect(() => {
     setIsLogIn(isLoggedIn())
-    setData(userData())
+    setData(getUserData())
     const handleResize = () => {
       setScreenWidth(document.documentElement.clientWidth)
     }

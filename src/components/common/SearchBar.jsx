@@ -3,22 +3,26 @@ import searchBarIcon from '@/assets/icons/searchBarIcon.svg'
 import media from '@/styles/media'
 import styled from 'styled-components'
 import { useNavigate } from 'react-router-dom'
+import useSearchParamsHelper from '@/hooks/useSearchParamsHelper'
 //TODO(j) 훅으로 searchparams 연결하기
+
 function SearchBar({ defaultValue }) {
   const navigate = useNavigate()
   const inputRef = useRef(null)
   const [inputFieldFocus, setInputFieldFocus] = useState(false)
+  const next = useSearchParamsHelper()
   const handleSubmit = (e) => {
     e.preventDefault()
     const removeBlankValue = encodeURIComponent(inputRef.current.value.trim())
     if (removeBlankValue !== '') {
-      navigate(`/search?q=${removeBlankValue}`)
+      // navigate(`/search?q=${removeBlankValue}`)
+      console.log(next(removeBlankValue, '/search'))
     }
   }
   return (
     <div>
       <SearchBarContainer $isfocused={inputFieldFocus} className='hoverBright'>
-        <SearchBarForm onSubmit={handleSubmit}>
+        <SearchBarForm onSubmit={() => handleSubmit}>
           <SearchBarIconButton type='submit'>
             <SearchBarIconButtonImage src={searchBarIcon} alt='searchBarIcon' />
           </SearchBarIconButton>
