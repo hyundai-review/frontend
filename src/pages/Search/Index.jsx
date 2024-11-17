@@ -33,14 +33,12 @@ function SearchPage() {
   const fetchMovies = useCallback(
     async (inputValue, page) => {
       if (isLoading || !checkMoreData) return // 중복 호출 및 더 가져올 데이터 없을 경우 종료
-
       setIsLoading(true) // 로딩 시작
       const queryParams = { keyword: inputValue, page: page, size: 24, fetch: false }
       try {
         const getMovieData = await nonAuthenticated.get('/movies/search', {
           params: queryParams,
         })
-
         const newMovies = getMovieData.data.content
         if (newMovies.length > 0) {
           setMovieDataArray((prev) => [...prev, ...newMovies]) // 기존 데이터에 추가
@@ -64,9 +62,11 @@ function SearchPage() {
       setNowPage(0)
       setMovieDataArray([])
       setCheckMoreData(true)
-      fetchMovies(query, 0)
     }
-  }, [query])
+  }, [searchParams])
+  useEffect(() => {
+    fetchMovies(query, 0)
+  }, [checkMoreData, query])
   //화면감지
   useEffect(() => {
     const handleScroll = () => {
@@ -95,7 +95,9 @@ function SearchPage() {
       <SearchPageContainer>
         <SearchBar defaultValue={query} />
         <SearchPageBodyWrapper>
-          <SearchPageResultWrapper>{`"${query}" 에 대한 검색결과`}</SearchPageResultWrapper>
+          <SearchPageResultWrapper>
+            {query == '' ? '검색어를 입력해주세요' : `"${query}" 에 대한 검색결과`}
+          </SearchPageResultWrapper>
           <MoviePosterWrapper>
             {movieDataArray.map((item, index) => (
               <MoviePosterCard movieInfo={item} key={index} />

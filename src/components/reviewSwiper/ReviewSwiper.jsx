@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import styled from 'styled-components'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import 'swiper/css'
@@ -11,7 +11,8 @@ function ReviewSwiper({ dataList }) {
   const navigate = useNavigate()
   const dataLength = dataList.length
   const { openModal } = useModalStore()
-
+  const [isFull, setIsFull] = useState(true)
+  const swiperRef = useRef(null)
   const handleSlideClick = (item) => {
     console.log('슬라이드클릭 >>> ', item)
     // 모달 열기
@@ -22,10 +23,19 @@ function ReviewSwiper({ dataList }) {
       },
     })
   }
+
+  useEffect(() => {
+    const checkSwiperLength = swiperRef.current?.swiper
+    if (checkSwiperLength) {
+      const isSwipeable = checkSwiperLength.isBeginning && checkSwiperLength.isEnd
+      console.log(isSwipeable)
+      setIsFull(isSwipeable)
+    }
+  }, [dataList])
   return (
     <div>
-      <SwiperWrapper>
-        <Swiper style={{ margin: 0 }} slidesPerView={'auto'}>
+      <SwiperWrapper $isFull={isFull}>
+        <Swiper style={{ margin: 0 }} slidesPerView={'auto'} ref={swiperRef}>
           {dataList.map((review, index) => (
             <SwiperSlide
               key={index}
@@ -95,7 +105,7 @@ const SwiperWrapper = styled.div`
     top: 0;
     right: 0;
     width: 5%;
-    height: 100%;
+    height: ${(props) => (props.$isFull ? 0 : 100)}%;
     background: linear-gradient(to left, rgba(0, 0, 0, 1), rgba(255, 255, 255, 0));
     z-index: 1;
   }

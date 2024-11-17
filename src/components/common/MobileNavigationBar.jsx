@@ -5,7 +5,7 @@ import homeIcon from '@/assets/icons/navHomeIcon.svg'
 import searchIcon from '@/assets/icons/navSearchIcon.svg'
 import myIcon from '@/assets/icons/navMyIcon.svg'
 import loginIcon from '@/assets/icons/navLoginIcon.svg'
-import { useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import useAuthStore from '@/store/authStore'
 import useNavigateStore from '@/store/navigateStore'
 
@@ -16,6 +16,7 @@ function MobileNavigationBar() {
   const nowPage = useNavigateStore((state) => state.nowPage)
   const [selectedItem, setSelectedItem] = useState(nowPage)
   const { isLoggedIn } = useAuthStore()
+  const location = useLocation()
   const logInMenuItems = [
     { icon: `${homeIcon}`, url: '/' },
     { icon: `${searchIcon}`, url: '/search' },
@@ -33,9 +34,10 @@ function MobileNavigationBar() {
   }
   useEffect(() => {
     setSelectedItem(nowPage)
+    console.log(nowPage)
   }, [])
   useEffect(() => {
-    console.log(location.pathname, setNavigatePage)
+    console.log(location.pathname, nowPage)
     if (location.pathname === '/') {
       setNavigatePage(0)
       setSelectedItem(0)
@@ -45,6 +47,9 @@ function MobileNavigationBar() {
     } else if (location.pathname === '/mypage') {
       setNavigatePage(2)
       setSelectedItem(2)
+    } else {
+      setNavigatePage(-1)
+      setSelectedItem(-1)
     }
   }, [location, setNavigatePage])
   return (
@@ -124,6 +129,7 @@ const SelectedButtonSlider = styled.div`
   box-shadow: 0 0 15px 5px rgba(255, 255, 255, 0.3);
   border-radius: 10px;
   transition: left 0.3s ease;
+  display: ${(props) => (props.$index === -1 ? 'none' : 'flex')};
 `
 
 const SelectedStyle = css`
