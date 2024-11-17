@@ -37,7 +37,9 @@ function PostTextReview() {
     if (isPhotocard) {
       nextStep()
     } else {
-      const response = await post(`/reviews/${movieId}`, formRef.current)
+      console.log('확인용', formRef.current)
+
+      const response = await post(`/reviews/${movieId}`, reviewPost)
       if (response.status === 200) {
         alert('리뷰가 등록되었습니다.')
         //TODO navigate
@@ -102,11 +104,10 @@ function PostTextReview() {
         </SBoxContainer.Box>
 
         <BtnWrap>
-          <button
-            style={{ all: 'unset', cursor: 'pointer', whiteSpace: 'nowrap' }}
-            onClick={handleSubmitReview}
-          >
-            <BtnText style={{ padding: '0 50px' }}>리뷰만 올리기</BtnText>
+          <button style={{ all: 'unset', cursor: 'pointer', whiteSpace: 'nowrap' }}>
+            <BtnText style={{ padding: '0 50px' }} onClick={() => handleSubmitReview()}>
+              리뷰만 올리기
+            </BtnText>
           </button>
 
           <SBtn.ReviewPostBtn onClick={() => handleSubmitReview(true)}>
