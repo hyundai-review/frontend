@@ -1,3 +1,4 @@
+import ProtectedReviewRoute from '@/components/routes/ProtectedReviewRoute'
 import React from 'react'
 import { lazy, Suspense } from 'react'
 import { Navigate } from 'react-router-dom'
@@ -15,7 +16,9 @@ const reviewRouter = () => {
       path: ':movieId/post',
       element: (
         <Suspense fallback={loading}>
-          <ReviewPostPage />
+          <ProtectedReviewRoute>
+            <ReviewPostPage />
+          </ProtectedReviewRoute>
         </Suspense>
       ),
       children: [

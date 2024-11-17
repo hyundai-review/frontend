@@ -34,13 +34,13 @@ function MovieDetailPage() {
         //   setCurrentMovieId(movieId)
         // }
 
-        setBackgroundImg(`/tmdb-images/${data.data.poster.filePath}`)
+        setBackgroundImg(`/tmdb-images${data.data.poster.filePath}`)
       } catch (err) {
         console.error('영화 정보를 가져오는 중 오류가 발생했습니다:', err)
       }
     }
     fetchMovieDetail()
-  }, [backgroundImg, movieId])
+  }, [movieId])
 
   return (
     <>

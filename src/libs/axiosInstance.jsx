@@ -15,7 +15,7 @@ export const authenticated = axios.create({
 authenticated.interceptors.request.use((config) => {
   // const ACCESS_TOKEN = getCookie('ACCESS_TOKEN')
   const ACCESS_TOKEN =
-    'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIzIiwiaWF0IjoxNzMxODUzNDU1LCJleHAiOjE3MzE4NTUyNTV9.f06OccaWbVFVzK0GffnVgDlCgWsovNmfW3lyVnfszT4A7oyjj9mFnf6HwgaRZCM6Wu3f96rij460PAF0RdwbXw'
+    'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIzIiwiaWF0IjoxNzMxODU2NjIxLCJleHAiOjE3MzE4NTg0MjF9.qcA6Jg2AU23seBtF3q0RH3VFTaChrWLMX0n9aDuNusF79TRkI1JINVvCAezRrIDUb0cgndWR_I2sVXY6ubnnRw'
 
   if (ACCESS_TOKEN) {
     config.headers['Authorization'] = `Bearer ${ACCESS_TOKEN}`
