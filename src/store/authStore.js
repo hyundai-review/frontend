@@ -15,5 +15,17 @@ const useAuthStore = create((set) => ({
     localStorage.removeItem('isLogIn')
     removeCookie('ACCESS_TOKEN')
   },
+  setuserNickname: (newData) => {
+    const userInfo = JSON.parse(localStorage.getItem('userInfo'))
+    const newUserId = userInfo.memberId
+    const newUsernickname = newData.nickname || userInfo.nickname
+    const newUserProfile = userInfo.profile
+    const newUserInfo = {
+      memberId: newUserId,
+      nickname: newUsernickname,
+      profile: newUserProfile,
+    }
+    localStorage.setItem('userInfo', JSON.stringify(newUserInfo))
+  },
 }))
 export default useAuthStore

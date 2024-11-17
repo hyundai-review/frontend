@@ -14,6 +14,7 @@ import Header from '@/components/common/Header'
 import MobileNavigationBar from '@/components/common/MobileNavigationBar'
 import useAuthStore from '@/store/authStore'
 import OverlayPosterCard from '@/components/moviePosterCard/OverlayPosterCard'
+import { isLoggedIn, getUserData } from '@/utils/logInManager'
 import { chkTime } from '@/utils/timeUtils'
 import { useApi } from '@/libs/useApi'
 import { isLoggedIn, userData } from '@/utils/logInManager'
@@ -25,14 +26,15 @@ suggestMovieData - moviePosterUrl, movieID */
 // TODO(j) 로컬 스토리지로 불러오는 값 훅으로 빼기 + 시간 계산도 util로 빼기 > 혜정이가 뺐다
 function MainPage() {
   const navigate = useNavigate()
-  const [data, setData] = useState(userData())
+  const [isLogIn, setIsLogIn] = useState(isLoggedIn())
+  const [data, setData] = useState(getUserData())
   const nowDate = new Date()
   const timeText = chkTime(nowDate.getHours())
   const [screenWidth, setScreenWidth] = useState(document.documentElement.clientWidth)
   const [isLogIn, setIsLogIn] = useState(isLoggedIn())
   useEffect(() => {
     setIsLogIn(isLoggedIn())
-    setData(userData())
+    setData(getUserData())
     const handleResize = () => {
       setScreenWidth(document.documentElement.clientWidth)
     }

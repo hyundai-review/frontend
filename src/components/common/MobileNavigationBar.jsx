@@ -8,10 +8,10 @@ import loginIcon from '@/assets/icons/navLoginIcon.svg'
 import { useNavigate } from 'react-router-dom'
 import useAuthStore from '@/store/authStore'
 
+//TODO(j) 다른 버튼 눌러서 이동해도 아래 네비게이션바가 따라오게하기 (store로 저장)
 function MobileNavigationBar() {
   const navigate = useNavigate()
   const [selectedItem, setSelectedItem] = useState(0)
-  //TODO(j) 로그인상태 store로 저장하면 이 변수 대체
   const { isLoggedIn } = useAuthStore()
   const logInMenuItems = [
     { icon: `${homeIcon}`, url: '/' },
