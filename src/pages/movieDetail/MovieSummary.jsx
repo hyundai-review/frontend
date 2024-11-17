@@ -4,7 +4,7 @@ import clock from '@/assets/icons/clock.svg'
 import GenreButton from '@/components/common/GenreButton'
 import styled from 'styled-components'
 import media from '@/styles/media'
-import { getStatusColor, mapMovieStatus } from '@/utils/\bstatusMapper'
+import { getStatusColor, mapMovieStatus } from '@/utils/statusMapper'
 function MovieSummary({ data }) {
   // const posterImageUrl =
   //   'https://img.cgv.co.kr/Movie/Thumbnail/StillCut/000088/88847/88847230819_727.jpg'
