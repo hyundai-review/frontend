@@ -50,8 +50,8 @@ export const transformReviewPost = (reviewPost, photocard) => {
 /** 포스터 & 스토리 사진 리스트 데이터 transform */
 export const transformStillcut = (imageData) => {
   const { posters = [], stillcuts = [] } = imageData
-  // const IMG_BASE_URL = 'https://image.tmdb.org/t/p/w500'
-  const IMG_BASE_URL = '/tmdb-images'
+  const IMG_BASE_URL = 'https://image.tmdb.org/t/p/w500'
+  // const IMG_BASE_URL = '/tmdb-images'
 
   let id = 0
   const transformedPosters = posters.slice(0, 5).map((poster, index) => ({

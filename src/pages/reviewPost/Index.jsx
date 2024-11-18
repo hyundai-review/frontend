@@ -9,6 +9,7 @@ import media from '@/styles/media'
 
 function ReviewPostPage() {
   const { movieId } = useParams()
+
   const {
     reviewStep,
     prevStep,
