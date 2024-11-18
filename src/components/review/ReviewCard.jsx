@@ -9,26 +9,77 @@ import media from '@/styles/media'
 import * as S from '@/styles/review/comment.style'
 import heart from '@/assets/icons/heart.svg'
 import heartActive from '@/assets/icons/heartActive.svg'
+import { useApi } from '@/libs/useApi'
+import useModalStore from '@/store/modalStore'
 function ReviewCard({ review, pageType }) {
-  const { movieId, movieTitle, rating, reviewContent, commentCount, cardDate } = review
+  const {
+    movieId,
+    reviewId,
+    movieTitle,
+    rating,
+    reviewContent,
+    commentCount,
+    cardDate,
+    photocard,
+    authorProfile,
+    authorNickname,
+    isLike: reviewIsLike,
+    isSpoil,
+  } = review
+  //
+  const { post } = useApi(true)
+  const { openModal } = useModalStore()
+  const { get, error } = useApi()
   const navigate = useNavigate()
   const [isCommentOpen, setIsCommentOpen] = useState(false)
   const [isLike, setIsLike] = useState(false)
   const [isSpoiler, setIsSpoiler] = useState(true)
-
+  const [commentList, setCommentList] = useState([])
+  const [fetchData, setFetchData] = useState(false)
+  const fetchCommentData = async () => {
+    try {
+      const response = await get(`/comments/${review.reviewId}`)
+      setCommentList(response.data.comments)
+    } catch (error) {
+      console.log(error)
+    }
+  }
+  useEffect(() => {
+    setIsSpoiler(isSpoil)
+    setIsLike(reviewIsLike)
+    if (pageType === 'mypage') {
+      setIsSpoiler(false)
+    }
+  }, [review, pageType])
   // 함수
   const handleCommentClick = (e) => {
-    console.log('댓글 열려라 참깨')
     setIsCommentOpen((prev) => !prev)
     e.stopPropagation()
   }
   const handleLikeClick = (e) => {
-    setIsLike((prev) => !prev)
     e.stopPropagation()
+    if (!isLike) {
+      openModal('confirm', { message: '좋아요를 누르시겠습니까?' }, async () => {
+        const response = await post(`/reviews/${reviewId}/like`)
+        console.log('-----------------------------------------')
+        console.log('좋아요 성공:', response)
+        setIsLike(true)
+      })
+    } else {
+      openModal('confirm', { message: '좋아요를 취소하시겠습니까?' }, async () => {
+        const response = await post(`/reviews/${reviewId}/like`)
+        console.log('-----------------------------------------')
+        console.log('좋아요 취소 성공:', response)
+        setIsLike(false)
+      })
+    }
   }
   const handleReviewClick = () => {
-    // TODO(k) 댓글까지 스크롤 처리
-    navigate(`/movie/${movieId}/detail`)
+    // TODO(k) 댓글까지 스크롤 처리 가능?
+    if (pageType === 'mypage') {
+      navigate(`/movie/${movieId}/detail`)
+    }
+    return
   }
   const handleSpoiler = (e) => {
     e.stopPropagation()
@@ -39,6 +90,31 @@ function ReviewCard({ review, pageType }) {
       setIsSpoiler(false)
     }
   }, [pageType])
+
+  useEffect(() => {
+    setCommentList(commentList)
+  }, [commentList])
+
+  useEffect(() => {
+    fetchCommentData()
+    setCommentList(commentList)
+  }, [isCommentOpen, fetchData, setFetchData])
+
+  // const handleComment = () => {
+  //   setFetchData((prev) => !prev)
+  // }
+  // useEffect(() => {
+  //   const fetchCommentData = async () => {
+  //     try {
+  //       const response = await get(`/comments/${review.reviewdId}`)
+  //       setCommentList(response.data.comments)
+  //       console.log(commentList)
+  //     } catch (error) {
+  //       console.log(error)
+  //     }
+  //   }
+  //   fetchCommentData()
+  // }, [isCommentOpen])
   return (
     <ReviewCardContainer className='hoverBright' onClick={handleReviewClick}>
       <Wrap>
@@ -57,45 +133,55 @@ function ReviewCard({ review, pageType }) {
                 {pageType === 'mypage' && <CardMovie>{movieTitle}</CardMovie>}
                 {pageType === 'movieDetail' && (
                   <S.CommentWrap>
-                    <S.CommentProfileImage src={commentProfileImage} />
-                    <S.CommentNickname>{commentNickname}</S.CommentNickname>
+                    <S.CommentProfileImage src={authorProfile} />
+                    <S.CommentNickname>{authorNickname}</S.CommentNickname>
                   </S.CommentWrap>
                 )}
                 <StarRating type='readonly' initialValue={rating} max={5} size={16} />
               </CardHeader>
               <CardContent>{reviewContent}</CardContent>
             </LeftWrap>
-            <RightWrap>
-              <Photocard src={review.photocard} />
-            </RightWrap>
+            {photocard && (
+              <RightWrap>
+                <Photocard src={photocard} />
+              </RightWrap>
+            )}
           </>
         )}
       </Wrap>
       <CommentWrap>
         <CardFooter>
           <CardCommentWrap>
-            <CardCommentLeft>
+            <CardCommentLeft onClick={handleCommentClick}>
               <CardCommentIcon
                 src={isCommentOpen ? commentWhite : comment}
                 $iscommentopen={isCommentOpen}
-                onClick={handleCommentClick}
               />
-              <CardCommentCount>{commentCount}</CardCommentCount>
+              <CardCommentCount>{commentList.length}</CardCommentCount>
             </CardCommentLeft>
             <FooterRightWrap>
               <CardDate>{cardDate.substring(0, 10)}</CardDate>
-              {!isLike ? (
-                <LikeIcon src={heart} $islike={isLike} onClick={handleLikeClick} />
-              ) : (
-                <LikeIcon src={heartActive} $islike={isLike} onClick={handleLikeClick} />
-              )}
+              {pageType === 'movieDetail' &&
+                (!isLike ? (
+                  <LikeIcon src={heart} $islike={isLike} onClick={handleLikeClick} />
+                ) : (
+                  <LikeIcon src={heartActive} $islike={isLike} onClick={handleLikeClick} />
+                ))}
             </FooterRightWrap>
           </CardCommentWrap>
         </CardFooter>
         {isCommentOpen && (
           <>
-            <ReviewComment />
-            <ReviewComment />
+            {commentList?.map((item, index) => (
+              <ReviewComment
+                isEdit={false}
+                commentData={item}
+                reviewId={review.reviewId}
+                key={index}
+                setFetchData={setFetchData}
+              />
+            ))}
+            <ReviewComment isEdit={true} reviewId={review.reviewId} setFetchData={setFetchData} />
           </>
         )}
       </CommentWrap>
@@ -104,9 +190,6 @@ function ReviewCard({ review, pageType }) {
 }
 
 export default ReviewCard
-const commentProfileImage =
-  'https://i.pinimg.com/564x/a0/16/57/a01657c023c0c08e4bed3333ffe7421e.jpg'
-const commentNickname = '히무라 켄신'
 
 const ReviewCardContainer = styled.div`
   width: 100%;
@@ -115,7 +198,6 @@ const ReviewCardContainer = styled.div`
   border-radius: 10px;
   border: 1px solid rgba(255, 255, 255, 0.1);
   background: rgba(0, 0, 0, 0.25);
-  cursor: pointer;
 `
 const SpoilerWrap = styled.div`
   display: flex;
@@ -230,6 +312,7 @@ const CardCommentWrap = styled.div`
 const CardCommentLeft = styled.div`
   display: flex;
   align-items: center;
+  cursor: pointer;
 `
 const CardComment = styled.span`
   /* font-size: 14px;
@@ -250,7 +333,6 @@ const CardCommentIcon = styled.img`
   width: 24px;
   height: 24px;
   margin-right: 5px;
-  cursor: pointer;
   ${({ $iscommentopen }) =>
     $iscommentopen && 'filter: drop-shadow(0px 0px 10px var(--primary-light-red, #ffd7d7));'}
 `
@@ -272,6 +354,7 @@ const LikeIcon = styled.img`
   ${({ $islike }) =>
     $islike && 'filter: drop-shadow(0px 0px 10px var(--primary-light-red, #ffd7d7));'}
 `
+
 const FooterRightWrap = styled.div`
   display: flex;
   align-items: center;

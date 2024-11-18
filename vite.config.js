@@ -12,4 +12,13 @@ export default defineConfig({
     },
   },
   assetsInclude: ['**/*.ttf'],
+  server: {
+    proxy: {
+      '/tmdb-images': {
+        target: 'https://image.tmdb.org/t/p/w500',
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/tmdb-images/, ''),
+      },
+    },
+  },
 })

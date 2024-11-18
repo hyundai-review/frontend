@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 // import StarRating from './StarRating'
 import styled from 'styled-components'
 import commentWhite from '@/assets/icons/commentWhite.svg'
@@ -11,46 +11,102 @@ import ReviewComment from '@/components/review/ReviewComment'
 import edit from '@/assets/icons/edit.svg'
 import trash from '@/assets/icons/trash.svg'
 import SearchBar from '@/components/common/SearchBar'
-const review = {
-  movieId: 1,
-  movieTitle: '명탐정 코난-시한장치의 마천루',
-  reviewId: 101,
-  rating: 5,
-  reviewContent: '5월 3일 토요일 밤 10시! 베이카 시네마 로비에서 만나는 거다! 잊지 마!',
-  photocard: 'https://img.cgv.co.kr/Movie/Thumbnail/Poster/000088/88769/88769_320.jpg',
-  totalComments: 12,
-  createdAt: '2023-11-01T12:00:00Z',
-  updatedAt: '2023-11-02T10:00:00Z',
-}
-function MyReview() {
-  const { movieId, movieTitle, rating, reviewContent, totalComments, createdAt } = review
-  const navigate = useNavigate()
+import * as SText from '@/styles/text'
+import { Checkbox } from '@mui/material'
+import { useApi } from '@/libs/useApi'
+import useModalStore from '@/store/modalStore'
+import { validateReviewForm } from '@/utils/myReviewHandlers'
+// import { review } from '@/assets/data/myReviewData'
+function MyReview({ myReviewData = {}, onDataChange }) {
+  // ----------data----------
+  const {
+    reviewId = 0,
+    rating: reviewRating = 0,
+    content: reviewContent = '작성된 리뷰가 없습니다.',
+    photocard = null,
+    updatedAt = '정보 없음',
+    totalComments = 0,
+    isSpoil: reviewIsSpoil = false,
+  } = myReviewData
+  // ----------API----------
+  const { put, delete: deleteReview } = useApi(true)
+  const { openModal } = useModalStore()
+  // ---------- State ----------
   const [isCommentOpen, setIsCommentOpen] = useState(false)
   const [isEdit, setIsEdit] = useState(false)
   const [isDelete, setIsDelete] = useState(false)
-  const [content, setContent] = useState(reviewContent)
-  const [initrating, setRating] = useState(3)
-  const handleRatingChange = (newRating) => {
-    setRating(newRating) // 별점 변경 시 상태 업데이트
+  const [isSpoil, setIsSpoil] = useState(false)
+  const [content, setContent] = useState('')
+  const [rating, setRating] = useState(0)
+  const formRef = useRef({ isSpoil, rating, content })
+  useEffect(() => {
+    if (myReviewData) {
+      // console.log('myReviewData >>> ', myReviewData)
+      setRating(reviewRating)
+      setContent(reviewContent)
+      setIsSpoil(reviewIsSpoil)
+      formRef.current.rating = reviewRating
+      formRef.current.content = reviewContent
+      formRef.current.isSpoil = reviewIsSpoil
+    }
+  }, [myReviewData])
+  // // 함수
+  const handleCheckboxChange = (e) => {
+    const checked = e.target.checked
+    formRef.current.isSpoil = checked // Ref 업데이트
+    setIsSpoil(checked) // 상태 업데이트
   }
-
-  // 함수
-  const handleCommentClick = (e) => {
-    console.log('댓글 열려라 참깨')
-    setIsCommentOpen((prev) => !prev)
-    e.stopPropagation()
+  const handleRatingChange = (newRating) => {
+    setRating(newRating) // 별점 상태 업데이트
+    formRef.current.rating = newRating // 폼 데이터 업데이트
   }
   const handleEditClick = (e) => {
-    console.log('편집 열려라 참깨')
-    setIsEdit((prev) => !prev)
+    e.stopPropagation()
+    console.log('편집 열려라 참깨 : ', isEdit)
+    const formData = {
+      rating: formRef.current.rating,
+      content: formRef.current.content,
+      isSpoil: formRef.current.isSpoil,
+    }
+    if (isEdit) {
+      // 제출 클릭
+      // 유효성 검사 호출
+      console.log('제출된 데이터 : ', formData) // 제출 데이터 확인
+      const isValid = validateReviewForm(formData, openModal)
+      if (!isValid) return
+      openModal('confirm', { message: '수정하시겠습니까?' }, async () => {
+        const response = await put(`/reviews/${reviewId}`, formData)
+        console.log('-----------------------------------------')
+        console.log('수정 성공:', response)
+        setIsEdit(false) // 편집 모드 종료
+      })
+      return
+    } else {
+      setIsEdit(true)
+    }
+  }
+  const handleCommentClick = (e) => {
+    console.log('댓글 열려라 참깨')
+    setIsCommentOpen(true)
     e.stopPropagation()
   }
   const handleDeleteClick = (e) => {
-    alert('삭제하시겠습니까?')
-    setIsDelete((prev) => !prev)
     e.stopPropagation()
+    openModal('confirm', { message: '삭제하시겠습니까?' }, async () => {
+      try {
+        const response = await deleteReview(`/reviews/${reviewId}`)
+        console.log('삭제 성공:', response)
+        onDataChange() // 부모에게 데이터 갱신 요청
+      } catch (error) {
+        console.error('삭제 실패:', error)
+      }
+    })
   }
-  const handleContentChange = (e) => setContent(e.target.value)
+  // 리뷰 내용 변경
+  const handleContentChange = (e) => {
+    setContent(e.target.value) // 내용 상태 업데이트
+    formRef.current.content = e.target.value // 폼 데이터 업데이트
+  }
   return (
     <Container>
       <Wrap>
@@ -62,25 +118,73 @@ function MyReview() {
           </CardHeader>
           {isEdit ? (
             <EditWrap>
-              <StarRating
-                type='controlled'
-                initialValue={initrating}
-                onChange={handleRatingChange}
-                size={16}
-                max={5}
-              />
+              <EditContents>
+                <StarRating
+                  type='controlled'
+                  initialValue={rating}
+                  onChange={handleRatingChange}
+                  size={16}
+                  max={5}
+                />
+                <SpoWrap>
+                  <SText.Text>스포일러가 포함되어 있나요?</SText.Text>
+                  <Checkbox
+                    checked={isSpoil}
+                    onChange={handleCheckboxChange}
+                    disableRipple // 애니 효과 제거
+                    sx={{
+                      padding: '0',
+                      color: 'var(--color-gray-50)',
+                      filter: 'drop-shadow(0px 0px 10px var(--primary-light-red, #ffd7d7))',
+
+                      '&.Mui-checked': {
+                        color: 'var(--color-gray-50)',
+                      },
+                      '& .MuiSvgIcon-root': {},
+                    }}
+                  />
+                </SpoWrap>
+              </EditContents>
               <EditInput type='text' value={content} onChange={handleContentChange} />
             </EditWrap>
           ) : (
             <>
-              <StarRating type='readonly' initialValue={rating} max={5} size={16} />
+              <EditContents>
+                <StarRating type='readonly' initialValue={rating} max={5} size={16} />
+                <SpoWrap>
+                  <SText.Text>
+                    스포
+                    <Checkbox
+                      // defaultChecked={!isSpoil}
+                      checked={isSpoil}
+                      disableRipple // 애니 효과 제거
+                      disabled // 체크박스를 읽기 전용으로 설정
+                      sx={{
+                        padding: '0',
+                        color: 'var(--color-gray-50)',
+                        filter: 'drop-shadow(0px 0px 10px var(--primary-light-red, #ffd7d7))',
+
+                        '&.Mui-checked': {
+                          color: 'var(--color-gray-50)',
+                        },
+                        '&.Mui-disabled': {
+                          opacity: 1, // disabled 상태에서도 가시성을 유지
+                          color: 'var(--color-gray-50)',
+                        },
+                      }}
+                    />
+                  </SText.Text>
+                </SpoWrap>
+              </EditContents>
               <CardContent>{content}</CardContent>
             </>
           )}
         </LeftWrap>
-        <RightWrap>
-          <Photocard src={review.photocard} />
-        </RightWrap>
+        {photocard && (
+          <RightWrap>
+            <Photocard src={photocard} />
+          </RightWrap>
+        )}
       </Wrap>
       <CommentWrap>
         <CardFooter>
@@ -94,18 +198,13 @@ function MyReview() {
               <CardCommentCount>{totalComments}</CardCommentCount>
             </CardCommentLeft>
             <CardCommentRight>
-              <CardDate>{createdAt.substring(0, 10)}</CardDate>
+              <CardDate>{updatedAt.slice(0, 10)}</CardDate>
               <Icon src={edit} $isedit={isEdit} onClick={handleEditClick} />
               <Icon src={trash} $isdelete={isDelete} onClick={handleDeleteClick} />
             </CardCommentRight>
           </CardCommentWrap>
         </CardFooter>
-        {isCommentOpen && (
-          <>
-            <ReviewComment />
-            <ReviewComment />
-          </>
-        )}
+        {isCommentOpen && <>{/*TODO(j) 댓글 불러와서 연동하기 */}</>}
       </CommentWrap>
     </Container>
   )
@@ -119,7 +218,7 @@ const TitleWrap = styled.div`
   background: rgba(0, 0, 0, 0.1);
   box-shadow: 0px 0px 10px 0px var(--primary-solid-light, rgba(199, 125, 181, 0.5));
   padding: 2px 8px;
-  margin-bottom: 5px;
+  /* margin-bottom: 5px; */
 `
 const Title = styled.div`
   text-align: center;
@@ -149,7 +248,6 @@ const Wrap = styled.div`
 `
 
 const LeftWrap = styled.div`
-  margin-right: 20px;
   flex: 1;
 `
 const CardHeader = styled.div`
@@ -234,8 +332,15 @@ const Icon = styled.img`
   ${({ $iscommentopen }) =>
     $iscommentopen && 'filter: drop-shadow(0px 0px 10px var(--primary-light-red, #ffd7d7));'}
   ${({ $isedit }) =>
-    $isedit && 'filter: drop-shadow(0px 0px 10px var(--primary-light-red, #ffd7d7));'}
-      ${({ $isdelete }) =>
+    $isedit &&
+    `
+      filter: 
+        drop-shadow(0px 0px 5px var(--primary-light-red, #ffd7d7)) 
+        brightness(1.2) 
+        contrast(1.5);
+      box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2); /* 부드러운 그림자 추가 */
+    `};
+  ${({ $isdelete }) =>
     $isdelete && 'filter: drop-shadow(0px 0px 10px var(--primary-light-red, #ffd7d7));'}
 `
 const CardCommentCount = styled.span`
@@ -284,4 +389,16 @@ const EditWrap = styled.div`
   ${media.medium`
   height:86px;
 `}
+`
+const EditContents = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 5px;
+`
+const SpoWrap = styled.div`
+  padding: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 `

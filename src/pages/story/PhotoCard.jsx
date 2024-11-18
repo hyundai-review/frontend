@@ -9,9 +9,12 @@ import useStoryStore from '@/store/storyStore'
 import CLOSE from '@/assets/icons/close.svg?react'
 import { useNavigate } from 'react-router-dom'
 
-function PhotoCard({ reviewInfo, slideNext }) {
-  const focusReview = useStoryStore((state) => state.focusReview)
+function PhotoCard({ reviewInfo, slideNext, index }) {
+  const { focusReview } = useStoryStore()
   const navigate = useNavigate()
+
+  const isCurrentFocus = focusReview?.reviewId === reviewInfo.reviewId
+
   return (
     <Container>
       <div style={{ marginBottom: '10px' }}>
@@ -27,21 +30,21 @@ function PhotoCard({ reviewInfo, slideNext }) {
           <Tab>
             <CommentWrap>
               <COMMENT />
-              <span>{reviewInfo.rating}</span>
+              <span>{reviewInfo.totalComments}</span>
             </CommentWrap>
             <HEART />
           </Tab>
         </ContentWrap>
       </CardWrap>
 
-      {focusReview.id === reviewInfo.id ? (
+      {isCurrentFocus && (
         <BottomWrap>
           <ProgressBar slideNext={slideNext} />
           <CloseWrap onClick={() => navigate('/', { replace: true })}>
             <CLOSE />
           </CloseWrap>
         </BottomWrap>
-      ) : null}
+      )}
     </Container>
   )
 }
@@ -62,7 +65,8 @@ const CardWrap = styled.div`
 `
 const ImgWrap = styled.div`
   width: 362px;
-  height: 429.75px;
+  /* height: 429.75px; */
+  height: 350px;
   flex-shrink: 0;
 
   img {

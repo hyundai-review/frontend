@@ -19,6 +19,9 @@ function Photography({ setTakePhotoFunc }) {
   const { canvasRef, offCanvasRef, offCtxRef, initializeCanvas } = useCanvas() // canvas 관리
   const backgroundImageObj = useBackgroundImage(optionBackImg.imgURL, dimensions) // 배경 이미지 관리
 
+  console.log('Background Image URL:', optionBackImg.imgURL)
+  console.log('Background Image Object:', backgroundImageObj.current)
+
   // 비디오 처리
   const { renderVideo } = useVideoProcessing(
     videoRef,

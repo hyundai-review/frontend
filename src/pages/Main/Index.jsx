@@ -12,13 +12,14 @@ import { reviewData } from '@/assets/data/reviewData'
 import BackgroundContainer from '@/components/common/BackgroundContainer'
 import Header from '@/components/common/Header'
 import MobileNavigationBar from '@/components/common/MobileNavigationBar'
-import useAuthStore from '@/store/authStore'
 import OverlayPosterCard from '@/components/moviePosterCard/OverlayPosterCard'
 import { isLoggedIn, getUserData } from '@/utils/logInManager'
 import { chkTime } from '@/utils/timeUtils'
 import { useApi } from '@/libs/useApi'
 import { Button } from '@mui/material'
 import useModalStore from '@/store/modalStore'
+import useNavigateStore from '@/store/navigateStore'
+import useStoryStore from '@/store/storyStore'
 
 /*boxOfficeMovieData - url, rank, date
 suggestMovieData - moviePosterUrl, movieID */
@@ -26,12 +27,16 @@ suggestMovieData - moviePosterUrl, movieID */
 function MainPage() {
   const navigate = useNavigate()
   const [isLogIn, setIsLogIn] = useState(isLoggedIn())
+  // const [isLogIn, setIsLogIn] = useState(true)
   const [data, setData] = useState(getUserData())
   const nowDate = new Date()
   const timeText = chkTime(nowDate.getHours())
   const [screenWidth, setScreenWidth] = useState(document.documentElement.clientWidth)
+  const setNavigatePage = useNavigateStore((state) => state.setNowPage)
+  const [stories, setStories] = useState(reviewData)
+  const { setReviewList } = useStoryStore()
   useEffect(() => {
-    setIsLogIn(isLoggedIn())
+    // setIsLogIn(isLoggedIn())
     setData(getUserData())
     const handleResize = () => {
       setScreenWidth(document.documentElement.clientWidth)
@@ -40,8 +45,10 @@ function MainPage() {
     return () => {
       window.removeEventListener('resize', handleResize)
     }
-    console.log(boxOfficeMovies)
   }, [])
+  useEffect(() => {
+    setNavigatePage(0)
+  }, [setNavigatePage])
   const suggestMovieData = [...Array(10)].map((_, index) => ({
     movieId: index,
     poster: 'https://image.tmdb.org/t/p/w300/tKV0etz5OIsAjSNG1hJktsjbNJk.jpg',
@@ -52,27 +59,45 @@ function MainPage() {
   // ----------------------  API 요청 ----------------------
   const [boxOfficeMovies, setBoxOfficeMovies] = useState([])
   const { get, loading, error } = useApi(false)
+  const { get: authGet } = useApi(true)
+
+  useEffect(() => {
+    if (isLogIn) {
+      authGet(`/reviews/recents`).then((response) => {
+        console.log('story 조회', response.data.contents)
+        setStories(response.data.contents)
+        setReviewList(response.data.contents)
+      })
+    }
+  }, [isLogIn])
   useEffect(() => {
     const fetchBoxoffice = async () => {
       try {
         const data = await get(`/movies/boxoffice`)
         setBoxOfficeMovies(data.data.movies)
-        console.log(data)
       } catch (err) {
         console.error('영화 정보를 가져오는 중 오류가 발생했습니다:', err)
       }
     }
     fetchBoxoffice()
-  }, [boxOfficeMovies])
+  }, [])
   // ---------------------------모달 테스트중---------------------
   const { openModal } = useModalStore()
   const handleModalClick = () => {
     console.log('모달 클릭')
     // 모달 열기
-    openModal('alert', {
-      message: '리뷰가 등록되었습니다.',
-    })
+    openModal(
+      'confirm',
+      {
+        message: '계속 진행하시겠습니까?',
+      },
+      // 확인 버튼 클릭 시 실행될 콜백 함수
+      () => {
+        console.log('확인 누름')
+      },
+    )
   }
+
   return (
     <div>
       <MainPageTopContainer>
@@ -96,7 +121,7 @@ function MainPage() {
               <MainPageWrapperTitle>{'최신 스토리'}</MainPageWrapperTitle>
               <Wrap>
                 {isLogIn ? (
-                  <Stories dataList={reviewData} path={'/main/story'} />
+                  <Stories dataList={stories} path={'/main/story'} />
                 ) : (
                   <Stories dataList={reviewData} path={'/user/login'} />
                 )}
