@@ -4,6 +4,8 @@ import * as S from '@/styles/review/comment.style'
 import Button from '../common/Button'
 import { getUserData } from '@/utils/logInManager'
 import { useApi } from '@/libs/useApi'
+import edit from '@/assets/icons/edit.svg'
+import trash from '@/assets/icons/trash.svg'
 
 function ReviewComment({ isEdit, commentData, reviewId }) {
   const { post, error } = useApi()
@@ -63,11 +65,18 @@ function ReviewComment({ isEdit, commentData, reviewId }) {
           <>
             <CommentContent>{commentContent}</CommentContent>
             <CommentFooter>
-              <div>
-                <S.CommentProfileImage src={commentProfileImage} />
-                <S.CommentNickname>{commentNickname}</S.CommentNickname>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                <div style={{ display: 'flex', alignItems: 'center' }}>
+                  <S.CommentProfileImage src={commentProfileImage} />
+                  <S.CommentNickname>{commentNickname}</S.CommentNickname>
+                </div>
+                <CommentDate>{commentDate}</CommentDate>
               </div>
-              <CommentDate>{commentDate}</CommentDate>
+
+              <div>
+                <Icon src={edit} />
+                <Icon src={trash} />
+              </div>
             </CommentFooter>
           </>
         </CommentContainer>
@@ -144,4 +153,16 @@ const CommentInput = styled.textarea`
   &:focus {
     height: 82px;
   }
+`
+const Icon = styled.img`
+  width: 24px;
+  height: 24px;
+  margin-right: 5px;
+  cursor: pointer;
+  ${({ $iscommentopen }) =>
+    $iscommentopen && 'filter: drop-shadow(0px 0px 10px var(--primary-light-red, #ffd7d7));'}
+  ${({ $isedit }) =>
+    $isedit && 'filter: drop-shadow(0px 0px 10px var(--primary-light-red, #ffd7d7));'}
+      ${({ $isdelete }) =>
+    $isdelete && 'filter: drop-shadow(0px 0px 10px var(--primary-light-red, #ffd7d7));'}
 `

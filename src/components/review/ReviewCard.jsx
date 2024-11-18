@@ -85,8 +85,8 @@ function ReviewCard({ review, pageType }) {
                 {pageType === 'mypage' && <CardMovie>{movieTitle}</CardMovie>}
                 {pageType === 'movieDetail' && (
                   <S.CommentWrap>
-                    <S.CommentProfileImage src={commentProfileImage} />
-                    <S.CommentNickname>{commentNickname}</S.CommentNickname>
+                    <S.CommentProfileImage src={authorProfile} />
+                    <S.CommentNickname>{authorNickname}</S.CommentNickname>
                   </S.CommentWrap>
                 )}
                 <StarRating type='readonly' initialValue={rating} max={5} size={16} />
