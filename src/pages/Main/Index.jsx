@@ -12,13 +12,13 @@ import { reviewData } from '@/assets/data/reviewData'
 import BackgroundContainer from '@/components/common/BackgroundContainer'
 import Header from '@/components/common/Header'
 import MobileNavigationBar from '@/components/common/MobileNavigationBar'
-import useAuthStore from '@/store/authStore'
 import OverlayPosterCard from '@/components/moviePosterCard/OverlayPosterCard'
 import { isLoggedIn, getUserData } from '@/utils/logInManager'
 import { chkTime } from '@/utils/timeUtils'
 import { useApi } from '@/libs/useApi'
 import { Button } from '@mui/material'
 import useModalStore from '@/store/modalStore'
+import useNavigateStore from '@/store/navigateStore'
 
 /*boxOfficeMovieData - url, rank, date
 suggestMovieData - moviePosterUrl, movieID */
@@ -30,6 +30,7 @@ function MainPage() {
   const nowDate = new Date()
   const timeText = chkTime(nowDate.getHours())
   const [screenWidth, setScreenWidth] = useState(document.documentElement.clientWidth)
+  const setNavigatePage = useNavigateStore((state) => state.setNowPage)
   useEffect(() => {
     setIsLogIn(isLoggedIn())
     setData(getUserData())
@@ -40,8 +41,10 @@ function MainPage() {
     return () => {
       window.removeEventListener('resize', handleResize)
     }
-    console.log(boxOfficeMovies)
   }, [])
+  useEffect(() => {
+    setNavigatePage(0)
+  }, [setNavigatePage])
   const suggestMovieData = [...Array(10)].map((_, index) => ({
     movieId: index,
     poster: 'https://image.tmdb.org/t/p/w300/tKV0etz5OIsAjSNG1hJktsjbNJk.jpg',
@@ -57,7 +60,6 @@ function MainPage() {
       try {
         const data = await get(`/movies/boxoffice`)
         setBoxOfficeMovies(data.data.movies)
-        console.log(data)
       } catch (err) {
         console.error('영화 정보를 가져오는 중 오류가 발생했습니다:', err)
       }
