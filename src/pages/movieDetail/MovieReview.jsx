@@ -11,7 +11,7 @@ import { useApi } from '@/libs/useApi'
 
 function MovieReview() {
   const navigate = useNavigate()
-  
+
   // data
   const reviewCount = 123
   const averageRating = 4.23

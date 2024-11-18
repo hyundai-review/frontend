@@ -28,7 +28,6 @@ function ReviewSwiper({ dataList }) {
     const checkSwiperLength = swiperRef.current?.swiper
     if (checkSwiperLength) {
       const isSwipeable = checkSwiperLength.isBeginning && checkSwiperLength.isEnd
-      console.log(isSwipeable)
       setIsFull(isSwipeable)
     }
   }, [dataList])

@@ -9,6 +9,8 @@ import media from '@/styles/media'
 import * as S from '@/styles/review/comment.style'
 import heart from '@/assets/icons/heart.svg'
 import heartActive from '@/assets/icons/heartActive.svg'
+import { useApi } from '@/libs/useApi'
+
 function ReviewCard({ review, pageType }) {
   const {
     rating,
@@ -21,17 +23,17 @@ function ReviewCard({ review, pageType }) {
     isLike,
     isSpoil,
   } = review
-  //
+  const { get, error } = useApi()
   const navigate = useNavigate()
   const [isCommentOpen, setIsCommentOpen] = useState(false)
   const [_isLike, setIsLike] = useState(false)
   const [isSpoiler, setIsSpoiler] = useState(true)
+  const [commentList, setCommentList] = useState([])
   useEffect(() => {
     console.log('reviewCard >>> ', review)
   }, [review])
-  // 함수
+  //함수
   const handleCommentClick = (e) => {
-    console.log('댓글 열려라 참깨')
     setIsCommentOpen((prev) => !prev)
     e.stopPropagation()
   }
@@ -52,6 +54,18 @@ function ReviewCard({ review, pageType }) {
       setIsSpoiler(false)
     }
   }, [pageType])
+  useEffect(() => {
+    const fetchCommentData = async () => {
+      try {
+        const response = await get(`/comments/${review.reviewdId}`)
+        setCommentList(response.data.comments)
+        console.log(commentList)
+      } catch (error) {
+        console.log(error)
+      }
+    }
+    fetchCommentData()
+  }, [isCommentOpen])
   return (
     <ReviewCardContainer className='hoverBright' onClick={handleReviewClick}>
       <Wrap>
@@ -93,7 +107,7 @@ function ReviewCard({ review, pageType }) {
                 $iscommentopen={isCommentOpen}
                 onClick={handleCommentClick}
               />
-              <CardCommentCount>{commentCount}</CardCommentCount>
+              <CardCommentCount>{review.commentCount}</CardCommentCount>
             </CardCommentLeft>
             <FooterRightWrap>
               <CardDate>{cardDate.substring(0, 10)}</CardDate>
@@ -105,12 +119,16 @@ function ReviewCard({ review, pageType }) {
             </FooterRightWrap>
           </CardCommentWrap>
         </CardFooter>
-        {isCommentOpen && (
-          <>
-            <ReviewComment />
-            <ReviewComment />
-          </>
-        )}
+        {isCommentOpen &&
+          commentList.map((item, index) => (
+            <ReviewComment
+              isEdit={false}
+              commentData={item}
+              reviewId={review.reviewdId}
+              key={index}
+            />
+          ))}
+        {/* <ReviewComment isEdit={true} reviewId={review.reviewdId} /> */}
       </CommentWrap>
     </ReviewCardContainer>
   )
@@ -285,6 +303,7 @@ const LikeIcon = styled.img`
   ${({ $islike }) =>
     $islike && 'filter: drop-shadow(0px 0px 10px var(--primary-light-red, #ffd7d7));'}
 `
+
 const FooterRightWrap = styled.div`
   display: flex;
   align-items: center;
