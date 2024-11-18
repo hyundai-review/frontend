@@ -41,7 +41,7 @@ function MyReview({ myReviewData = {}, onDataChange }) {
   const formRef = useRef({ isSpoil, rating, content })
   useEffect(() => {
     if (myReviewData) {
-      console.log('myReviewData >>> ', myReviewData)
+      // console.log('myReviewData >>> ', myReviewData)
       setRating(reviewRating)
       setContent(reviewContent)
       setIsSpoil(reviewIsSpoil)

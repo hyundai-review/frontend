@@ -30,7 +30,6 @@ function ReviewSwiper({ dataList }) {
       const isSwipeable = checkSwiperLength.isBeginning && checkSwiperLength.isEnd
       setIsFull(isSwipeable)
     }
-    console.log('reviewSwiper > ', dataList.photocard)
   }, [dataList])
   return (
     <div>
@@ -45,9 +44,7 @@ function ReviewSwiper({ dataList }) {
                   style={{ width: 250 }}
                 >
                   <ImageSlideWrap>
-                    <ImageSlide $imageurl={review.photocard}>
-                      <ImageText>{'여기는 나중에 대체됨'}</ImageText>
-                    </ImageSlide>
+                    <ImageSlide $imageurl={review.photocard}></ImageSlide>
                   </ImageSlideWrap>
                 </SwiperSlide>
               ),

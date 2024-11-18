@@ -35,12 +35,13 @@ function ReviewCard({ review, pageType }) {
   const [isSpoiler, setIsSpoiler] = useState(true)
   const [commentList, setCommentList] = useState([])
   useEffect(() => {
-    // console.log('reviewCard >>> ', review)
-    // console.log('reviewLike >>> ', reviewIsLike)
     setIsSpoiler(isSpoil)
     setIsLike(reviewIsLike)
-  }, [review])
-  //함수
+    if (pageType === 'mypage') {
+      setIsSpoiler(false)
+    }
+  }, [review, pageType])
+  // 함수
   const handleCommentClick = (e) => {
     setIsCommentOpen((prev) => !prev)
     e.stopPropagation()
@@ -64,7 +65,7 @@ function ReviewCard({ review, pageType }) {
     }
   }
   const handleReviewClick = () => {
-    // TODO(k) 댓글까지 스크롤 처리 > 영화 상세페이지의 리뷰를 누르면 무슨일이 벌어지지
+    // TODO(k) 댓글까지 스크롤 처리
     if (pageType === 'mypage') {
       navigate(`/movie/${movieId}/detail`)
     }
@@ -74,23 +75,18 @@ function ReviewCard({ review, pageType }) {
     e.stopPropagation()
     setIsSpoiler(false)
   }
-  useEffect(() => {
-    if (pageType === 'mypage') {
-      setIsSpoiler(false)
-    }
-  }, [pageType])
-  useEffect(() => {
-    const fetchCommentData = async () => {
-      try {
-        const response = await get(`/comments/${review.reviewdId}`)
-        setCommentList(response.data.comments)
-        console.log(commentList)
-      } catch (error) {
-        console.log(error)
-      }
-    }
-    fetchCommentData()
-  }, [isCommentOpen])
+  // useEffect(() => {
+  //   const fetchCommentData = async () => {
+  //     try {
+  //       const response = await get(`/comments/${review.reviewdId}`)
+  //       setCommentList(response.data.comments)
+  //       console.log(commentList)
+  //     } catch (error) {
+  //       console.log(error)
+  //     }
+  //   }
+  //   fetchCommentData()
+  // }, [isCommentOpen])
   return (
     <ReviewCardContainer className='hoverBright' onClick={handleReviewClick}>
       <Wrap>
