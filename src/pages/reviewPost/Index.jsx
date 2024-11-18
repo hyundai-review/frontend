@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { useParams, Outlet, useNavigate, useLocation } from 'react-router-dom'
 import styled from 'styled-components'
 import * as S from '@/styles/background'
@@ -9,6 +9,7 @@ import media from '@/styles/media'
 
 function ReviewPostPage() {
   const { movieId } = useParams()
+  const [imageLoaded, setImageLoaded] = useState(false)
   const {
     reviewStep,
     prevStep,
@@ -22,6 +23,18 @@ function ReviewPostPage() {
   } = useReviewStore()
   const navigate = useNavigate()
   const location = useLocation()
+
+  // 이미지 프리로드
+  useEffect(() => {
+    if (backgroundImg) {
+      const img = new Image()
+      img.crossOrigin = 'anonymous'
+      img.onload = () => {
+        setImageLoaded(true)
+      }
+      img.src = backgroundImg
+    }
+  }, [backgroundImg])
 
   // store에 navigate 함수 저장
   useEffect(() => {
@@ -50,7 +63,7 @@ function ReviewPostPage() {
   }, [location.pathname, setReviewStep])
 
   return (
-    <Container $image={backgroundImg}>
+    <Container $image={backgroundImg} $loaded={imageLoaded}>
       <S.BlurOverlay>
         <Wrap>
           <TopWrap>
@@ -99,7 +112,8 @@ export default ReviewPostPage
 const Container = styled.div`
   width: 100vw;
   height: 100vh;
-  background: ${(props) => `url(${props.$image})`};
+  /* background: ${(props) => `url(${props.$image})`}; */
+  background: ${(props) => (props.$loaded ? `url(${props.$image})` : 'none')};
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
