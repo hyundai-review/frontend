@@ -18,12 +18,12 @@ const ButtonContainer = styled.div`
   display: inline-flex; /* 내용에 따라 크기 조절 */
   align-items: center;
   justify-content: center;
-  cursor: pointer;
   border-radius: ${({ radius }) => radius || 5}px;
   border: 1px solid #b6b5ff;
   box-shadow: 0px 0px 10px 0px var(--primary-solid-light, rgba(199, 125, 181, 0.5));
   //padding: 1px 4px;
   padding: 5px 10px;
+  cursor: default;
 `
 const ButtonText = styled.div`
   text-align: center;
