@@ -19,18 +19,14 @@ function PostPhotoReview() {
   const { processPhotocard, setProcessPhotocard } = useReviewStore()
   const [takePhoto, setTakePhoto] = useState(null) // takePhoto 함수 저장용 state
   const { isReviewDataValid } = useReviewValidation()
-  const handleTakePhoto = () => {
-    if (takePhoto) {
-      const imageData = takePhoto()
 
+  const handleTakePhoto = async () => {
+    if (takePhoto) {
+      const imageData = await takePhoto() // // startTimer 함수 실행
       // 여기서 이미지 데이터 처리
       setProcessPhotocard({
         step1: imageData,
       })
-      // setProcessPhotocard((prev) => ({
-      //   ...prev,
-      //   step1: imageData,
-      // }))
     }
   }
 
