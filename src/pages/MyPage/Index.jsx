@@ -9,7 +9,7 @@ import styled from 'styled-components'
 import ReviewSwiper from '@/components/reviewSwiper/ReviewSwiper'
 import { useApi } from '@/libs/useApi'
 import { useInfiniteScroll } from '@/hooks/useInfiniteScroll'
-
+import useNavigateStore from '@/store/navigateStore'
 // myReviewData에서 데이터를 변환
 function MyPage() {
   // ----------------------  API 요청 ----------------------
@@ -40,9 +40,13 @@ function MyPage() {
 
   // const [data, setData] = useState([])
   const transformedData = transformMyReviewData(data)
+  // myReviewData에서 데이터를 변환
+  // const transformedData = transformReviewData(myReviewData)
+  const setNavigatePage = useNavigateStore((state) => state.setNowPage)
   useEffect(() => {
     console.log(transformedData)
-  }, [])
+    setNavigatePage(2)
+  }, [setNavigatePage])
   return (
     <>
       <Profile />
