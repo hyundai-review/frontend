@@ -14,6 +14,7 @@ import { useApi } from '@/libs/useApi'
 function ReviewCard({ review, pageType }) {
   const {
     rating,
+    movieId,
     reviewContent,
     commentCount,
     cardDate,
@@ -29,6 +30,15 @@ function ReviewCard({ review, pageType }) {
   const [_isLike, setIsLike] = useState(false)
   const [isSpoiler, setIsSpoiler] = useState(true)
   const [commentList, setCommentList] = useState([])
+  const [fetchData, setFetchData] = useState(false)
+  const fetchCommentData = async () => {
+    try {
+      const response = await get(`/comments/${review.reviewdId}`)
+      setCommentList(response.data.comments)
+    } catch (error) {
+      console.log(error)
+    }
+  }
   useEffect(() => {
     console.log('reviewCard >>> ', review)
     setIsSpoiler(isSpoil)
@@ -44,7 +54,7 @@ function ReviewCard({ review, pageType }) {
   }
   const handleReviewClick = () => {
     // TODO(k) 댓글까지 스크롤 처리
-    navigate(`/movie/${movieId}/detail`)
+    // navigate(`/movie/${movieId}/detail`)
   }
   const handleSpoiler = (e) => {
     e.stopPropagation()
@@ -55,18 +65,19 @@ function ReviewCard({ review, pageType }) {
       setIsSpoiler(false)
     }
   }, [pageType])
+
   useEffect(() => {
-    const fetchCommentData = async () => {
-      try {
-        const response = await get(`/comments/${review.reviewdId}`)
-        setCommentList(response.data.comments)
-        console.log(commentList)
-      } catch (error) {
-        console.log(error)
-      }
-    }
+    setCommentList(commentList)
+  }, [commentList])
+
+  useEffect(() => {
     fetchCommentData()
-  }, [isCommentOpen])
+    setCommentList(commentList)
+  }, [isCommentOpen, fetchData, setFetchData])
+
+  // const handleComment = () => {
+  //   setFetchData((prev) => !prev)
+  // }
   return (
     <ReviewCardContainer className='hoverBright' onClick={handleReviewClick}>
       <Wrap>
@@ -102,13 +113,12 @@ function ReviewCard({ review, pageType }) {
       <CommentWrap>
         <CardFooter>
           <CardCommentWrap>
-            <CardCommentLeft>
+            <CardCommentLeft onClick={handleCommentClick}>
               <CardCommentIcon
                 src={isCommentOpen ? commentWhite : comment}
                 $iscommentopen={isCommentOpen}
-                onClick={handleCommentClick}
               />
-              <CardCommentCount>{review.commentCount}</CardCommentCount>
+              <CardCommentCount>{commentList.length}</CardCommentCount>
             </CardCommentLeft>
             <FooterRightWrap>
               <CardDate>{cardDate.substring(0, 10)}</CardDate>
@@ -120,16 +130,20 @@ function ReviewCard({ review, pageType }) {
             </FooterRightWrap>
           </CardCommentWrap>
         </CardFooter>
-        {isCommentOpen &&
-          commentList.map((item, index) => (
-            <ReviewComment
-              isEdit={false}
-              commentData={item}
-              reviewId={review.reviewdId}
-              key={index}
-            />
-          ))}
-        {/* <ReviewComment isEdit={true} reviewId={review.reviewdId} /> */}
+        {isCommentOpen && (
+          <>
+            {commentList?.map((item, index) => (
+              <ReviewComment
+                isEdit={false}
+                commentData={item}
+                reviewId={review.reviewdId}
+                key={index}
+                setFetchData={setFetchData}
+              />
+            ))}
+            <ReviewComment isEdit={true} reviewId={review.reviewdId} setFetchData={setFetchData} />
+          </>
+        )}
       </CommentWrap>
     </ReviewCardContainer>
   )
@@ -144,7 +158,6 @@ const ReviewCardContainer = styled.div`
   border-radius: 10px;
   border: 1px solid rgba(255, 255, 255, 0.1);
   background: rgba(0, 0, 0, 0.25);
-  cursor: pointer;
 `
 const SpoilerWrap = styled.div`
   display: flex;
@@ -259,6 +272,7 @@ const CardCommentWrap = styled.div`
 const CardCommentLeft = styled.div`
   display: flex;
   align-items: center;
+  cursor: pointer;
 `
 const CardComment = styled.span`
   /* font-size: 14px;
@@ -279,7 +293,6 @@ const CardCommentIcon = styled.img`
   width: 24px;
   height: 24px;
   margin-right: 5px;
-  cursor: pointer;
   ${({ $iscommentopen }) =>
     $iscommentopen && 'filter: drop-shadow(0px 0px 10px var(--primary-light-red, #ffd7d7));'}
 `

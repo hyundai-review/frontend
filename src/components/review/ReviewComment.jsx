@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import styled, { css } from 'styled-components'
 import * as S from '@/styles/review/comment.style'
 import Button from '../common/Button'
@@ -6,35 +6,83 @@ import { getUserData } from '@/utils/logInManager'
 import { useApi } from '@/libs/useApi'
 import edit from '@/assets/icons/edit.svg'
 import trash from '@/assets/icons/trash.svg'
+import useModalStore from '@/store/modalStore'
 
-function ReviewComment({ isEdit, commentData, reviewId }) {
-  const { post, error } = useApi()
+function ReviewComment({ isEdit, commentData, reviewId, setFetchData }) {
+  const { post, put, delete: remove, error } = useApi()
+  const { openModal } = useModalStore()
   const userInfo = getUserData()
   //댓글 데이터
-  const commentProfileImage = commentData.author.profile
-  const commentNickname = commentData.author.nickname
-  const commentDate = commentData.createdAt.substring(0, 10)
-  const commentContent = commentData.content
+  const [commentId, setCommentId] = useState(isEdit ? '' : commentData.commentId)
+  const [commentProfileImage, setCommentProfileImage] = useState(
+    isEdit ? '' : commentData.author.profile,
+  )
+  const [commentNickname, setCommentNickname] = useState(isEdit ? '' : commentData.author.nickname)
+  const [commentDate, setCommentDate] = useState(
+    isEdit ? '' : commentData.createdAt.substring(0, 10),
+  )
+  const [commentContent, setCommentContent] = useState(isEdit ? '' : commentData.content)
   const [isFocused, setIsFocused] = useState(false)
+  const [isEdited, setIsEdited] = useState(isEdit)
+  const [isModified, setIsModified] = useState(false)
+  const [autoPlay, setAutoPlay] = useState(false)
+  // const [inputValue, setInputValue] = useState('')
   const inputRef = useRef(null)
 
   const submitComment = async (commentInput) => {
     const commentData = { content: commentInput }
-    console.log(`/comments/${reviewId}`, commentData)
     const response = await post(`/comments/${reviewId}`, commentData)
-    if (response.status === 200) {
-      alert('답글이 등록되었습니다.')
-    }
+    setFetchData((prev) => !prev)
   }
+  const modifyComment = async (commentInput) => {
+    const commentData = { content: commentInput }
+    const response = await put(`/comments/${commentId}`, commentData)
+
+    setFetchData((prev) => !prev)
+  }
+  const deleteComment = async () => {
+    const response = await remove(`/comments/${commentId}`)
+    setFetchData((prev) => !prev)
+  }
+
   const handleClicked = () => {
+    const inputValue = inputRef.current.value
     if (inputRef.current) {
-      console.log(inputRef.current.value)
-      submitComment(inputRef.current.value)
+      inputRef.current.blur()
+      //댓글 처음 등록일 떄
+      if (isModified == false) {
+        openModal('confirm', { message: '댓글을 등록하시겠습니까?' }, () => {
+          submitComment(inputValue)
+          setIsFocused(false)
+          setIsEdited(true)
+          // reloadData()
+        })
+      } else {
+        //댓글 수정할 때
+        openModal('confirm', { message: '댓글을 수정하시겠습니까?' }, () => {
+          modifyComment(inputValue)
+          setIsFocused(false)
+          setIsEdited(false)
+          setCommentContent(inputValue)
+          // reloadData()
+        })
+
+        setIsEdited(false)
+      }
     }
+    setIsFocused(false)
+    inputRef.current.value = ''
+  }
+  const handleDelete = async () => {
+    openModal('confirm', { message: '댓글을 삭제하시겠습니까?' }, () => {
+      deleteComment()
+      setIsFocused(false)
+      // reloadData()
+    })
   }
   return (
     <>
-      {isEdit ? (
+      {isEdited ? (
         <div style={{ display: 'flex', justifyContent: 'flex-end', flexDirection: 'column' }}>
           <CommentContainer $isfocused={isFocused}>
             <div style={{ display: 'flex', flexDirection: 'column' }}>
@@ -44,7 +92,9 @@ function ReviewComment({ isEdit, commentData, reviewId }) {
                 placeholder='답글 추가'
                 maxLength={255}
                 onFocus={() => setIsFocused(true)}
-                onBlur={() => setIsFocused(false)}
+                onBlur={() => handleClicked()}
+                defaultValue={commentContent}
+                autoFocus={autoPlay}
               />
             </div>
           </CommentContainer>
@@ -56,9 +106,16 @@ function ReviewComment({ isEdit, commentData, reviewId }) {
                 justifyContent: 'flex-end',
                 marginBottom: '5px',
               }}
-            ></div>
+            >
+              <Button
+                text={'완료'}
+                onClick={() => {
+                  handleClicked()
+                  setAutoPlay(false)
+                }}
+              />
+            </div>
           )}
-          <Button text={'완료'} onClick={() => handleClicked()} />
         </div>
       ) : (
         <CommentContainer $isfocused={isFocused}>
@@ -74,8 +131,21 @@ function ReviewComment({ isEdit, commentData, reviewId }) {
               </div>
 
               <div>
-                <Icon src={edit} />
-                <Icon src={trash} />
+                <Icon
+                  src={edit}
+                  onClick={() => {
+                    setIsEdited(true)
+                    setIsFocused(true)
+                    setAutoPlay(true)
+                    setIsModified(true)
+                  }}
+                />
+                <Icon
+                  src={trash}
+                  onClick={() => {
+                    handleDelete()
+                  }}
+                />
               </div>
             </CommentFooter>
           </>
