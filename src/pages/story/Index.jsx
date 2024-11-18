@@ -7,7 +7,6 @@ import useStoryStore from '@/store/storyStore'
 
 function StoryPage() {
   const focusReview = useStoryStore((state) => state.focusReview)
-
   return (
     <Wrap image={focusReview.photocard}>
       <BlurOverlay>

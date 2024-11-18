@@ -9,12 +9,44 @@ import useStoryStore from '@/store/storyStore'
 import CLOSE from '@/assets/icons/close.svg?react'
 import { useNavigate } from 'react-router-dom'
 
-function PhotoCard({ reviewInfo, slideNext }) {
-  const focusReview = useStoryStore((state) => state.focusReview)
+function PhotoCard({ reviewInfo, slideNext, index }) {
+  // console.log('photoCard', reviewInfo)
+  // const focusReview = useStoryStore((state) => state.focusReview)
+  const focusReview = useStoryStore()
   const navigate = useNavigate()
+  // console.log('focusReview, reviewInfo.reviewId:', focusReview, reviewInfo.reviewId)
   return (
     <Container>
       <div style={{ marginBottom: '10px' }}>
+        <StoryStarRating max={5} />
+      </div>
+      <CardWrap>
+        <ImgWrap>
+          <img src={reviewInfo.photocard} alt='' />
+        </ImgWrap>
+
+        <ContentWrap>
+          <p>{reviewInfo.content}</p>
+          <Tab>
+            <CommentWrap>
+              <COMMENT />
+              <span>{5}</span>
+            </CommentWrap>
+            <HEART />
+          </Tab>
+        </ContentWrap>
+      </CardWrap>
+
+      {focusReview.id === reviewInfo.reviewid ? (
+        <BottomWrap>
+          {/* <ProgressBar slideNext={slideNext} /> */}
+          <CloseWrap onClick={() => navigate('/', { replace: true })}>
+            <CLOSE />
+          </CloseWrap>
+        </BottomWrap>
+      ) : null}
+
+      {/* <div style={{ marginBottom: '10px' }}>
         <StoryStarRating max={reviewInfo.rating} />
       </div>
       <CardWrap>
@@ -41,7 +73,7 @@ function PhotoCard({ reviewInfo, slideNext }) {
             <CLOSE />
           </CloseWrap>
         </BottomWrap>
-      ) : null}
+      ) : null} */}
     </Container>
   )
 }

@@ -5,8 +5,9 @@ import { useNavigate } from 'react-router-dom'
 export const useCarousel = (initialIndex = 1) => {
   const navigate = useNavigate()
   const [activeIndex, setActiveIndex] = useState(initialIndex)
-  const { updateFocusReview, reviewList } = useStoryStore()
   const [swiper, setSwiper] = useState(null)
+  const reviewList = useStoryStore((state) => state.reviewList)
+  const updateFocusReview = useStoryStore((state) => state.updateFocusReview)
 
   /** 다음 슬라이드로 이동하는 함수 */
   const slideNext = () => {
@@ -28,17 +29,30 @@ export const useCarousel = (initialIndex = 1) => {
     setActiveIndex(swiper.activeIndex)
 
     // 현재 focus된 슬라이드의 review id 스토어에 업로드
+    // console.log('reviewList', reviewList)
+    // console.log('activeIndex', swiper.activeIndex)
+
     const currentReview = reviewList[swiper.activeIndex]
     if (currentReview) {
-      updateFocusReview(currentReview.id)
+      // const currentReview = reviewList[swiper.activeIndex]
+      updateFocusReview(currentReview.reviewId)
     }
+
+    // console.log('확인용', currentReview)
+    updateFocusReview(currentReview)
   }
 
   /** 슬라이드 클릭 함수 */
+  // index 순서
+  // item : reviewId, photocard
   const handleSlideClick = (index, path, item) => {
+    console.log('클릭한 슬라이드', item, item.reviewId)
+
     // 클릭한 슬라이드가 acive 상태일 때 상세페이지로 이동
     if (index === activeIndex) {
-      navigate(`${path}/${item.id}`)
+      updateFocusReview(index) // 포커스 된 리뷰 업데이트
+      // navigate(`${path}/${item.id}`)
+      navigate(`${path}/${item.reviewId}`)
     } else {
       // active 상태가 아닌 슬라이드 클릭 시 해당 슬라이드로 이동
       const swiper = document.querySelector('.swiper').swiper

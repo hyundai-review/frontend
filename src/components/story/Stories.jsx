@@ -5,18 +5,25 @@ import 'swiper/css'
 import 'swiper/css/navigation'
 import 'swiper/css/pagination'
 import 'swiper/css/effect-coverflow'
-
 import styled from 'styled-components'
 import StoryItem from './StoryItem'
 import { useCarousel } from '@/libs/useCarousel'
 import useModalStore from '@/store/modalStore'
 import { useNavigate } from 'react-router-dom'
+
 function Stories({ dataList, path }) {
   const { handleSlideChange, handleSlideClick } = useCarousel(1)
   const openModal = useModalStore((state) => state.openModal)
   const navigate = useNavigate()
 
+  console.log('dataList', dataList)
   const handleClick = (index, path, review) => {
+    console.log('진짜찐짜 확인', {
+      index: index,
+      path: path,
+      review: review,
+    })
+
     if (path === '/user/login') {
       navigate(path) // /user/login 경로로 이동
     } else if (path) {
@@ -50,7 +57,7 @@ function Stories({ dataList, path }) {
             // onClick={() => handleSlideClick(index, '/main/story', review)}
             onClick={() => handleClick(index, path, review)}
           >
-            <StoryItem photocardImg={review.photocard} reviewId={review.id} />
+            <StoryItem photocardImg={review.photocard} reviewId={review.reveiwId} />
           </SwiperSlide>
         ))}
       </Swiper>

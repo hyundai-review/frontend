@@ -19,6 +19,7 @@ import { useApi } from '@/libs/useApi'
 import { Button } from '@mui/material'
 import useModalStore from '@/store/modalStore'
 import useNavigateStore from '@/store/navigateStore'
+import useStoryStore from '@/store/storyStore'
 
 /*boxOfficeMovieData - url, rank, date
 suggestMovieData - moviePosterUrl, movieID */
@@ -33,6 +34,7 @@ function MainPage() {
   const [screenWidth, setScreenWidth] = useState(document.documentElement.clientWidth)
   const setNavigatePage = useNavigateStore((state) => state.setNowPage)
   const [stories, setStories] = useState(reviewData)
+  const { setReviewList } = useStoryStore()
   useEffect(() => {
     // setIsLogIn(isLoggedIn())
     setData(getUserData())
@@ -64,6 +66,7 @@ function MainPage() {
       authGet(`/reviews/recents`).then((response) => {
         console.log('story 조회', response.data.contents)
         setStories(response.data.contents)
+        setReviewList(response.data.contents)
       })
     }
   }, [isLogIn])
