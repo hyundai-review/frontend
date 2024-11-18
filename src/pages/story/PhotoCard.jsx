@@ -65,7 +65,8 @@ const CardWrap = styled.div`
 `
 const ImgWrap = styled.div`
   width: 362px;
-  height: 429.75px;
+  /* height: 429.75px; */
+  height: 350px;
   flex-shrink: 0;
 
   img {
