@@ -96,6 +96,7 @@ export const useBackgroundImage = (imageUrl, dimensions) => {
     }
 
     console.log('useBackgroundImage------------------', imageUrl)
+    
     img.src = imageUrl
   }, [imageUrl, dimensions])
 
