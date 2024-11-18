@@ -10,13 +10,22 @@ import useReviewStore from '@/store/reviewStore'
 import { useApi } from '@/libs/useApi'
 import { Navigate, useNavigate, useParams } from 'react-router-dom'
 import useModalStore from '@/store/modalStore'
+import MovieSummaryLarge from '../movieDetail/MovieSummaryLarge'
+import MovieSummary from '../movieDetail/MovieSummary'
+import useResponsive from '@/hooks/useResponsive'
+import { useWindowSize } from '@/utils/useWindowSize'
 
 /** step 1. 텍스트 리뷰 작성 */
 function PostTextReview() {
   const { nextStep, reviewPost, setReviewPost } = useReviewStore()
   const { post, error } = useApi()
+  const { get: nonAuthGet } = useApi(false)
   const { movieId } = useParams()
+
   const { openModal } = useModalStore()
+  const { width } = useWindowSize() // 윈도우 크기 추적
+  const isMobil = width <= 968
+  const [data, setData] = useState(null)
 
   const navigate = useNavigate()
   const [starRating, setStarRating] = useState(reviewPost.rating)
@@ -24,6 +33,18 @@ function PostTextReview() {
     content: reviewPost.content,
     isSpoil: reviewPost.isSpoil,
   })
+
+  useEffect(() => {
+    const fetchMovieDetail = async () => {
+      try {
+        const data = await nonAuthGet(`/movies/details/${movieId}`)
+        setData(data.data)
+      } catch (err) {
+        console.error('영화 정보를 가져오는 중 오류가 발생했습니다:', err)
+      }
+    }
+    fetchMovieDetail()
+  }, [movieId])
 
   // 리뷰만 올리기
   const handleSubmitReview = async (isPhotocard = false) => {
@@ -60,6 +81,15 @@ function PostTextReview() {
 
   return (
     <Container>
+      <div>
+        {!isMobil ? (
+          <MovieSummaryLarge data={data} />
+        ) : (
+          <>
+            <MovieSummary data={data} />
+          </>
+        )}
+      </div>
       <div>
         <SText.Text style={{ marginBottom: '6px' }}>별점을 선택해주세요</SText.Text>
         <Wrap $width='362px' $height='48px'>
