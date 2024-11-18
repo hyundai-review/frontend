@@ -9,11 +9,13 @@ import { useApi } from '@/libs/useApi'
 import { useParams } from 'react-router-dom'
 import { transformReviewPost } from '@/utils/dataTransform'
 import { objectToFormData } from '@/utils/objectToFormdata'
+import useModalStore from '@/store/modalStore'
 
 function PostUploadReview() {
   const { processPhotocard, reviewPost } = useReviewStore()
   const { post, error } = useApi()
   const { movieId } = useParams()
+  const { openModal } = useModalStore()
 
   const handleDownload = async () => {
     try {
@@ -33,10 +35,20 @@ function PostUploadReview() {
   const handleSubmitReview = async (includeStory = false) => {
     if (!includeStory) {
       // 리뷰만 올리기
-      const response = await post(`/reviews/${movieId}`, reviewPost)
-      if (response.status === 200) {
-        alert('리뷰가 등록되었습니다.')
-        //TODO navigate
+      try {
+        const response = await post(`/reviews/${movieId}`, reviewPost)
+
+        if (response.status === 200) {
+          openModal('confirm', { message: '리뷰를 등록하시겠습니까?' }, () => {
+            navigate(`/movie/${movieId}/detail`)
+          })
+        }
+      } catch (err) {
+        if (err.response?.status === 409) {
+          openModal('alert', {
+            message: '이미 리뷰를 작성하셨습니다.',
+          })
+        }
       }
     } else {
       // 스토리 게시
@@ -46,10 +58,20 @@ function PostUploadReview() {
           photocard: 'photocard.jpg',
         },
       })
-      const response = await post(`/reviews/photo/${movieId}`, formData, true)
-      if (response.status === 200) {
-        alert('포토 리뷰가 등록되었습니다.')
-        //TODO navigate
+      try {
+        const response = await post(`/reviews/${movieId}`, formData, true)
+
+        if (response.status === 200) {
+          openModal('confirm', { message: '포토리뷰를 등록하시겠습니까?' }, () => {
+            navigate(`/movie/${movieId}/detail`)
+          })
+        }
+      } catch (err) {
+        if (err.response?.status === 409) {
+          openModal('alert', {
+            message: '이미 리뷰를 작성하셨습니다.',
+          })
+        }
       }
     }
   }

@@ -40,8 +40,6 @@ function PostTextReview() {
     if (isPhotocard) {
       nextStep()
     } else {
-      console.log('확인용', formRef.current)
-
       try {
         const response = await post(`/reviews/${movieId}`, reviewPost)
 
