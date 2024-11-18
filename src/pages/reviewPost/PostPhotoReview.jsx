@@ -11,8 +11,6 @@ import PHOTOBTN from '@/assets/icons/photoBtn.svg?react'
 import { useNavigate } from 'react-router-dom'
 import { useReviewValidation } from '@/utils/useValidation'
 
-// TODO (Y)촬영 버튼 클릭 시 소리 & 타이머 넣기
-
 /** step 2. 사진 촬영 */
 function PostPhotoReview() {
   const { reviewStep, nextStep } = useReviewStore()
@@ -23,7 +21,6 @@ function PostPhotoReview() {
   const handleTakePhoto = async () => {
     if (takePhoto) {
       const imageData = await takePhoto() // // startTimer 함수 실행
-      // 여기서 이미지 데이터 처리
       setProcessPhotocard({
         step1: imageData,
       })
@@ -43,6 +40,7 @@ function PostPhotoReview() {
           <OptionBackList />
         </OptionWrap>
       </MainWrap>
+
       {/* 촬영버튼 */}
       <SBoxContainer.Box
         $width='100%'
