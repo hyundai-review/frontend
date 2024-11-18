@@ -5,6 +5,7 @@ import GenreButton from '@/components/common/GenreButton'
 import styled from 'styled-components'
 import media from '@/styles/media'
 import { getStatusColor, mapMovieStatus } from '@/utils/statusMapper'
+import * as S from '@/styles/movieSummary/MovieSummary.style.'
 function MovieSummary({ data }) {
   // const posterImageUrl =
   //   'https://img.cgv.co.kr/Movie/Thumbnail/StillCut/000088/88847/88847230819_727.jpg'
@@ -52,8 +53,8 @@ function MovieSummary({ data }) {
             ))}
           </MovieGenreWrap>
           <MovieStatusWrap>
-            <StatusCircle $color={statusColor} />
-            <StatusText>{status}</StatusText>
+            <S.StatusCircle $color={statusColor} />
+            <S.StatusText>{status}</S.StatusText>
           </MovieStatusWrap>
         </Wrap>
       </RightSection>
@@ -215,23 +216,4 @@ const MovieStatusWrap = styled.div`
   align-items: center;
   justify-content: flex-end;
   gap: 10px;
-`
-
-const StatusCircle = styled.div`
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background-color: var(--semantic-success, #7ed6a0);
-  background-color: ${(props) => props.$color};
-  box-shadow: 0px 0px 10px ${(props) => props.$color};
-`
-const StatusText = styled.div`
-  color: var(--gray-200, #e4e4e7);
-  text-align: right;
-  /* regular/sm */
-  font-family: Pretendard;
-  font-size: 14px;
-  font-style: normal;
-  font-weight: 400;
-  line-height: 21px; /* 150% */
 `

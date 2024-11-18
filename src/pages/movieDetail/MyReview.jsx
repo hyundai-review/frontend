@@ -41,7 +41,7 @@ function MyReview({ myReviewData = {}, onDataChange }) {
   const formRef = useRef({ isSpoil, rating, content })
   useEffect(() => {
     if (myReviewData) {
-      console.log('myReviewData >>> ', myReviewData)
+      // console.log('myReviewData >>> ', myReviewData)
       setRating(reviewRating)
       setContent(reviewContent)
       setIsSpoil(reviewIsSpoil)
@@ -180,9 +180,11 @@ function MyReview({ myReviewData = {}, onDataChange }) {
             </>
           )}
         </LeftWrap>
-        <RightWrap>
-          <Photocard src={photocard} />
-        </RightWrap>
+        {photocard && (
+          <RightWrap>
+            <Photocard src={photocard} />
+          </RightWrap>
+        )}
       </Wrap>
       <CommentWrap>
         <CardFooter>
@@ -251,7 +253,6 @@ const Wrap = styled.div`
 `
 
 const LeftWrap = styled.div`
-  margin-right: 20px;
   flex: 1;
 `
 const CardHeader = styled.div`
@@ -336,8 +337,15 @@ const Icon = styled.img`
   ${({ $iscommentopen }) =>
     $iscommentopen && 'filter: drop-shadow(0px 0px 10px var(--primary-light-red, #ffd7d7));'}
   ${({ $isedit }) =>
-    $isedit && 'filter: drop-shadow(0px 0px 10px var(--primary-light-red, #ffd7d7));'}
-      ${({ $isdelete }) =>
+    $isedit &&
+    `
+      filter: 
+        drop-shadow(0px 0px 5px var(--primary-light-red, #ffd7d7)) 
+        brightness(1.2) 
+        contrast(1.5);
+      box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2); /* 부드러운 그림자 추가 */
+    `};
+  ${({ $isdelete }) =>
     $isdelete && 'filter: drop-shadow(0px 0px 10px var(--primary-light-red, #ffd7d7));'}
 `
 const CardCommentCount = styled.span`
