@@ -13,6 +13,7 @@ import { useApi } from '@/libs/useApi'
 import useModalStore from '@/store/modalStore'
 function ReviewCard({ review, pageType }) {
   const {
+    movieId,
     reviewId,
     movieTitle,
     rating,
@@ -65,7 +66,7 @@ function ReviewCard({ review, pageType }) {
     }
   }
   const handleReviewClick = () => {
-    // TODO(k) 댓글까지 스크롤 처리
+    // TODO(k) 댓글까지 스크롤 처리 가능?
     if (pageType === 'mypage') {
       navigate(`/movie/${movieId}/detail`)
     }
@@ -134,11 +135,12 @@ function ReviewCard({ review, pageType }) {
             </CardCommentLeft>
             <FooterRightWrap>
               <CardDate>{cardDate.substring(0, 10)}</CardDate>
-              {!isLike ? (
-                <LikeIcon src={heart} $islike={isLike} onClick={handleLikeClick} />
-              ) : (
-                <LikeIcon src={heartActive} $islike={isLike} onClick={handleLikeClick} />
-              )}
+              {pageType === 'movieDetail' &&
+                (!isLike ? (
+                  <LikeIcon src={heart} $islike={isLike} onClick={handleLikeClick} />
+                ) : (
+                  <LikeIcon src={heartActive} $islike={isLike} onClick={handleLikeClick} />
+                ))}
             </FooterRightWrap>
           </CardCommentWrap>
         </CardFooter>
