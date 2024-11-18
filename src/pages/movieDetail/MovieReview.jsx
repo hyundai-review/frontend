@@ -25,6 +25,7 @@ function MovieReview() {
       // TODO(k) 무한스크롤 페이지네이션 이후 추가해야함, 일단 빼고 진행
       const response = await get(`/reviews/${movieId}?page=0&size=10&sort=date`)
       setData(response.data)
+      // setData(response.data.flatMap((item) => Array(5).fill(item)))
       setIsReviewWritten(response.data.myReview !== null)
       // console.log('movie review >>> ', response.data)
     } catch (err) {
@@ -38,7 +39,7 @@ function MovieReview() {
 
   useEffect(() => {
     if (data) {
-      // console.log('other reviewlist : ', data.otherReviewList)
+      console.log('other reviewlist : ', data.otherReviewList)
       const transformed = transformReviewData(data.otherReviewList)
       setTransformedData(transformed) // 상태 업데이트
     }

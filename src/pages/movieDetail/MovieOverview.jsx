@@ -30,7 +30,7 @@ function MovieOverview({ data }) {
         <Box>
           <TextWrap>
             <Summary>{summary}</Summary>
-            <Contents ref={contentsRef} isExpanded={isExpanded}>
+            <Contents ref={contentsRef} $isexpanded={isExpanded}>
               {contents}
             </Contents>
             {isOverflowing && ( // 컨텐츠가 길 경우에만 더보기 버튼 표시
@@ -93,7 +93,7 @@ const Contents = styled.div`
   line-height: 21px; /* 150% */
   overflow: hidden;
   display: -webkit-box;
-  -webkit-line-clamp: ${({ isExpanded }) => (isExpanded ? 'none' : 2)};
+  -webkit-line-clamp: ${({ $isExpanded }) => ($isExpanded ? 'none' : 2)};
   -webkit-box-orient: vertical;
   text-overflow: ellipsis;
 `
