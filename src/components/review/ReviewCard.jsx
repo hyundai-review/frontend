@@ -35,6 +35,15 @@ function ReviewCard({ review, pageType }) {
   const [isLike, setIsLike] = useState(false)
   const [isSpoiler, setIsSpoiler] = useState(true)
   const [commentList, setCommentList] = useState([])
+  const [fetchData, setFetchData] = useState(false)
+  const fetchCommentData = async () => {
+    try {
+      const response = await get(`/comments/${review.reviewdId}`)
+      setCommentList(response.data.comments)
+    } catch (error) {
+      console.log(error)
+    }
+  }
   useEffect(() => {
     setIsSpoiler(isSpoil)
     setIsLike(reviewIsLike)
@@ -76,6 +85,24 @@ function ReviewCard({ review, pageType }) {
     e.stopPropagation()
     setIsSpoiler(false)
   }
+  useEffect(() => {
+    if (pageType === 'mypage') {
+      setIsSpoiler(false)
+    }
+  }, [pageType])
+
+  useEffect(() => {
+    setCommentList(commentList)
+  }, [commentList])
+
+  useEffect(() => {
+    fetchCommentData()
+    setCommentList(commentList)
+  }, [isCommentOpen, fetchData, setFetchData])
+
+  // const handleComment = () => {
+  //   setFetchData((prev) => !prev)
+  // }
   // useEffect(() => {
   //   const fetchCommentData = async () => {
   //     try {
@@ -125,13 +152,12 @@ function ReviewCard({ review, pageType }) {
       <CommentWrap>
         <CardFooter>
           <CardCommentWrap>
-            <CardCommentLeft>
+            <CardCommentLeft onClick={handleCommentClick}>
               <CardCommentIcon
                 src={isCommentOpen ? commentWhite : comment}
                 $iscommentopen={isCommentOpen}
-                onClick={handleCommentClick}
               />
-              <CardCommentCount>{review.commentCount}</CardCommentCount>
+              <CardCommentCount>{commentList.length}</CardCommentCount>
             </CardCommentLeft>
             <FooterRightWrap>
               <CardDate>{cardDate.substring(0, 10)}</CardDate>
@@ -144,25 +170,26 @@ function ReviewCard({ review, pageType }) {
             </FooterRightWrap>
           </CardCommentWrap>
         </CardFooter>
-        {isCommentOpen &&
-          commentList.map((item, index) => (
-            <ReviewComment
-              isEdit={false}
-              commentData={item}
-              reviewId={review.reviewdId}
-              key={index}
-            />
-          ))}
-        {/* <ReviewComment isEdit={true} reviewId={review.reviewdId} /> */}
+        {isCommentOpen && (
+          <>
+            {commentList?.map((item, index) => (
+              <ReviewComment
+                isEdit={false}
+                commentData={item}
+                reviewId={review.reviewdId}
+                key={index}
+                setFetchData={setFetchData}
+              />
+            ))}
+            <ReviewComment isEdit={true} reviewId={review.reviewdId} setFetchData={setFetchData} />
+          </>
+        )}
       </CommentWrap>
     </ReviewCardContainer>
   )
 }
 
 export default ReviewCard
-// const commentProfileImage =
-//   'https://i.pinimg.com/564x/a0/16/57/a01657c023c0c08e4bed3333ffe7421e.jpg'
-// const commentNickname = '히무라 켄신'
 
 const ReviewCardContainer = styled.div`
   width: 100%;
@@ -171,7 +198,6 @@ const ReviewCardContainer = styled.div`
   border-radius: 10px;
   border: 1px solid rgba(255, 255, 255, 0.1);
   background: rgba(0, 0, 0, 0.25);
-  cursor: pointer;
 `
 const SpoilerWrap = styled.div`
   display: flex;
@@ -286,6 +312,7 @@ const CardCommentWrap = styled.div`
 const CardCommentLeft = styled.div`
   display: flex;
   align-items: center;
+  cursor: pointer;
 `
 const CardComment = styled.span`
   /* font-size: 14px;
@@ -306,7 +333,6 @@ const CardCommentIcon = styled.img`
   width: 24px;
   height: 24px;
   margin-right: 5px;
-  cursor: pointer;
   ${({ $iscommentopen }) =>
     $iscommentopen && 'filter: drop-shadow(0px 0px 10px var(--primary-light-red, #ffd7d7));'}
 `

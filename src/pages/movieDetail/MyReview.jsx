@@ -204,12 +204,7 @@ function MyReview({ myReviewData = {}, onDataChange }) {
             </CardCommentRight>
           </CardCommentWrap>
         </CardFooter>
-        {isCommentOpen && (
-          <>
-            <ReviewComment />
-            <ReviewComment />
-          </>
-        )}
+        {isCommentOpen && <>{/*TODO(j) 댓글 불러와서 연동하기 */}</>}
       </CommentWrap>
     </Container>
   )
