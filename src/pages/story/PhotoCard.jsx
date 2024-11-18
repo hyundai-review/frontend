@@ -10,11 +10,11 @@ import CLOSE from '@/assets/icons/close.svg?react'
 import { useNavigate } from 'react-router-dom'
 
 function PhotoCard({ reviewInfo, slideNext, index }) {
-  // console.log('photoCard', reviewInfo)
-  // const focusReview = useStoryStore((state) => state.focusReview)
-  const focusReview = useStoryStore()
+  const { focusReview } = useStoryStore()
   const navigate = useNavigate()
-  // console.log('focusReview, reviewInfo.reviewId:', focusReview, reviewInfo.reviewId)
+
+  const isCurrentFocus = focusReview?.reviewId === reviewInfo.reviewId
+
   return (
     <Container>
       <div style={{ marginBottom: '10px' }}>
@@ -37,14 +37,14 @@ function PhotoCard({ reviewInfo, slideNext, index }) {
         </ContentWrap>
       </CardWrap>
 
-      {focusReview.id === reviewInfo.reviewid ? (
+      {isCurrentFocus && (
         <BottomWrap>
-          {/* <ProgressBar slideNext={slideNext} /> */}
+          <ProgressBar slideNext={slideNext} />
           <CloseWrap onClick={() => navigate('/', { replace: true })}>
             <CLOSE />
           </CloseWrap>
         </BottomWrap>
-      ) : null}
+      )}
 
       {/* <div style={{ marginBottom: '10px' }}>
         <StoryStarRating max={reviewInfo.rating} />
