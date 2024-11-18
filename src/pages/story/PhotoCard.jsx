@@ -15,10 +15,11 @@ function PhotoCard({ reviewInfo, slideNext, index }) {
 
   const isCurrentFocus = focusReview?.reviewId === reviewInfo.reviewId
 
+  console.log('reviewInfo', reviewInfo)
   return (
     <Container>
       <div style={{ marginBottom: '10px' }}>
-        <StoryStarRating max={5} />
+        <StoryStarRating max={reviewInfo.rating} />
       </div>
       <CardWrap>
         <ImgWrap>
@@ -30,7 +31,7 @@ function PhotoCard({ reviewInfo, slideNext, index }) {
           <Tab>
             <CommentWrap>
               <COMMENT />
-              <span>{5}</span>
+              <span>{reviewInfo.totalComments}</span>
             </CommentWrap>
             <HEART />
           </Tab>
@@ -45,35 +46,6 @@ function PhotoCard({ reviewInfo, slideNext, index }) {
           </CloseWrap>
         </BottomWrap>
       )}
-
-      {/* <div style={{ marginBottom: '10px' }}>
-        <StoryStarRating max={reviewInfo.rating} />
-      </div>
-      <CardWrap>
-        <ImgWrap>
-          <img src={reviewInfo.photocard} alt='' />
-        </ImgWrap>
-
-        <ContentWrap>
-          <p>{reviewInfo.content}</p>
-          <Tab>
-            <CommentWrap>
-              <COMMENT />
-              <span>{reviewInfo.rating}</span>
-            </CommentWrap>
-            <HEART />
-          </Tab>
-        </ContentWrap>
-      </CardWrap>
-
-      {focusReview.id === reviewInfo.id ? (
-        <BottomWrap>
-          <ProgressBar slideNext={slideNext} />
-          <CloseWrap onClick={() => navigate('/', { replace: true })}>
-            <CLOSE />
-          </CloseWrap>
-        </BottomWrap>
-      ) : null} */}
     </Container>
   )
 }

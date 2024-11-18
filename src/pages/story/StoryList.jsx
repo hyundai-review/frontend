@@ -14,57 +14,16 @@ import { useParams } from 'react-router-dom'
 import { useApi } from '@/libs/useApi'
 
 function StoryList() {
-  // const reviewList = useStoryStore((state) => state.reviewList)
   const { review } = useParams()
   const { get } = useApi()
   const { setReviewList, reviewList, focusReview } = useStoryStore()
-  // const reviewList = useStoryStore((state) => state.reviewList)
-  // const setReviewList = useStoryStore((state) => state.setReviewList)
 
   const { handleSlideChange, handleSlideClick, setSwiper, slideNext } = useCarousel(2)
   const { width } = useWindowSize()
   const isMobile = width < 780
 
-  // focusReview와 일치하는 review의 index 찾기
-  // const focusIndex = reviewList?.findIndex((review) => review.id === focusReview?.id) ?? 2
-  // console.log('------------------------------focusReview:', focusReview)
-  // console.log('------------------------------reviewList:', reviewList)
-
   const focusIndex =
     reviewList?.findIndex((review) => review.reviewId === focusReview?.reviewId) ?? 2
-
-  useEffect(() => {
-    console.log('------------------------------focusReview:', focusReview)
-    console.log('------------------------------reviewList:', reviewList)
-
-    // focusIndex 계산도 여기서
-    // const index = reviewList?.findIndex((review) => review.reviewId === focusReview?.reviewId) ?? 2
-    // console.log('focusIndex:', index)
-  }, [focusReview, reviewList])
-
-  // console.log('focustIndex:', focusIndex)
-  // // useEffect(() => {
-  //   get(`/reviews/recents`).then((response) => {
-  //     console.log('story 조회', response.data.contents)
-  //     setReviewList(response.data.contents)
-  //   })
-  // }, [])
-
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     try {
-  //       const response = await get(`/reviews/recents`)
-  //       console.log('story 조회', response.data.contents)
-  //       if (response.data.contents) {
-  //         setReviewList(response.data.contents)
-  //       }
-  //     } catch (error) {
-  //       console.error('Error fetching reviews:', error)
-  //     }
-  //   }
-
-  //   fetchData()
-  // }, [setReviewList])
 
   return (
     <SwiperContainer>

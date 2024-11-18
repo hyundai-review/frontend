@@ -18,12 +18,6 @@ function Stories({ dataList, path }) {
 
   console.log('dataList', dataList)
   const handleClick = (index, path, review) => {
-    console.log('진짜찐짜 확인', {
-      index: index,
-      path: path,
-      review: review,
-    })
-
     if (path === '/user/login') {
       navigate(path) // /user/login 경로로 이동
     } else if (path) {
@@ -52,11 +46,7 @@ function Stories({ dataList, path }) {
         }}
       >
         {dataList.map((review, index) => (
-          <SwiperSlide
-            key={index}
-            // onClick={() => handleSlideClick(index, '/main/story', review)}
-            onClick={() => handleClick(index, path, review)}
-          >
+          <SwiperSlide key={index} onClick={() => handleClick(index, path, review)}>
             <StoryItem photocardImg={review.photocard} reviewId={review.reveiwId} />
           </SwiperSlide>
         ))}
