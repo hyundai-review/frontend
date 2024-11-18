@@ -38,7 +38,7 @@ function ReviewCard({ review, pageType }) {
   const [fetchData, setFetchData] = useState(false)
   const fetchCommentData = async () => {
     try {
-      const response = await get(`/comments/${review.reviewdId}`)
+      const response = await get(`/comments/${review.reviewId}`)
       setCommentList(response.data.comments)
     } catch (error) {
       console.log(error)
@@ -176,12 +176,12 @@ function ReviewCard({ review, pageType }) {
               <ReviewComment
                 isEdit={false}
                 commentData={item}
-                reviewId={review.reviewdId}
+                reviewId={review.reviewId}
                 key={index}
                 setFetchData={setFetchData}
               />
             ))}
-            <ReviewComment isEdit={true} reviewId={review.reviewdId} setFetchData={setFetchData} />
+            <ReviewComment isEdit={true} reviewId={review.reviewId} setFetchData={setFetchData} />
           </>
         )}
       </CommentWrap>
