@@ -8,24 +8,37 @@ import { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import ReviewSwiper from '@/components/reviewSwiper/ReviewSwiper'
 import { useApi } from '@/libs/useApi'
+import { useInfiniteScroll } from '@/hooks/useInfiniteScroll'
 
 // myReviewData에서 데이터를 변환
 function MyPage() {
   // ----------------------  API 요청 ----------------------
-  const { get } = useApi(true)
-  useEffect(() => {
-    const fetchMyReviews = async () => {
-      try {
-        const response = await get(`/reviews/my?page=0&size=10&sort=date`)
-        setData(response.data.contents)
-        console.log(response.data.contents)
-      } catch (err) {
-        console.error('내 리뷰 정보를 가져오는 중 오류가 발생했습니다:', err)
-      }
-    }
-    fetchMyReviews()
-  }, [])
-  const [data, setData] = useState([])
+  const { get, loading } = useApi(true)
+  // useEffect(() => {
+  // const fetchMyReviews = async () => {
+  //   try {
+  //     const response = await get(`/reviews/my?page=0&size=10&sort=date`)
+  //     setData(response.data.contents)
+  //     console.log(response.data.contents)
+  //   } catch (err) {
+  //     console.error('내 리뷰 정보를 가져오는 중 오류가 발생했습니다:', err)
+  //   }
+  // }
+  //   fetchMyReviews()
+  // }, [])
+  const [hasNext, setHasNext] = useState(true) // 다음 페이지 여부
+
+  // 데이터를 가져오는 함수
+  const fetchMyReviews = async (page) => {
+    const response = await get(`/reviews/my?page=${page}&size=10&sort=date`)
+    setHasNext(response.data.pageable.hasNext) // 다음 페이지 여부 업데이트
+    return response.data.contents
+  }
+  // TODO(k) 무한스크롤은 되는데 갑자기 0페이지 리뷰들이 스포일러 처리됨 왜지? 그리고 무한스크롤할 때 로딩같은 스피너를 추가하거나 해야 할듯
+
+  const { data, observerRef } = useInfiniteScroll(fetchMyReviews, hasNext, loading)
+
+  // const [data, setData] = useState([])
   const transformedData = transformMyReviewData(data)
   useEffect(() => {
     console.log(transformedData)
@@ -43,6 +56,7 @@ function MyPage() {
             <ReviewCard pageType='mypage' key={review.movieId} review={review} />
           ))}
         </ReviewContainer>
+        <div ref={observerRef} style={{ height: '20px' }} />
       </div>
     </>
   )
