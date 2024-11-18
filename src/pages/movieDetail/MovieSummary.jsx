@@ -75,7 +75,6 @@ const MovieSummaryContainer = styled.div`
 const LeftSection = styled.div`
   width: auto;
   display: inline-flex;
-  align-items: center;
   justify-content: center;
 `
 
@@ -105,6 +104,7 @@ const Wrap = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  gap: 10px;
 `
 const RightTitleWrap = styled.div`
   display: flex;
@@ -210,6 +210,7 @@ const RunningTime = styled.div`
 const MovieGenreWrap = styled.div`
   display: flex;
   gap: 10px;
+  flex-wrap: wrap;
 `
 const MovieStatusWrap = styled.div`
   display: flex;
