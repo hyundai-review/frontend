@@ -10,9 +10,11 @@ import * as S from '@/styles/review/comment.style'
 import heart from '@/assets/icons/heart.svg'
 import heartActive from '@/assets/icons/heartActive.svg'
 import { useApi } from '@/libs/useApi'
-
+import useModalStore from '@/store/modalStore'
 function ReviewCard({ review, pageType }) {
   const {
+    reviewId,
+    movieTitle,
     rating,
     reviewContent,
     commentCount,
@@ -20,18 +22,23 @@ function ReviewCard({ review, pageType }) {
     photocard,
     authorProfile,
     authorNickname,
-    isLike,
+    isLike: reviewIsLike,
     isSpoil,
   } = review
+  //
+  const { post } = useApi(true)
+  const { openModal } = useModalStore()
   const { get, error } = useApi()
   const navigate = useNavigate()
   const [isCommentOpen, setIsCommentOpen] = useState(false)
-  const [_isLike, setIsLike] = useState(false)
+  const [isLike, setIsLike] = useState(false)
   const [isSpoiler, setIsSpoiler] = useState(true)
   const [commentList, setCommentList] = useState([])
   useEffect(() => {
-    console.log('reviewCard >>> ', review)
+    // console.log('reviewCard >>> ', review)
+    // console.log('reviewLike >>> ', reviewIsLike)
     setIsSpoiler(isSpoil)
+    setIsLike(reviewIsLike)
   }, [review])
   //함수
   const handleCommentClick = (e) => {
@@ -39,12 +46,29 @@ function ReviewCard({ review, pageType }) {
     e.stopPropagation()
   }
   const handleLikeClick = (e) => {
-    setIsLike((prev) => !prev)
     e.stopPropagation()
+    if (!isLike) {
+      openModal('confirm', { message: '좋아요를 누르시겠습니까?' }, async () => {
+        const response = await post(`/reviews/${reviewId}/like`)
+        console.log('-----------------------------------------')
+        console.log('좋아요 성공:', response)
+        setIsLike(true)
+      })
+    } else {
+      openModal('confirm', { message: '좋아요를 취소하시겠습니까?' }, async () => {
+        const response = await post(`/reviews/${reviewId}/like`)
+        console.log('-----------------------------------------')
+        console.log('좋아요 취소 성공:', response)
+        setIsLike(false)
+      })
+    }
   }
   const handleReviewClick = () => {
-    // TODO(k) 댓글까지 스크롤 처리
-    navigate(`/movie/${movieId}/detail`)
+    // TODO(k) 댓글까지 스크롤 처리 > 영화 상세페이지의 리뷰를 누르면 무슨일이 벌어지지
+    if (pageType === 'mypage') {
+      navigate(`/movie/${movieId}/detail`)
+    }
+    return
   }
   const handleSpoiler = (e) => {
     e.stopPropagation()

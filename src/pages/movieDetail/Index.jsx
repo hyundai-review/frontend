@@ -6,14 +6,15 @@ import MovieReview from './MovieReview'
 import MovieSummary from './MovieSummary'
 import arrowLeft from '@/assets/icons/arrow-left.svg'
 import ActorCard from './ActorCard'
-// import actorData from '@/assets/data/actorsData'
 import useResponsive from '@/hooks/useResponsive'
 import MovieSummaryLarge from './MovieSummaryLarge'
 import { useParams } from 'react-router-dom'
 import { useApi } from '@/libs/useApi'
 import useReviewStore from '@/store/reviewStore'
+import useScrollToTop from '@/hooks/useScrollToTop'
 
 function MovieDetailPage() {
+  useScrollToTop() // 페이지 로드 시 스크롤을 최상단으로 이동
   const { movieId } = useParams()
   const screenSize = useResponsive()
   const { setBackgroundImg, setCurrentMovieId } = useReviewStore()
