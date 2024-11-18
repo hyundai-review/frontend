@@ -85,8 +85,8 @@ function ReviewCard({ review, pageType }) {
                 {pageType === 'mypage' && <CardMovie>{movieTitle}</CardMovie>}
                 {pageType === 'movieDetail' && (
                   <S.CommentWrap>
-                    <S.CommentProfileImage src={authorProfile} />
-                    <S.CommentNickname>{authorNickname}</S.CommentNickname>
+                    <S.CommentProfileImage src={commentProfileImage} />
+                    <S.CommentNickname>{commentNickname}</S.CommentNickname>
                   </S.CommentWrap>
                 )}
                 <StarRating type='readonly' initialValue={rating} max={5} size={16} />
@@ -136,9 +136,6 @@ function ReviewCard({ review, pageType }) {
 }
 
 export default ReviewCard
-// const commentProfileImage =
-//   'https://i.pinimg.com/564x/a0/16/57/a01657c023c0c08e4bed3333ffe7421e.jpg'
-// const commentNickname = '히무라 켄신'
 
 const ReviewCardContainer = styled.div`
   width: 100%;
