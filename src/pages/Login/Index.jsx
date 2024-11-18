@@ -2,7 +2,7 @@ import { GET_KakaoLoginLink } from '@/apis/loginApi'
 import React from 'react'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
-import logo from '/logo.svg'
+import logo from '/squareLogo.svg'
 import kakao from '@/assets/icons/kakao.svg'
 
 function LoginPage() {

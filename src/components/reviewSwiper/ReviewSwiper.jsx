@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import styled from 'styled-components'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import 'swiper/css'
@@ -6,33 +6,49 @@ import Stories from '../story/Stories'
 import media from '@/styles/media'
 import { useNavigate } from 'react-router-dom'
 import useModalStore from '@/store/modalStore'
+import { data } from '@tensorflow/tfjs'
 
 function ReviewSwiper({ dataList }) {
   const navigate = useNavigate()
-  const dataLength = dataList.length
-  const openModal = useModalStore((state) => state.openModal)
-
+  const { openModal } = useModalStore()
+  const [isFull, setIsFull] = useState(true)
+  const swiperRef = useRef(null)
   const handleSlideClick = (item) => {
-    console.log(item)
+    console.log('슬라이드클릭 >>> ', item)
     // 모달 열기
-    openModal(item) // 선택된 포토카드를 상태에 전달하여 모달 열기
+    openModal('photoCard', {
+      photocard: {
+        image: item.photocard,
+        name: item.movieTitle,
+      },
+    })
   }
+
+  useEffect(() => {
+    const checkSwiperLength = swiperRef.current?.swiper
+    if (checkSwiperLength) {
+      const isSwipeable = checkSwiperLength.isBeginning && checkSwiperLength.isEnd
+      setIsFull(isSwipeable)
+    }
+  }, [dataList])
   return (
     <div>
-      <SwiperWrapper>
-        <Swiper style={{ margin: 0 }} slidesPerView={'auto'}>
-          {dataList.map((review, index) => (
-            <SwiperSlide
-              onClick={() => handleSlideClick(index, path, review)}
-              style={{ width: 250 }}
-            >
-              <ImageSlideWrap>
-                <ImageSlide imageUrl={review.photocard}>
-                  <ImageText>{'여기는 나중에 대체됨'}</ImageText>
-                </ImageSlide>
-              </ImageSlideWrap>
-            </SwiperSlide>
-          ))}
+      <SwiperWrapper $isFull={isFull}>
+        <Swiper style={{ margin: 0 }} slidesPerView={'auto'} ref={swiperRef}>
+          {dataList.map(
+            (review, index) =>
+              review.photocard && (
+                <SwiperSlide
+                  key={index}
+                  onClick={() => handleSlideClick(review)}
+                  style={{ width: 250 }}
+                >
+                  <ImageSlideWrap>
+                    <ImageSlide $imageurl={review.photocard}></ImageSlide>
+                  </ImageSlideWrap>
+                </SwiperSlide>
+              ),
+          )}
         </Swiper>
       </SwiperWrapper>
       <StoriesWrapper>
@@ -54,25 +70,7 @@ const ImageSlide = styled.div`
   border-radius: 5px;
   width: 200px;
   height: 200px;
-  background: url(${(props) => props.imageUrl}) lightgray 50% / cover no-repeat;
-`
-
-const ImageText = styled.div`
-  position: absolute;
-  bottom: 12px;
-  left: 50%;
-  transform: translateX(-50%);
-  border-radius: 2px;
-  background: rgba(0, 0, 0, 0.5);
-  color: white;
-  text-align: center;
-  padding: 4px 10px;
-  margin: 0 auto;
-  font-family: Pretendard;
-  font-size: 10px;
-  font-style: normal;
-  font-weight: 400;
-  line-height: 15px;
+  background: url(${(props) => props.$imageurl}) lightgray 50% / cover no-repeat;
 `
 
 const SwiperWrapper = styled.div`
@@ -89,7 +87,7 @@ const SwiperWrapper = styled.div`
     top: 0;
     right: 0;
     width: 5%;
-    height: 100%;
+    height: ${(props) => (props.$isFull ? 0 : 100)}%;
     background: linear-gradient(to left, rgba(0, 0, 0, 1), rgba(255, 255, 255, 0));
     z-index: 1;
   }

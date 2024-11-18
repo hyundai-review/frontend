@@ -1,10 +1,10 @@
 import styled from 'styled-components'
 /*사용 예시
  <Button text='로그아웃' onClick={handleLogout} />*/
-function MainGenreButton({ text, onClick, isActive }) {
-  const StyledText = isActive ? ActiveButtonText : InactiveButtonText
+function MainGenreButton({ text, onClick, isactive }) {
+  const StyledText = isactive ? ActiveButtonText : InactiveButtonText
   return (
-    <ButtonContainer onClick={onClick} isActive={isActive}>
+    <ButtonContainer onClick={onClick} isactive={isactive}>
       <StyledText>{text}</StyledText>
     </ButtonContainer>
   )
@@ -20,10 +20,10 @@ const ButtonContainer = styled.div`
   cursor: pointer;
   padding: 4px 12px; /* 여백 설정 */
   border-radius: 10px;
-  border: ${({ isActive }) =>
-    isActive ? '1px solid #b6b5ff' : '1px solid var(--gray-400, #A1A1AA)'};
+  border: ${({ $isactive }) =>
+    $isactive ? '1px solid #b6b5ff' : '1px solid var(--gray-400, #A1A1AA)'};
   background: rgba(0, 0, 0, 0.25);
-  box-shadow: ${({ isActive }) => (isActive ? '0px 0px 10px rgba(199, 125, 181, 0.7)' : 'none')};
+  box-shadow: ${({ $isactive }) => ($isactive ? '0px 0px 10px rgba(199, 125, 181, 0.7)' : 'none')};
   backdrop-filter: blur(2px);
   transition: all 0.8s ease;
   height: fit-content;

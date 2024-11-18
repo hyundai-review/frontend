@@ -2,16 +2,16 @@ import media from '@/styles/media'
 import React from 'react'
 import styled from 'styled-components'
 import arrow from '@/assets/icons/arrow-right.svg'
-function OverlayPosterCard() {
+function OverlayPosterCard({ movieTitle, movieTagLine, movieYear }) {
   return (
     <div>
       <OverlayPosterCardContainer>
         <OverlayPosterCardWrapper>
-          <OverlayPosterCardTitle>{'청설'}</OverlayPosterCardTitle>
-          <OverlayPosterCardDate>{'(2024)'}</OverlayPosterCardDate>
-          <OverlayPosterCardContent>
-            {'손으로 설렘을 말하고 가슴으로 사랑을 느끼다'}
-          </OverlayPosterCardContent>
+          <OverlayPosterCardTopWrapper>
+            <OverlayPosterCardTitle>{`${movieTitle}`}</OverlayPosterCardTitle>
+            <OverlayPosterCardDate>{`(${movieYear})`}</OverlayPosterCardDate>
+          </OverlayPosterCardTopWrapper>
+          <OverlayPosterCardContent>{`${movieTagLine}`}</OverlayPosterCardContent>
           <OverlayPosterCardArrow src={arrow} />
         </OverlayPosterCardWrapper>
       </OverlayPosterCardContainer>
@@ -53,25 +53,41 @@ const OverlayPosterCardWrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  gap: 10px;
+`
+
+const OverlayPosterCardTopWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  height: 64px;
+  width: 115px;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  top: 40px;
+  gap: 7px;
+  ${media.small`
+    top:12px
+  `}
 `
 
 const OverlayPosterCardTitle = styled.div`
   width: 115px;
-  height: 18px;
+  height: fit-content;
   color: var(--color-gray-50);
   font-size: 18px;
   line-height: 18px;
   font-weight: 500;
   text-align: center;
-  position: fixed;
-  top: 40px;
   display: -webkit-box;
-  -webkit-line-clamp: 1;
+  -webkit-line-clamp: 2;
   text-overflow: ellipsis;
   -webkit-box-orient: vertical;
   overflow: hidden;
   ${media.small`
-    font-size : 14px
+  width:100px;
+    font-size : 14px;
+  -webkit-line-clamp: 1;
   `}
 `
 const OverlayPosterCardDate = styled.div`
@@ -82,11 +98,8 @@ const OverlayPosterCardDate = styled.div`
   line-height: 18px;
   font-weight: 500;
   text-align: center;
-  position: fixed;
-  top: 57px;
+  /* position: fixed; */
   display: -webkit-box;
-  -webkit-line-clamp: 3;
-  text-overflow: ellipsis;
   -webkit-box-orient: vertical;
   overflow: hidden;
   ${media.small`
@@ -95,7 +108,7 @@ const OverlayPosterCardDate = styled.div`
 `
 
 const OverlayPosterCardContent = styled.div`
-  width: 115px;
+  width: 125px;
   height: fit-content;
   color: var(--color-gray-50);
   font-size: 15px;
@@ -106,6 +119,7 @@ const OverlayPosterCardContent = styled.div`
   text-overflow: ellipsis;
   -webkit-box-orient: vertical;
   overflow: hidden;
+  padding-top: 20px;
   ${media.small`
     font-size:10px;
     width:65px;
@@ -116,7 +130,7 @@ const OverlayPosterCardContent = styled.div`
     -webkit-box-orient: vertical;
   overflow: hidden;
   padding-top:15px;
-  `}
+  `};
 `
 const OverlayPosterCardArrow = styled.img`
   position: fixed;

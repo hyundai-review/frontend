@@ -1,38 +1,68 @@
-import { myReviewData, review } from '@/assets/data/myReviewData'
+import { myReviewDataTest, reviewTest } from '@/assets/data/myReviewData'
 import StarRating from '@/components/common/StarRating'
 import ReviewSwiper from '@/components/reviewSwiper/ReviewSwiper'
 import { transformReviewData } from '@/utils/dataTransform'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import ReviewCard from '../../components/review/ReviewCard'
 import MyReview from './MyReview'
-import useAuthStore from '@/store/authStore'
-function MovieReview() {
-  // data
-  const reviewCount = 123
-  const averageRating = 4.23
-  const transformedData = transformReviewData(myReviewData)
-  //
-  const { isLoggedIn } = useAuthStore()
-  const [isReviewWritten, setIsReviewWritten] = useState(true)
+import { useNavigate, useParams } from 'react-router-dom'
+import { useApi } from '@/libs/useApi'
 
+function MovieReview() {
+  const navigate = useNavigate()
+  // ---------------------------login---------------------------
+  const [isLogin, setIsLogin] = useState(true)
+  const { movieId } = useParams()
+  const [isReviewWritten, setIsReviewWritten] = useState(false)
+  const [transformedData, setTransformedData] = useState([])
+  // ---------------------------API---------------------------
+  const { get, loading, error } = useApi(true) // 테스트중 true로 바꿔야함
+
+  const [data, setData] = useState(null)
+  const fetchReviewData = async () => {
+    try {
+      // TODO(k) 무한스크롤 페이지네이션 이후 추가해야함, 일단 빼고 진행
+      const response = await get(`/reviews/${movieId}?page=0&size=10&sort=date`)
+      setData(response.data)
+      setIsReviewWritten(response.data.myReview !== null)
+      // console.log('movie review >>> ', response.data)
+    } catch (err) {
+      console.error('리뷰 정보를 가져오는 중 오류가 발생했습니다:', err)
+    }
+  }
+  useEffect(() => {
+    if (!isLogin) return // 로그인 상태가 아니면 추가 요청 생략
+    fetchReviewData()
+  }, [])
+
+  useEffect(() => {
+    if (data) {
+      // console.log('other reviewlist : ', data.otherReviewList)
+      const transformed = transformReviewData(data.otherReviewList)
+      setTransformedData(transformed) // 상태 업데이트
+    }
+  }, [data])
+  const onDataChange = () => {
+    fetchReviewData() // 데이터 다시 요청
+  }
   return (
     <Wrap>
       <TitleWrap>
-        <Title>리뷰({reviewCount})</Title>
-        {!isLoggedIn && (
+        <Title>리뷰({data?.totalReviews})</Title>
+        {isLogin && (
           <RatingWrap>
             <StarRating type='readonly' initialValue='1' max={1} size={24} />
-            <AverageRating>{averageRating}</AverageRating>
+            <AverageRating>{data?.averageRating.toFixed(2)}</AverageRating>
           </RatingWrap>
         )}
       </TitleWrap>
-      {isLoggedIn ? (
+      {!isLogin ? (
         <Box>
           <TextWrap>
             <Text>
-              {/* TODO(k) 회원가입 누르면 로그인 페이지로 이동 */}
-              <BoldText>회원가입</BoldText>을 통해 리뷰를 확인하세요
+              <BoldText onClick={() => navigate('/user/login')}>회원가입</BoldText>을 통해 리뷰를
+              확인하세요
             </Text>
           </TextWrap>
         </Box>
@@ -41,19 +71,21 @@ function MovieReview() {
           <ReviewContentsContainer>
             <ReviewSwiper dataList={transformedData} />
             {!isReviewWritten ? (
-              <ButtonWrap className='hoverBright'>
+              <ButtonWrap
+                className='hoverBright'
+                onClick={() => navigate(`/review/${movieId}/post`)}
+              >
                 <ReviewPostButton>스토리 & 리뷰 작성하기</ReviewPostButton>
               </ButtonWrap>
             ) : (
               <ButtonWrap>
-                <MyReview review={review} />
+                <MyReview myReviewData={data?.myReview} onDataChange={onDataChange} />
               </ButtonWrap>
             )}
             <>
               <ReviewContainer>
-                {/* <ReviewCard /> */}
-                {transformedData.map((review) => (
-                  <ReviewCard pageType='movieDetail' key={review.movieId} review={review} />
+                {transformedData?.map((review, index) => (
+                  <ReviewCard pageType='movieDetail' key={index} review={review} />
                 ))}
               </ReviewContainer>
             </>
@@ -112,6 +144,7 @@ const Text = styled.div`
 `
 const BoldText = styled.span`
   font-weight: 700;
+  cursor: pointer;
 `
 
 const RatingWrap = styled.div`

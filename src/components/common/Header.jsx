@@ -1,17 +1,23 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import Button from './Button'
-import Logo from '/logo.svg'
-import { useNavigate } from 'react-router-dom'
+import Logo from '/squareLogo.svg'
+import { useLocation, useNavigate } from 'react-router-dom'
 import media from '@/styles/media'
-import useAuthStore from '@/store/authStore'
-//TODO(j)button onClick시 로그인 로직 작동
+import { isLoggedIn, getUserData } from '@/utils/logInManager'
+import useNavigateStore from '@/store/navigateStore'
+
 function Header() {
-  //TODO(j) 로그인 유저 정보 저장시 이 변수들 바꾸기
+  //TODO(j) 로컬 스토리지로 불러오는 값 훅으로 빼기
   const navigate = useNavigate()
-  const { isLoggedIn } = useAuthStore()
-  const profileImage = 'https://image.tmdb.org/t/p/w300/tKV0etz5OIsAjSNG1hJktsjbNJk.jpg'
-  const userName = '테스트'
+  const [isLogIn, setIsLogIn] = useState(isLoggedIn())
+  const [data, setData] = useState(getUserData())
+  const nameChanged = useNavigateStore((state) => state.nameChanged)
+  const location = useLocation()
+  useEffect(() => {
+    setIsLogIn(isLoggedIn())
+    setData(getUserData())
+  }, [location.pathname, nameChanged])
   return (
     <div>
       <HeaderContainer>
@@ -25,14 +31,14 @@ function Header() {
               }}
             />
           </HeaderLogoWrapper>
-          {!isLoggedIn ? (
+          {!isLogIn ? (
             <HeaderRightWrapper>
-              <Button text={'로그인'} onClick={console.log('여기에 로그인')} />
+              <Button text={'로그인'} onClick={() => navigate('/user/login')} />
             </HeaderRightWrapper>
           ) : (
             <HeaderRightWrapper onClick={() => navigate('/mypage')}>
-              <HeaderUserProfileImage src={`${profileImage}`} alt='profileImage' />
-              <HeaderUserName>{`${userName}`}</HeaderUserName>
+              <HeaderUserProfileImage src={`${data.profile}`} alt='profileImage' />
+              <HeaderUserName>{`${data.nickname}`}</HeaderUserName>
             </HeaderRightWrapper>
           )}
         </HeaderWrapper>
@@ -98,6 +104,7 @@ const HeaderUserProfileImage = styled.img`
   border-radius: 50%;
   width: 32px;
   height: 32px;
+  background: linear-gradient(0deg, #d9d9d9 0%, #d9d9d9 100%);
 `
 
 const HeaderUserName = styled.p`

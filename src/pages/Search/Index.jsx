@@ -1,28 +1,110 @@
-import React from 'react'
-import MoviePosterBox from '@/components/moviePosterCard/MoviePosterCard.jsx'
+import React, { useCallback, useEffect, useState } from 'react'
+import MoviePosterCard from '@/components/moviePosterCard/MoviePosterCard.jsx'
 import SearchBar from '@/components/common/SearchBar.jsx'
 import media from '@/styles/media'
 import styled from 'styled-components'
-
+import { useSearchParams } from 'react-router-dom'
+import { nonAuthenticated } from '@/libs/axiosInstance'
+import useNavigateStore from '@/store/navigateStore'
+//TODO(j) axios 한군데 모으기
 function SearchPage() {
-  const movieDataArray = [...Array(10)].map((_, index) => ({
-    id: index,
-    imageUrl: 'https://image.tmdb.org/t/p/w300/tKV0etz5OIsAjSNG1hJktsjbNJk.jpg',
-  }))
-  const handleSearch = (inputValue) => {
-    console.log(`이 값으로 검색 시작${inputValue}`)
+  const [movieDataArray, setMovieDataArray] = useState([])
+  const [searchParams] = useSearchParams()
+  const [isLoading, setIsLoading] = useState(false)
+  const [checkMoreData, setCheckMoreData] = useState(true)
+  const [nowPage, setNowPage] = useState(0)
+  const setNavigatePage = useNavigateStore((state) => state.setNowPage)
+  const query = searchParams.get('q') || ''
+  const searchWihValue = async (inputValue, page, fetch) => {
+    const queryParams = { keyword: inputValue, page: 0, size: 24, fetch: fetch }
+    try {
+      const getMovieData = await nonAuthenticated.get('/movies/search', {
+        params: queryParams,
+      })
+      //TODO(J) 데이터 없을때를 위한 코드 fetch true로 변경할 것
+      if (getMovieData.data.content.length === 0) {
+        const getMovieData = searchWihValue(inputValue, 0, false)
+      }
+      setMovieDataArray(getMovieData.data.content)
+    } catch (e) {
+      console.log(error)
+    }
   }
+  const fetchMovies = useCallback(
+    async (inputValue, page) => {
+      if (isLoading || !checkMoreData) return // 중복 호출 및 더 가져올 데이터 없을 경우 종료
+      setIsLoading(true) // 로딩 시작
+      const queryParams = { keyword: inputValue, page: page, size: 24, fetch: false }
+      try {
+        const getMovieData = await nonAuthenticated.get('/movies/search', {
+          params: queryParams,
+        })
+        const newMovies = getMovieData.data.content
+        if (newMovies.length > 0) {
+          setMovieDataArray((prev) => [...prev, ...newMovies]) // 기존 데이터에 추가
+        }
+        setCheckMoreData(newMovies.length === 24) // 데이터가 24개보다 적으면 더 가져올 데이터가 없다고 판단
+      } catch (e) {
+        console.error(e)
+      } finally {
+        setIsLoading(false) // 로딩 종료
+      }
+    },
+    [isLoading, checkMoreData], // 필요한 값만 종속성으로 추가
+  )
+  //네비게이션 페이지 설정
+  useEffect(() => {
+    setNavigatePage(1)
+  }, [setNavigatePage])
+  //검색 쿼리 변경되면 첫 페이지 가져오기
+  useEffect(() => {
+    if (query) {
+      setNowPage(0)
+      setMovieDataArray([])
+      setCheckMoreData(true)
+    }
+  }, [searchParams])
+  useEffect(() => {
+    fetchMovies(query, 0)
+  }, [checkMoreData, query])
+  //화면감지
+  useEffect(() => {
+    const handleScroll = () => {
+      if (
+        window.innerHeight + document.documentElement.scrollTop >=
+          document.documentElement.offsetHeight - 50 && // 화면 하단 50px 전에 감지
+        !isLoading
+      ) {
+        setNowPage((prevPage) => prevPage + 1) // 다음 페이지 요청
+      }
+    }
+    window.addEventListener('scroll', handleScroll)
+    return () => {
+      window.removeEventListener('scroll', handleScroll)
+    }
+  }, [isLoading, checkMoreData])
+
+  useEffect(() => {
+    if (nowPage > 0) {
+      fetchMovies(query, nowPage)
+    }
+  }, [nowPage])
+
   return (
     <div>
       <SearchPageContainer>
-        <SearchBar handleSearch={handleSearch} />
+        <SearchBar defaultValue={query} />
         <SearchPageBodyWrapper>
-          <SearchPageResultWrapper>{`검색결과 - ${movieDataArray.length}건`}</SearchPageResultWrapper>
+          <SearchPageResultWrapper>
+            {query == '' ? '검색어를 입력해주세요' : `"${query}" 에 대한 검색결과`}
+          </SearchPageResultWrapper>
           <MoviePosterWrapper>
             {movieDataArray.map((item, index) => (
-              <MoviePosterBox moviePosterUrl={item.imageUrl} movieId={item.id} key={index} />
+              <MoviePosterCard movieInfo={item} key={index} />
             ))}
           </MoviePosterWrapper>
+          {isLoading && <LoadingIndicator>로딩 중...</LoadingIndicator>}
+          {!checkMoreData && <EndMessage>더 이상 결과가 없습니다.</EndMessage>}
         </SearchPageBodyWrapper>
       </SearchPageContainer>
     </div>
@@ -70,6 +152,18 @@ const MoviePosterWrapper = styled.div`
   gap:1px;
   padding-left:10px;
   `}
+`
+
+const LoadingIndicator = styled.div`
+  text-align: center;
+  margin: 20px 0;
+  color: var(--color-gray-300);
+`
+
+const EndMessage = styled.div`
+  text-align: center;
+  margin: 20px 0;
+  color: var(--color-gray-400);
 `
 
 export default SearchPage

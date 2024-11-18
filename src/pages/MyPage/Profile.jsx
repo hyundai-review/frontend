@@ -1,29 +1,72 @@
 import Button from '@/components/common/Button'
-import React from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import styled from 'styled-components'
 import edit from '@/assets/icons/edit.svg'
-function Profile() {
-  //temp data
-  const nickname = '아보카도파김치'
-  const reviewCount = 32
+import { useNavigate } from 'react-router-dom'
+import { authenticated } from '@/libs/axiosInstance'
+import { isLoggedIn } from '@/utils/logInManager'
+import { getUserData, removeData, setUserNickname } from '@/utils/logInManager'
+import { useApi } from '@/libs/useApi'
+import useNavigateStore from '@/store/navigateStore'
 
-  // 닉네임 수정 함수
-  const handleEditNickname = () => {
-    console.log('닉네임 수정 아이콘이 클릭되었습니다.')
-    // 닉네임 수정 로직 추가
+function Profile() {
+  const navigate = useNavigate()
+  const nameChanged = useNavigateStore((state) => state.nameChanged)
+  const setNameChanged = useNavigateStore((state) => state.setNameChanged)
+  const inputRef = useRef(null)
+  const [isEdit, setIsEdit] = useState(true)
+  //-------------------------------Data---------------------------
+  const [userinfo, setUserInfo] = useState(getUserData())
+  const userNicknameLength = userinfo.nickname.length
+  //TODO(j) axios 요청 따로 모으기 + 로그아웃 로직 분리
+  // ------------------------------login---------------------------
+  const handleEditNickname = async () => {
+    setIsEdit(!isEdit)
+    if (userinfo.nickname !== inputRef.current.value) {
+      try {
+        //TODO(j) axios 요청 따로 모으기 + 로그아웃 로직 분리
+        const ans = await authenticated.put('/members/nickname', {
+          nickname: `${inputRef.current.value}`,
+        })
+        setUserNickname(ans.data)
+        setUserInfo(getUserData())
+        setNameChanged()
+      } catch (e) {
+        console.log('닉네임 수정 실패')
+      }
+    }
   }
-  const handleLogout = () => {
-    console.log('로그아웃 클릭됨')
+  const handleLogout = async () => {
+    try {
+      removeData()
+      navigate('/')
+    } catch (e) {
+      console.log(e)
+    }
   }
+  //TODO(j) input에 자동포커스 가게하기
   return (
     <ProfileContainer>
-      <ProfileImage src='https://i.pinimg.com/564x/4f/82/6b/4f826b4c9b219eb74c55c29d21b0427e.jpg' />
-      <ProfileNicknameWrap>
-        <ProfileNickname>{nickname}</ProfileNickname>
-        <ProfileSuffix>님</ProfileSuffix>
-        <Icon onClick={handleEditNickname} src={edit} alt='아이콘' />
-      </ProfileNicknameWrap>
-      <Button text='로그아웃' onClick={handleLogout} />
+      <ProfileImage src={`${userinfo.profile}`} />
+      {isEdit === true ? (
+        <ProfileNicknameWrap>
+          <ProfileNickname>{`${userinfo.nickname}`}</ProfileNickname>
+          <ProfileSuffix>님</ProfileSuffix>
+          <Icon onClick={() => setIsEdit(!isEdit)} src={edit} alt='아이콘' />
+        </ProfileNicknameWrap>
+      ) : (
+        <ProfileNicknameWrap>
+          <form onSubmit={handleEditNickname}>
+            <ProfileNicknameInput
+              defaultValue={`${userinfo.nickname}`}
+              length={userNicknameLength}
+              ref={inputRef}
+            ></ProfileNicknameInput>
+            <Icon onClick={() => handleEditNickname()} src={edit} alt='아이콘' />
+          </form>
+        </ProfileNicknameWrap>
+      )}
+      <Button text='로그아웃' onClick={() => handleLogout()} />
     </ProfileContainer>
   )
 }
@@ -48,6 +91,7 @@ const ProfileImage = styled.img`
 `
 const ProfileNicknameWrap = styled.div`
   margin-bottom: 10px;
+  width: fit-content;
 `
 const ProfileNickname = styled.span`
   color: #fafafa;
@@ -55,6 +99,25 @@ const ProfileNickname = styled.span`
   font-weight: 700;
   line-height: 36px;
 `
+const ProfileNicknameInput = styled.input`
+  width: ${(props) => props.length * 24 + 30}px;
+  min-width: 100px;
+  outline: none;
+  border: none;
+  background: transparent;
+  color: #fafafa;
+  font-size: 24px;
+  font-weight: 700;
+  line-height: 36px;
+  background: rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 0 15px 5px rgba(255, 255, 255, 0.3);
+  border-radius: 10px;
+  padding: 0px 10px;
+  margin-right: 10px;
+`
+
 const ProfileSuffix = styled.span`
   font-size: 24px;
   font-weight: 200;

@@ -23,12 +23,11 @@ const StyledStarGray = styled(StarGray)`
 `
 
 function StarRating({ type = 'readonly', initialValue = 0, onChange, max = 5, size = 14 }) {
-  const location = useLocation()
-
+  const numericValue = Number(initialValue) // 숫자로 변환
   return (
     <Rating
       name={`star-rating-${type}`}
-      value={initialValue}
+      value={numericValue}
       onChange={(e, newValue) => {
         if (type === 'controlled' && onChange) {
           onChange(newValue)

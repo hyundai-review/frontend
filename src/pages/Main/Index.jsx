@@ -12,66 +12,99 @@ import { reviewData } from '@/assets/data/reviewData'
 import BackgroundContainer from '@/components/common/BackgroundContainer'
 import Header from '@/components/common/Header'
 import MobileNavigationBar from '@/components/common/MobileNavigationBar'
-import useAuthStore from '@/store/authStore'
-import { authenticated, nonAuthenticated } from '@/libs/axiosInstance'
 import OverlayPosterCard from '@/components/moviePosterCard/OverlayPosterCard'
+import { isLoggedIn, getUserData } from '@/utils/logInManager'
+import { chkTime } from '@/utils/timeUtils'
+import { useApi } from '@/libs/useApi'
+import { Button } from '@mui/material'
+import useModalStore from '@/store/modalStore'
+import useNavigateStore from '@/store/navigateStore'
+import useStoryStore from '@/store/storyStore'
 
 /*boxOfficeMovieData - url, rank, date
 suggestMovieData - moviePosterUrl, movieID */
-// TODO(j) 로그인시 isLogin에 상태 저장할것
+// TODO(j) 로컬 스토리지로 불러오는 값 훅으로 빼기 + 시간 계산도 util로 빼기 > 혜정이가 뺐다
 function MainPage() {
   const navigate = useNavigate()
-  const { isLoggedIn } = useAuthStore()
-  const userName = '테스트'
+  const [isLogIn, setIsLogIn] = useState(isLoggedIn())
+  // const [isLogIn, setIsLogIn] = useState(true)
+  const [data, setData] = useState(getUserData())
   const nowDate = new Date()
-  const chkTime = (time) => {
-    if (time < 5) {
-      return '밤'
-    } else if (time < 12) {
-      return '아침'
-    } else if (time < 18) {
-      return '낮'
-    } else if (time < 22) {
-      return '저녁'
-    } else {
-      return '밤'
-    }
-  }
   const timeText = chkTime(nowDate.getHours())
   const [screenWidth, setScreenWidth] = useState(document.documentElement.clientWidth)
-  const res = async () => {
-    try {
-      const res = await nonAuthenticated.get('/api/movies/boxoffice')
-      console.log(res)
-    } catch (e) {
-      console.log(e)
-    }
-  }
+  const setNavigatePage = useNavigateStore((state) => state.setNowPage)
+  const [stories, setStories] = useState(reviewData)
+  const { setReviewList } = useStoryStore()
   useEffect(() => {
+    // setIsLogIn(isLoggedIn())
+    setData(getUserData())
     const handleResize = () => {
       setScreenWidth(document.documentElement.clientWidth)
     }
-    // res()
     window.addEventListener('resize', handleResize)
     return () => {
       window.removeEventListener('resize', handleResize)
     }
   }, [])
-  const boxOfficeMovieData = [...Array(10)].map((_, index) => ({
-    imageUrl: 'https://image.tmdb.org/t/p/w300/tKV0etz5OIsAjSNG1hJktsjbNJk.jpg',
-    rank: index + 1,
-    date: '2024.11.11',
-  }))
+  useEffect(() => {
+    setNavigatePage(0)
+  }, [setNavigatePage])
   const suggestMovieData = [...Array(10)].map((_, index) => ({
-    moviePosterUrl: 'https://image.tmdb.org/t/p/w300/tKV0etz5OIsAjSNG1hJktsjbNJk.jpg',
-    movieId: index + 1,
+    movieId: index,
+    poster: 'https://image.tmdb.org/t/p/w300/tKV0etz5OIsAjSNG1hJktsjbNJk.jpg',
+    title: '청설',
+    releaseDate: '2024',
+    tagline: '',
   }))
+  // ----------------------  API 요청 ----------------------
+  const [boxOfficeMovies, setBoxOfficeMovies] = useState([])
+  const { get, loading, error } = useApi(false)
+  const { get: authGet } = useApi(true)
+
+  useEffect(() => {
+    if (isLogIn) {
+      authGet(`/reviews/recents`).then((response) => {
+        console.log('story 조회', response.data.contents)
+        setStories(response.data.contents)
+        setReviewList(response.data.contents)
+      })
+    }
+  }, [isLogIn])
+  useEffect(() => {
+    const fetchBoxoffice = async () => {
+      try {
+        const data = await get(`/movies/boxoffice`)
+        setBoxOfficeMovies(data.data.movies)
+      } catch (err) {
+        console.error('영화 정보를 가져오는 중 오류가 발생했습니다:', err)
+      }
+    }
+    fetchBoxoffice()
+  }, [])
+  // ---------------------------모달 테스트중---------------------
+  const { openModal } = useModalStore()
+  const handleModalClick = () => {
+    console.log('모달 클릭')
+    // 모달 열기
+    openModal(
+      'confirm',
+      {
+        message: '계속 진행하시겠습니까?',
+      },
+      // 확인 버튼 클릭 시 실행될 콜백 함수
+      () => {
+        console.log('확인 누름')
+      },
+    )
+  }
+
   return (
     <div>
       <MainPageTopContainer>
         <MainPageTopWrapper>
-          <MainPageTitle>{!isLoggedIn ? '로그인이 필요합니다.' : `${userName}님,`}</MainPageTitle>
-          {!isLoggedIn ? (
+          <Button onClick={handleModalClick}>모달 테스트 중</Button>
+          <MainPageTitle>{!isLogIn ? '로그인이 필요합니다.' : `${data.nickname}님,`}</MainPageTitle>
+          {!isLogIn ? (
             ''
           ) : (
             <MainPageSubTitle>
@@ -87,7 +120,11 @@ function MainPage() {
             <MainPageSliderWrapper>
               <MainPageWrapperTitle>{'최신 스토리'}</MainPageWrapperTitle>
               <Wrap>
-                <Stories dataList={reviewData} path={'/main/story'} />
+                {isLogIn ? (
+                  <Stories dataList={stories} path={'/main/story'} />
+                ) : (
+                  <Stories dataList={reviewData} path={'/user/login'} />
+                )}
               </Wrap>
             </MainPageSliderWrapper>
           </div>
@@ -96,7 +133,7 @@ function MainPage() {
               <MainPageWrapperTitle>{`${nowDate.getMonth() + 1}월 ${nowDate.getDate()}일 박스오피스 순위`}</MainPageWrapperTitle>
               <MainPageBoxOfficeSwiperWrapper $width={screenWidth - 402}>
                 <Swiper spaceBetween={7} slidesPerView={'auto'}>
-                  {boxOfficeMovieData.map((item, index) => (
+                  {boxOfficeMovies?.map((item, index) => (
                     <MainPageSwiperSlide key={index}>
                       <BoxOfficePosterCard movieInfo={item} />
                     </MainPageSwiperSlide>
@@ -108,7 +145,7 @@ function MainPage() {
         </MainPageBodyTopWrapper>
         <MainPageSliderWrapper>
           <MainPageWrapperTitle>{'추천영화'}</MainPageWrapperTitle>
-          <SuggestMovieBox isLogin={isLogin} suggestMovieData={suggestMovieData} />
+          <SuggestMovieBox isLogin={isLogIn} suggestMovieData={suggestMovieData} />
         </MainPageSliderWrapper>
       </MainPageBodyContainer>
     </div>

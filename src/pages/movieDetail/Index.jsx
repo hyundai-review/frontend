@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import media from '@/styles/media'
 import MovieOverview from './MovieOverview'
@@ -6,16 +6,44 @@ import MovieReview from './MovieReview'
 import MovieSummary from './MovieSummary'
 import arrowLeft from '@/assets/icons/arrow-left.svg'
 import ActorCard from './ActorCard'
-import actorData from '@/assets/data/actorsData'
 import useResponsive from '@/hooks/useResponsive'
 import MovieSummaryLarge from './MovieSummaryLarge'
+import { useParams } from 'react-router-dom'
+import { useApi } from '@/libs/useApi'
+import useReviewStore from '@/store/reviewStore'
+import useScrollToTop from '@/hooks/useScrollToTop'
+
 function MovieDetailPage() {
-  const posterImageUrl =
-    'https://img.cgv.co.kr/Movie/Thumbnail/StillCut/000088/88847/88847230819_727.jpg'
+  useScrollToTop() // 페이지 로드 시 스크롤을 최상단으로 이동
+  const { movieId } = useParams()
   const screenSize = useResponsive()
+  const { setBackgroundImg, setCurrentMovieId } = useReviewStore()
+
+  useEffect(() => {
+    console.log(movieId)
+  }, [])
+  // ----------------------  API 요청 ----------------------
+  const { get, loading, error } = useApi(false)
+  const [data, setData] = useState(null)
+
+  useEffect(() => {
+    const fetchMovieDetail = async () => {
+      try {
+        const data = await get(`/movies/details/${movieId}`)
+        setData(data.data)
+
+        setCurrentMovieId(movieId)
+        setBackgroundImg(`/tmdb-images${data.data.poster.filePath}`)
+      } catch (err) {
+        console.error('영화 정보를 가져오는 중 오류가 발생했습니다:', err)
+      }
+    }
+    fetchMovieDetail()
+  }, [movieId])
+
   return (
     <>
-      <Wrap imageUrl={posterImageUrl}>
+      <Wrap $imageurl={`https://image.tmdb.org/t/p/w300/${data?.poster.filePath}`}>
         <BlurOverlay>
           <Container>
             <Header>
@@ -23,14 +51,14 @@ function MovieDetailPage() {
             </Header>
             <ContentsWrap>
               {screenSize === 'medium' || screenSize === 'large' ? (
-                <MovieSummaryLarge />
+                <MovieSummaryLarge data={data} />
               ) : (
                 <>
-                  <MovieSummary />
-                  <MovieOverview />
+                  <MovieSummary data={data} />
+                  <MovieOverview data={data} />
                 </>
               )}
-              <ActorCard data={actorData} />
+              <ActorCard data={data} />
               <MovieReview />
             </ContentsWrap>
           </Container>
@@ -43,20 +71,32 @@ function MovieDetailPage() {
 export default MovieDetailPage
 const Wrap = styled.div`
   position: relative;
+  min-height: 100vh;
   height: auto;
-  background: url(${(props) => props.imageUrl});
+  background: url(${(props) => props.$imageurl});
   background-size: cover;
   background-position: center;
 `
 
 const BlurOverlay = styled.div`
   width: 100%;
+  min-height: 100vh;
   height: auto;
   border: 1px solid rgba(255, 255, 255, 0.1);
   background: rgba(0, 0, 0, 0.5);
   backdrop-filter: blur(20px);
 `
-const Container = styled.div``
+const Container = styled.div`
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 25px;
+  @media (min-width: 1440px) {
+    padding: 0; /* 1440px 이상일 때 패딩 제거 */
+  }
+  ${media.small`
+    padding: 20px;
+    `}
+`
 const ContentsWrap = styled.div`
   display: flex;
   flex-direction: column;
