@@ -7,7 +7,8 @@ import { isLoggedIn } from '@/utils/logInManager'
 function StoryItem({ photocardImg, reviewId }) {
   const [isLogIn, setIsLogIn] = useState(isLoggedIn())
   useEffect(() => {
-    setIsLogIn(isLoggedIn())
+    // setIsLogIn(isLoggedIn())
+    setIsLogIn(true)
   }, [])
   return (
     <ImgFrame>

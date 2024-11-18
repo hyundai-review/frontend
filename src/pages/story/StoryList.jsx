@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 import { Swiper, SwiperSlide, useSwiper } from 'swiper/react'
-import { EffectCoverflow } from 'swiper/modules'
+import { EffectCoverflow, Navigation } from 'swiper/modules'
 import 'swiper/css'
 import 'swiper/css/navigation'
 import 'swiper/css/pagination'
@@ -9,13 +9,21 @@ import { useCarousel } from '@/libs/useCarousel'
 import PhotoCard from './PhotoCard'
 import { useWindowSize } from '@/utils/useWindowSize'
 import useStoryStore from '@/store/storyStore'
+import { useEffect, useState } from 'react'
+import { useParams } from 'react-router-dom'
+import { useApi } from '@/libs/useApi'
 
 function StoryList() {
-  const reviewList = useStoryStore((state) => state.reviewList)
+  const { review } = useParams()
+  const { get } = useApi()
+  const { setReviewList, reviewList, focusReview } = useStoryStore()
 
   const { handleSlideChange, handleSlideClick, setSwiper, slideNext } = useCarousel(2)
   const { width } = useWindowSize()
   const isMobile = width < 780
+
+  const focusIndex =
+    reviewList?.findIndex((review) => review.reviewId === focusReview?.reviewId) ?? 2
 
   return (
     <SwiperContainer>
@@ -25,7 +33,7 @@ function StoryList() {
         effect={isMobile ? undefined : 'coverflow'}
         centeredSlides={true}
         slidesPerView='auto'
-        initialSlide={2}
+        initialSlide={focusIndex}
         onSlideChange={handleSlideChange}
         slidesPerGroup={1}
         coverflowEffect={{
@@ -68,13 +76,12 @@ function StoryList() {
           },
         }}
       >
-        {reviewList.map((review, index) => (
+        {reviewList?.map((review, index) => (
           <StyledSwiperSlide
-            key={review.id}
-            //TODO 나중에 영화 상세페이지로 이동하게 할 것
-            onClick={() => handleSlideClick(index, '#', review)}
+            key={index}
+            onClick={() => handleSlideClick(index, `/movie/${review.movieId}/detail`)}
           >
-            <PhotoCard reviewInfo={review} slideNext={slideNext} />
+            <PhotoCard reviewInfo={review} slideNext={slideNext} index={index} />
           </StyledSwiperSlide>
         ))}
       </Swiper>
