@@ -16,6 +16,7 @@ jobs:
           echo "VITE_BASE_URL=${{ secrets.VITE_BASE_URL }}" > .env
           echo "VITE_REDIRECT_URL=${{ secrets.VITE_REDIRECT_URL }}" >> .env
           echo "VITE_REST_API_KEY=${{ secrets.VITE_REST_API_KEY }}" >> .env
+          echo "VITE_IMG_BASE_URL=${{ secrets.VITE_IMG_BASE_URL }}" >> .env
 
       # 의존성 설치 및 빌드
       - name: Install dependencies
