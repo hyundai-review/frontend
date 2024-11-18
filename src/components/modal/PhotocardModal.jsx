@@ -24,5 +24,7 @@ const PhotocardImage = styled.img`
   margin-top: 20px;
   width: 100%;
   height: auto;
+  max-height: 70vh;
   border-radius: 8px;
+  object-fit: cover;
 `

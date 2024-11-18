@@ -19,20 +19,24 @@ import { useApi } from '@/libs/useApi'
 import { Button } from '@mui/material'
 import useModalStore from '@/store/modalStore'
 import useNavigateStore from '@/store/navigateStore'
+import useStoryStore from '@/store/storyStore'
 
 /*boxOfficeMovieData - url, rank, date
 suggestMovieData - moviePosterUrl, movieID */
 // TODO(j) 로컬 스토리지로 불러오는 값 훅으로 빼기 + 시간 계산도 util로 빼기 > 혜정이가 뺐다
 function MainPage() {
   const navigate = useNavigate()
-  const [isLogIn, setIsLogIn] = useState(isLoggedIn())
+  // const [isLogIn, setIsLogIn] = useState(isLoggedIn())
+  const [isLogIn, setIsLogIn] = useState(true)
   const [data, setData] = useState(getUserData())
   const nowDate = new Date()
   const timeText = chkTime(nowDate.getHours())
   const [screenWidth, setScreenWidth] = useState(document.documentElement.clientWidth)
   const setNavigatePage = useNavigateStore((state) => state.setNowPage)
+  const [stories, setStories] = useState(reviewData)
+  const { setReviewList } = useStoryStore()
   useEffect(() => {
-    setIsLogIn(isLoggedIn())
+    // setIsLogIn(isLoggedIn())
     setData(getUserData())
     const handleResize = () => {
       setScreenWidth(document.documentElement.clientWidth)
@@ -55,6 +59,17 @@ function MainPage() {
   // ----------------------  API 요청 ----------------------
   const [boxOfficeMovies, setBoxOfficeMovies] = useState([])
   const { get, loading, error } = useApi(false)
+  const { get: authGet } = useApi(true)
+
+  useEffect(() => {
+    if (isLogIn) {
+      authGet(`/reviews/recents`).then((response) => {
+        console.log('story 조회', response.data.contents)
+        setStories(response.data.contents)
+        setReviewList(response.data.contents)
+      })
+    }
+  }, [isLogIn])
   useEffect(() => {
     const fetchBoxoffice = async () => {
       try {
@@ -106,7 +121,7 @@ function MainPage() {
               <MainPageWrapperTitle>{'최신 스토리'}</MainPageWrapperTitle>
               <Wrap>
                 {isLogIn ? (
-                  <Stories dataList={reviewData} path={'/main/story'} />
+                  <Stories dataList={stories} path={'/main/story'} />
                 ) : (
                   <Stories dataList={reviewData} path={'/user/login'} />
                 )}
