@@ -289,7 +289,7 @@ const CardFooter = styled.div`
 const RightWrap = styled.div``
 
 const Photocard = styled.img`
-  width: 170px;
+  width: 250px;
   height: 100%;
   border-radius: 5px;
   object-fit: cover;

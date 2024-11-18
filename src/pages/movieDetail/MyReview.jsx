@@ -4,7 +4,6 @@ import styled from 'styled-components'
 import commentWhite from '@/assets/icons/commentWhite.svg'
 import comment from '@/assets/icons/comment.svg'
 import StarRating from '@/components/common/StarRating'
-import { useNavigate } from 'react-router-dom'
 import media from '@/styles/media'
 import * as S from '@/styles/review/comment.style'
 import ReviewComment from '@/components/review/ReviewComment'
@@ -289,8 +288,8 @@ const CardFooter = styled.div`
 const RightWrap = styled.div``
 
 const Photocard = styled.img`
-  width: 100%;
-  height: 240px;
+  width: 250px;
+  height: 100%;
   border-radius: 5px;
   object-fit: cover;
 `
