@@ -10,6 +10,7 @@ import ReviewSwiper from '@/components/reviewSwiper/ReviewSwiper'
 import { useApi } from '@/libs/useApi'
 import { useInfiniteScroll } from '@/hooks/useInfiniteScroll'
 import useNavigateStore from '@/store/navigateStore'
+import { set } from 'lodash'
 // myReviewData에서 데이터를 변환
 function MyPage() {
   // ----------------------  API 요청 ----------------------
@@ -27,10 +28,12 @@ function MyPage() {
   //   fetchMyReviews()
   // }, [])
   const [hasNext, setHasNext] = useState(true) // 다음 페이지 여부
+  const [totalReviewCount, setTotalReviewCount] = useState(0)
 
   // 데이터를 가져오는 함수
   const fetchMyReviews = async (page) => {
     const response = await get(`/reviews/my?page=${page}&size=10&sort=date`)
+    setTotalReviewCount(response.data.totalReviews)
     setHasNext(response.data.pageable.hasNext) // 다음 페이지 여부 업데이트
     return response.data.contents
   }
@@ -52,7 +55,7 @@ function MyPage() {
       <Profile />
       <div style={{ paddingLeft: '20px' }}>
         <ReviewTitleWrap>
-          <ReviewTitle>리뷰(999)</ReviewTitle>
+          <ReviewTitle>리뷰({totalReviewCount})</ReviewTitle>
         </ReviewTitleWrap>
         <ReviewSwiper dataList={transformedData} path={'/mypage'} />
         <ReviewContainer>

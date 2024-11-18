@@ -4,7 +4,6 @@ import styled from 'styled-components'
 import edit from '@/assets/icons/edit.svg'
 import { useNavigate } from 'react-router-dom'
 import { authenticated } from '@/libs/axiosInstance'
-import { getUserData } from '@/utils/logInManager'
 import { isLoggedIn } from '@/utils/logInManager'
 import { getUserData, removeData, setUserNickname } from '@/utils/logInManager'
 import { useApi } from '@/libs/useApi'
@@ -19,7 +18,6 @@ function Profile() {
   //-------------------------------Data---------------------------
   const [userinfo, setUserInfo] = useState(getUserData())
   const userNicknameLength = userinfo.nickname.length
-  const reviewCount = 32 // TODO(k) 응답 배열 개수 세야할듯 > util로 뺴야할지도?
   //TODO(j) axios 요청 따로 모으기 + 로그아웃 로직 분리
   // ------------------------------login---------------------------
   const handleEditNickname = async () => {
