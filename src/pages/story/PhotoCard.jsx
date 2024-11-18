@@ -15,7 +15,6 @@ function PhotoCard({ reviewInfo, slideNext, index }) {
 
   const isCurrentFocus = focusReview?.reviewId === reviewInfo.reviewId
 
-  console.log('reviewInfo', reviewInfo)
   return (
     <Container>
       <div style={{ marginBottom: '10px' }}>

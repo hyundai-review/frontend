@@ -79,8 +79,7 @@ function StoryList() {
         {reviewList?.map((review, index) => (
           <StyledSwiperSlide
             key={index}
-            //TODO 나중에 영화 상세페이지로 이동하게 할 것
-            onClick={() => handleSlideClick(index, '#', review)}
+            onClick={() => handleSlideClick(index, `/movie/${review.movieId}/detail`)}
           >
             <PhotoCard reviewInfo={review} slideNext={slideNext} index={index} />
           </StyledSwiperSlide>
