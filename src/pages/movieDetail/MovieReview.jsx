@@ -11,11 +11,6 @@ import { useApi } from '@/libs/useApi'
 
 function MovieReview() {
   const navigate = useNavigate()
-
-  // data
-  const reviewCount = 123
-  const averageRating = 4.23
-
   // ---------------------------login---------------------------
   const [isLogin, setIsLogin] = useState(true)
   const { movieId } = useParams()
@@ -58,7 +53,7 @@ function MovieReview() {
         {isLogin && (
           <RatingWrap>
             <StarRating type='readonly' initialValue='1' max={1} size={24} />
-            <AverageRating>{data?.averageRating}</AverageRating>
+            <AverageRating>{data?.averageRating.toFixed(2)}</AverageRating>
           </RatingWrap>
         )}
       </TitleWrap>
