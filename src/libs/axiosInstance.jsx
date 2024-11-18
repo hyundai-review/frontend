@@ -17,7 +17,7 @@ authenticated.interceptors.request.use((config) => {
 
   // TODO(k) 임시 엑세스 토큰
   const ACCESS_TOKEN =
-    'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIzIiwiaWF0IjoxNzMxOTU1ODk3LCJleHAiOjE3MzE5NTc2OTd9.0sv09rxopTRvzNIKdaSXX5v0GhAp7xlIGkzRvb3Qo-il1fl7wr6d--4FWTwypbeQwQbTj1b8YDnQqn_ysIi-ow'
+    'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIzIiwiaWF0IjoxNzMxOTU4MDg3LCJleHAiOjE3MzE5NTk4ODd9.G20z6N7X11Yxy_SgFhe-tTWrNMRdNoiuhrXYNf84FGqbmpqodTSn3r2XCclhki8uHiIS61K99uxjAMlG35Ly8Q'
 
   if (ACCESS_TOKEN) {
     config.headers['Authorization'] = `Bearer ${ACCESS_TOKEN}`

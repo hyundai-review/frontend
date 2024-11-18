@@ -9,7 +9,6 @@ import media from '@/styles/media'
 
 function ReviewPostPage() {
   const { movieId } = useParams()
-
   const {
     reviewStep,
     prevStep,
@@ -52,7 +51,7 @@ function ReviewPostPage() {
 
   return (
     <Container $image={backgroundImg}>
-      <S.BlurOverlay>
+      <BlurOverlay>
         <Wrap>
           <TopWrap>
             {/* 단계 바 */}
@@ -90,22 +89,42 @@ function ReviewPostPage() {
           {/* 공통 */}
           <Outlet />
         </Wrap>
-      </S.BlurOverlay>
+      </BlurOverlay>
     </Container>
   )
 }
 
 export default ReviewPostPage
 
+// const Container = styled.div`
+//   width: 100vw;
+//   height: 100vh;
+//   background: ${(props) => `url(${props.$image})`};
+//   background-size: cover;
+//   background-position: center;
+//   background-repeat: no-repeat;
+// `
 const Container = styled.div`
-  width: 100vw;
-  height: 100vh;
+  min-height: 100vh;
+  height: auto;
+
   background: ${(props) => `url(${props.$image})`};
   background-size: cover;
   background-position: center;
-  background-repeat: no-repeat;
 `
+
+const BlurOverlay = styled.div`
+  width: 100%;
+  min-height: 100vh;
+  height: auto;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(20px);
+`
+
 const Wrap = styled.div`
+  padding: 25px 0;
+
   width: calc(100% - 240px);
   margin: 0 auto;
   min-width: 362px;
