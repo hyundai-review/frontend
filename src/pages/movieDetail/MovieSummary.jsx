@@ -6,7 +6,8 @@ import styled from 'styled-components'
 import media from '@/styles/media'
 import { getStatusColor, mapMovieStatus } from '@/utils/statusMapper'
 import * as S from '@/styles/movieSummary/MovieSummary.style.'
-function MovieSummary({ data }) {
+import SkeletonMovieSummary from './skeleton/SkeletonMovieSummary'
+function MovieSummary({ data, loading }) {
   // const posterImageUrl =
   //   'https://img.cgv.co.kr/Movie/Thumbnail/StillCut/000088/88847/88847230819_727.jpg'
   // const title = '청설'
@@ -23,42 +24,47 @@ function MovieSummary({ data }) {
   const runningTime = `${Math.floor(data?.runtime / 60)}시간 ${data?.runtime % 60}분` // 148 → "2시간 28분"
   const status = mapMovieStatus(data?.status)
   const statusColor = getStatusColor(data?.status)
+  if (loading) {
+    return <SkeletonMovieSummary />
+  }
   return (
-    <MovieSummaryContainer>
-      <LeftSection>
-        <Poster $imageurl={posterImageUrl} />
-      </LeftSection>
-      <RightSection>
-        <RightHeader>
-          <RightTitleWrap>
-            <RightTitle>{title}</RightTitle>
-            <RightYear>({year})</RightYear>
-          </RightTitleWrap>
-          <RightRating>{certification}</RightRating>
-        </RightHeader>
-        <Wrap>
-          <MovieInfo>
-            <InfoWrap>
-              <CalendarIcon src={calendar}></CalendarIcon>
-              <ReleaseDate>{releaseDate}</ReleaseDate>
-            </InfoWrap>
-            <InfoWrap>
-              <ClockIcon src={clock}></ClockIcon>
-              <RunningTime>{runningTime}</RunningTime>
-            </InfoWrap>
-          </MovieInfo>
-          <MovieGenreWrap>
-            {data?.genres.map((genre) => (
-              <GenreButton key={genre.genreId} fontSize={14} radius={10} category={genre.name} />
-            ))}
-          </MovieGenreWrap>
-          <MovieStatusWrap>
-            <S.StatusCircle $color={statusColor} />
-            <S.StatusText>{status}</S.StatusText>
-          </MovieStatusWrap>
-        </Wrap>
-      </RightSection>
-    </MovieSummaryContainer>
+    <>
+      <MovieSummaryContainer>
+        <LeftSection>
+          <Poster $imageurl={posterImageUrl} />
+        </LeftSection>
+        <RightSection>
+          <RightHeader>
+            <RightTitleWrap>
+              <RightTitle>{title}</RightTitle>
+              <RightYear>({year})</RightYear>
+            </RightTitleWrap>
+            <RightRating>{certification}</RightRating>
+          </RightHeader>
+          <Wrap>
+            <MovieInfo>
+              <InfoWrap>
+                <CalendarIcon src={calendar}></CalendarIcon>
+                <ReleaseDate>{releaseDate}</ReleaseDate>
+              </InfoWrap>
+              <InfoWrap>
+                <ClockIcon src={clock}></ClockIcon>
+                <RunningTime>{runningTime}</RunningTime>
+              </InfoWrap>
+            </MovieInfo>
+            <MovieGenreWrap>
+              {data?.genres.map((genre) => (
+                <GenreButton key={genre.genreId} fontSize={14} radius={10} category={genre.name} />
+              ))}
+            </MovieGenreWrap>
+            <MovieStatusWrap>
+              <S.StatusCircle $color={statusColor} />
+              <S.StatusText>{status}</S.StatusText>
+            </MovieStatusWrap>
+          </Wrap>
+        </RightSection>
+      </MovieSummaryContainer>
+    </>
   )
 }
 

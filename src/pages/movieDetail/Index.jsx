@@ -51,15 +51,15 @@ function MovieDetailPage() {
             </Header>
             <ContentsWrap>
               {screenSize === 'medium' || screenSize === 'large' ? (
-                <MovieSummaryLarge data={data} />
+                <MovieSummaryLarge data={data} loading={loading} />
               ) : (
                 <>
-                  <MovieSummary data={data} />
-                  <MovieOverview data={data} />
+                  <MovieSummary data={data} loading={loading} />
+                  <MovieOverview data={data} loading={loading} />
                 </>
               )}
-              <ActorCard data={data} />
-              <MovieReview />
+              <ActorCard data={data} loading={loading} />
+              <MovieReview loading={loading} />
             </ContentsWrap>
           </Container>
         </BlurOverlay>
@@ -89,7 +89,7 @@ const BlurOverlay = styled.div`
 const Container = styled.div`
   max-width: 1440px;
   margin: 0 auto;
-  padding: 20px 30px;
+  padding: 70px 30px;
   @media (min-width: 1441px) {
     padding: 0 20px;
   }

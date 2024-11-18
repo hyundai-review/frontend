@@ -2,7 +2,8 @@ import React, { useEffect, useRef, useState } from 'react'
 import styled from 'styled-components'
 import down from '@/assets/icons/down.svg'
 import up from '@/assets/icons/up.svg'
-function MovieOverview({ data }) {
+import SkeletonMovieOverview from './skeleton/SkeletonMovieOverview'
+function MovieOverview({ data, loading }) {
   const [isExpanded, setIsExpanded] = useState(false)
   const [isOverflowing, setIsOverflowing] = useState(false)
   const contentsRef = useRef(null)
@@ -23,6 +24,9 @@ function MovieOverview({ data }) {
       setIsOverflowing(contentsRef.current.scrollHeight > contentsRef.current.clientHeight)
     }
   }, [contents])
+  if (loading) {
+    return <SkeletonMovieOverview />
+  }
   return (
     <>
       <Wrap>

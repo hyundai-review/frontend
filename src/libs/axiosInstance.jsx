@@ -16,7 +16,7 @@ authenticated.interceptors.request.use((config) => {
   // const ACCESS_TOKEN = getCookie('ACCESS_TOKEN')
 
   const ACCESS_TOKEN =
-    'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiI0IiwiaWF0IjoxNzMxOTQyOTkyLCJleHAiOjE3MzE5NDQ3OTJ9.tolEwBJSsIrdFxq6o1Nz54lQNJ1WVcakaU29uMaSzWBCo4e-K7hhn5i8W40KnLE9fzPOVlM_ThojrXLKKy3LRA'
+    'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiI0IiwiaWF0IjoxNzMxOTQ5NjQyLCJleHAiOjE3MzE5NTE0NDJ9.ehiUMNkb4UujkWIqqB4yHiYWC8C50l9IlbypxoCaX4obUkzyXzawQn6y-pCx5ZHvD8LrOn5qiq4n-WftDZ2vbg'
   if (ACCESS_TOKEN) {
     config.headers['Authorization'] = `Bearer ${ACCESS_TOKEN}`
   } else {
