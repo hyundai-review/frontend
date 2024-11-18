@@ -180,9 +180,11 @@ function MyReview({ myReviewData = {}, onDataChange }) {
             </>
           )}
         </LeftWrap>
-        <RightWrap>
-          <Photocard src={photocard} />
-        </RightWrap>
+        {photocard && (
+          <RightWrap>
+            <Photocard src={photocard} />
+          </RightWrap>
+        )}
       </Wrap>
       <CommentWrap>
         <CardFooter>
@@ -251,7 +253,6 @@ const Wrap = styled.div`
 `
 
 const LeftWrap = styled.div`
-  margin-right: 20px;
   flex: 1;
 `
 const CardHeader = styled.div`

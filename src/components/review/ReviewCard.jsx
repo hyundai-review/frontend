@@ -93,9 +93,11 @@ function ReviewCard({ review, pageType }) {
               </CardHeader>
               <CardContent>{reviewContent}</CardContent>
             </LeftWrap>
-            <RightWrap>
-              <Photocard src={review.photocard} />
-            </RightWrap>
+            {photocard && (
+              <RightWrap>
+                <Photocard src={photocard} />
+              </RightWrap>
+            )}
           </>
         )}
       </Wrap>

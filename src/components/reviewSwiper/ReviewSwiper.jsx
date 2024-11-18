@@ -6,10 +6,10 @@ import Stories from '../story/Stories'
 import media from '@/styles/media'
 import { useNavigate } from 'react-router-dom'
 import useModalStore from '@/store/modalStore'
+import { data } from '@tensorflow/tfjs'
 
 function ReviewSwiper({ dataList }) {
   const navigate = useNavigate()
-  const dataLength = dataList.length
   const { openModal } = useModalStore()
   const [isFull, setIsFull] = useState(true)
   const swiperRef = useRef(null)
@@ -30,24 +30,28 @@ function ReviewSwiper({ dataList }) {
       const isSwipeable = checkSwiperLength.isBeginning && checkSwiperLength.isEnd
       setIsFull(isSwipeable)
     }
+    console.log('reviewSwiper > ', dataList.photocard)
   }, [dataList])
   return (
     <div>
       <SwiperWrapper $isFull={isFull}>
         <Swiper style={{ margin: 0 }} slidesPerView={'auto'} ref={swiperRef}>
-          {dataList.map((review, index) => (
-            <SwiperSlide
-              key={index}
-              onClick={() => handleSlideClick(review)}
-              style={{ width: 250 }}
-            >
-              <ImageSlideWrap>
-                <ImageSlide $imageurl={review.photocard}>
-                  <ImageText>{'여기는 나중에 대체됨'}</ImageText>
-                </ImageSlide>
-              </ImageSlideWrap>
-            </SwiperSlide>
-          ))}
+          {dataList.map(
+            (review, index) =>
+              review.photocard && (
+                <SwiperSlide
+                  key={index}
+                  onClick={() => handleSlideClick(review)}
+                  style={{ width: 250 }}
+                >
+                  <ImageSlideWrap>
+                    <ImageSlide $imageurl={review.photocard}>
+                      <ImageText>{'여기는 나중에 대체됨'}</ImageText>
+                    </ImageSlide>
+                  </ImageSlideWrap>
+                </SwiperSlide>
+              ),
+          )}
         </Swiper>
       </SwiperWrapper>
       <StoriesWrapper>
