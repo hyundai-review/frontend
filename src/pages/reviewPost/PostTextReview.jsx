@@ -8,14 +8,17 @@ import * as SBtn from '@/styles/button'
 import { Checkbox } from '@mui/material'
 import useReviewStore from '@/store/reviewStore'
 import { useApi } from '@/libs/useApi'
-import { useParams } from 'react-router-dom'
+import { Navigate, useNavigate, useParams } from 'react-router-dom'
+import useModalStore from '@/store/modalStore'
 
 /** step 1. 텍스트 리뷰 작성 */
 function PostTextReview() {
   const { nextStep, reviewPost, setReviewPost } = useReviewStore()
   const { post, error } = useApi()
   const { movieId } = useParams()
+  const { openModal } = useModalStore()
 
+  const navigate = useNavigate()
   const [starRating, setStarRating] = useState(reviewPost.rating)
   const formRef = useRef({
     content: reviewPost.content,
@@ -39,10 +42,20 @@ function PostTextReview() {
     } else {
       console.log('확인용', formRef.current)
 
-      const response = await post(`/reviews/${movieId}`, reviewPost)
-      if (response.status === 200) {
-        alert('리뷰가 등록되었습니다.')
-        //TODO navigate
+      try {
+        const response = await post(`/reviews/${movieId}`, reviewPost)
+
+        if (response.status === 200) {
+          openModal('confirm', { message: '리뷰를 등록하시겠습니까?' }, () => {
+            navigate(`/movie/${movieId}/detail`)
+          })
+        }
+      } catch (err) {
+        if (err.response?.status === 409) {
+          openModal('alert', {
+            message: '이미 리뷰를 작성하셨습니다.',
+          })
+        }
       }
     }
   }

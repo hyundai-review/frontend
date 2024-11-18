@@ -33,9 +33,10 @@ export const useApi = (requireAuth = true) => {
       setError(err.response?.data || err.message)
 
       const errorMessage = ERROR_MESSAGES[err.response?.status]
-      if (errorMessage) {
-        alert(errorMessage)
-      }
+      // if (errorMessage) {
+      //   alert(errorMessage)
+      // }
+
       throw err
       //
     } finally {
