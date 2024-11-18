@@ -14,8 +14,10 @@ import SearchBar from '@/components/common/SearchBar'
 import * as SText from '@/styles/text'
 import { Checkbox } from '@mui/material'
 import { useApi } from '@/libs/useApi'
+import useModalStore from '@/store/modalStore'
+import { validateReviewForm } from '@/utils/myReviewHandlers'
 // import { review } from '@/assets/data/myReviewData'
-function MyReview({ myReviewData = {} }) {
+function MyReview({ myReviewData = {}, onDataChange }) {
   // ----------data----------
   const {
     reviewId = 0,
@@ -27,9 +29,9 @@ function MyReview({ myReviewData = {} }) {
     isSpoil: reviewIsSpoil = false,
   } = myReviewData
   // ----------API----------
-  const { put } = useApi(true)
-
-  // const navigate = useNavigate()
+  const { put, delete: deleteReview } = useApi(true)
+  const { openModal } = useModalStore()
+  // ---------- State ----------
   const [isCommentOpen, setIsCommentOpen] = useState(false)
   const [isEdit, setIsEdit] = useState(false)
   const [isDelete, setIsDelete] = useState(false)
@@ -43,10 +45,12 @@ function MyReview({ myReviewData = {} }) {
       setRating(reviewRating)
       setContent(reviewContent)
       setIsSpoil(reviewIsSpoil)
+      formRef.current.rating = reviewRating
+      formRef.current.content = reviewContent
+      formRef.current.isSpoil = reviewIsSpoil
     }
   }, [myReviewData])
-
-  // 함수
+  // // 함수
   const handleCheckboxChange = (e) => {
     const checked = e.target.checked
     formRef.current.isSpoil = checked // Ref 업데이트
@@ -56,36 +60,47 @@ function MyReview({ myReviewData = {} }) {
     setRating(newRating) // 별점 상태 업데이트
     formRef.current.rating = newRating // 폼 데이터 업데이트
   }
+  const handleEditClick = (e) => {
+    e.stopPropagation()
+    console.log('편집 열려라 참깨 : ', isEdit)
+    const formData = {
+      rating: formRef.current.rating,
+      content: formRef.current.content,
+      isSpoil: formRef.current.isSpoil,
+    }
+    if (isEdit) {
+      // 제출 클릭
+      // 유효성 검사 호출
+      console.log('제출된 데이터 : ', formData) // 제출 데이터 확인
+      const isValid = validateReviewForm(formData, openModal)
+      if (!isValid) return
+      openModal('confirm', { message: '수정하시겠습니까?' }, async () => {
+        const response = await put(`/reviews/${reviewId}`, formData)
+        console.log('-----------------------------------------')
+        console.log('수정 성공:', response)
+        setIsEdit(false) // 편집 모드 종료
+      })
+      return
+    } else {
+      setIsEdit(true)
+    }
+  }
   const handleCommentClick = (e) => {
     console.log('댓글 열려라 참깨')
     setIsCommentOpen(true)
     e.stopPropagation()
   }
-  const handleEditClick = async (e) => {
-    console.log('편집 열려라 참깨')
-    if (isEdit) {
-      // 제출 클릭
-      const formData = {
-        rating: formRef.current.rating,
-        content: formRef.current.content,
-        isSpoil: formRef.current.isSpoil,
-      }
-      console.log('제출된 데이터nkm: ', formData) // 제출 데이터 확인
-      const response = await put(`/reviews/${reviewId}`, formData)
-      console.log('-----------------------------------------')
-      console.log('수정 성공:', response)
-      // onSubmit(formData) // 부모 컴포넌트에 데이터 전달
-      setIsEdit(false) // 편집 모드 종료
-      e.stopPropagation()
-      return
-    }
-    setIsEdit(true)
-    e.stopPropagation()
-  }
   const handleDeleteClick = (e) => {
-    alert('삭제하시겠습니까?')
-    setIsDelete((prev) => !prev)
     e.stopPropagation()
+    openModal('confirm', { message: '삭제하시겠습니까?' }, async () => {
+      try {
+        const response = await deleteReview(`/reviews/${reviewId}`)
+        console.log('삭제 성공:', response)
+        onDataChange() // 부모에게 데이터 갱신 요청
+      } catch (error) {
+        console.error('삭제 실패:', error)
+      }
+    })
   }
   // 리뷰 내용 변경
   const handleContentChange = (e) => {
@@ -152,7 +167,10 @@ function MyReview({ myReviewData = {} }) {
                         '&.Mui-checked': {
                           color: 'var(--color-gray-50)',
                         },
-                        '& .MuiSvgIcon-root': {},
+                        '&.Mui-disabled': {
+                          opacity: 1, // disabled 상태에서도 가시성을 유지
+                          color: 'var(--color-gray-50)',
+                        },
                       }}
                     />
                   </SText.Text>
@@ -203,7 +221,7 @@ const TitleWrap = styled.div`
   background: rgba(0, 0, 0, 0.1);
   box-shadow: 0px 0px 10px 0px var(--primary-solid-light, rgba(199, 125, 181, 0.5));
   padding: 2px 8px;
-  margin-bottom: 5px;
+  /* margin-bottom: 5px; */
 `
 const Title = styled.div`
   text-align: center;

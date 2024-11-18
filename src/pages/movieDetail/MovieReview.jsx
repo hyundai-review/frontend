@@ -25,37 +25,35 @@ function MovieReview() {
   const { get, loading, error } = useApi(true) // 테스트중 true로 바꿔야함
 
   const [data, setData] = useState(null)
+  const fetchReviewData = async () => {
+    try {
+      // TODO(k) 무한스크롤 페이지네이션 이후 추가해야함, 일단 빼고 진행
+      const response = await get(`/reviews/${movieId}?page=0&size=10&sort=date`)
+      setData(response.data)
+      setIsReviewWritten(response.data.myReview !== null)
+      // console.log('movie review >>> ', response.data)
+    } catch (err) {
+      console.error('리뷰 정보를 가져오는 중 오류가 발생했습니다:', err)
+    }
+  }
   useEffect(() => {
     if (!isLogin) return // 로그인 상태가 아니면 추가 요청 생략
-    const fetchReviewData = async () => {
-      try {
-        // TODO(k) 무한스크롤 페이지네이션 이후 추가해야함, 일단 빼고 진행
-        const response = await get(`/reviews/${movieId}?page=0&size=10&sort=date`)
-        setData(response.data)
-        setIsReviewWritten(response.data.myReview !== null)
-        console.log('movie review >>> ', response.data)
-      } catch (err) {
-        console.error('리뷰 정보를 가져오는 중 오류가 발생했습니다:', err)
-      }
-    }
     fetchReviewData()
   }, [])
 
   useEffect(() => {
     if (data) {
-      console.log('other reviewlist : ', data.otherReviewList)
+      // console.log('other reviewlist : ', data.otherReviewList)
       const transformed = transformReviewData(data.otherReviewList)
       setTransformedData(transformed) // 상태 업데이트
-      console.log('transformed before state update : ', transformed) // 즉시 확인
     }
   }, [data])
-  useEffect(() => {
-    console.log('Updated transformedData : ', transformedData)
-  }, [transformedData])
+  const onDataChange = () => {
+    fetchReviewData() // 데이터 다시 요청
+  }
   return (
     <Wrap>
       <TitleWrap>
-        {/* TODO(k) 백엔드에 없어서 아마 리뷰총개수 지울수도 */}
         <Title>리뷰({data?.totalReviews})</Title>
         {isLogin && (
           <RatingWrap>
@@ -86,7 +84,7 @@ function MovieReview() {
               </ButtonWrap>
             ) : (
               <ButtonWrap>
-                <MyReview myReviewData={data?.myReview} />
+                <MyReview myReviewData={data?.myReview} onDataChange={onDataChange} />
               </ButtonWrap>
             )}
             <>
