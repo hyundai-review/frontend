@@ -14,7 +14,8 @@ import block from '@/assets/icons/block.svg'
 import { isLoggedIn } from '@/utils/logInManager'
 function Stories({ dataList, path }) {
   const { handleSlideChange, handleSlideClick } = useCarousel(1)
-  const [isLogIn, setIsLogIn] = useState(isLoggedIn())
+  // const [isLogIn, setIsLogIn] = useState(isLoggedIn())
+  const [isLogIn, setIsLogIn] = useState(true)
   const openModal = useModalStore((state) => state.openModal)
   const navigate = useNavigate()
 
@@ -24,8 +25,6 @@ function Stories({ dataList, path }) {
       navigate(path) // /user/login 경로로 이동
     } else if (path) {
       handleSlideClick(index, path, review)
-    } else {
-      openModal(review)
     }
   }
 

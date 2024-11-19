@@ -1,3 +1,4 @@
+import useModalStore from '@/store/modalStore'
 import useStoryStore from '@/store/storyStore'
 import React, { useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
@@ -8,6 +9,7 @@ export const useCarousel = (initialIndex = 1) => {
   const [swiper, setSwiper] = useState(null)
   const reviewList = useStoryStore((state) => state.reviewList)
   const updateFocusReview = useStoryStore((state) => state.updateFocusReview)
+  const openModal = useModalStore((state) => state.openModal)
 
   /** 다음 슬라이드로 이동하는 함수 */
   const slideNext = () => {
@@ -43,7 +45,11 @@ export const useCarousel = (initialIndex = 1) => {
       updateFocusReview(index) // 포커스 된 리뷰 업데이트
 
       if (item) {
-        navigate(`${path}/${item.reviewId}`)
+        if (path === '#') {
+          openModal(item)
+        } else {
+          navigate(`${path}/${item.reviewId}`)
+        }
       } else {
         navigate(`${path}`)
       }

@@ -36,7 +36,7 @@ function ReviewSwiper({ dataList }) {
     <>
       {isMobile ? (
         <StoriesWrapper>
-          <Stories dataList={dataList} />
+          <Stories dataList={dataList} path='#' />
         </StoriesWrapper>
       ) : (
         <SwiperWrapper $isFull={!isMobile}>
