@@ -11,9 +11,10 @@ import { useCarousel } from '@/libs/useCarousel'
 import useModalStore from '@/store/modalStore'
 import { useNavigate } from 'react-router-dom'
 import block from '@/assets/icons/block.svg'
+import { isLoggedIn } from '@/utils/logInManager'
 function Stories({ dataList, path }) {
   const { handleSlideChange, handleSlideClick } = useCarousel(1)
-  const [isLogIn, setIsLogIn] = useState(true) // 테스트용 로그인
+  const [isLogIn, setIsLogIn] = useState(isLoggedIn())
   const openModal = useModalStore((state) => state.openModal)
   const navigate = useNavigate()
 
