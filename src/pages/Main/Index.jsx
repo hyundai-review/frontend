@@ -20,6 +20,7 @@ import useNavigateStore from '@/store/navigateStore'
 import useStoryStore from '@/store/storyStore'
 import { fetchBoxOfficeMovies } from '@/apis/movieQuery'
 import { useQuery, useQueryClient } from '@tanstack/react-query'
+import SkeletonBoxOfiicePosterCard from '@/components/common/Skeleton/SkeletonBoxOfiicePosterCard'
 
 /*boxOfficeMovieData - url, rank, date
 suggestMovieData - moviePosterUrl, movieID */
@@ -131,11 +132,18 @@ function MainPage() {
               <MainPageWrapperTitle>{`${nowDate.getMonth() + 1}월 ${nowDate.getDate()}일 박스오피스 순위`}</MainPageWrapperTitle>
               <MainPageBoxOfficeSwiperWrapper $width={screenWidth - 402}>
                 <Swiper spaceBetween={7} slidesPerView={'auto'}>
-                  {boxOfficeMovies?.map((item, index) => (
-                    <MainPageSwiperSlide key={index}>
-                      <BoxOfficePosterCard movieInfo={item} />
-                    </MainPageSwiperSlide>
-                  ))}
+                  {loading
+                    ? Array.from({ length: 10 }).map((_, index) => (
+                        <MainPageSwiperSlide key={index}>
+                          <SkeletonBoxOfiicePosterCard key={index} />
+                        </MainPageSwiperSlide>
+                      ))
+                    : boxOfficeMovies?.map((item, index) => (
+                        <MainPageSwiperSlide key={index}>
+                          <BoxOfficePosterCard movieInfo={item} />
+                        </MainPageSwiperSlide>
+                      ))}
+                  {}
                 </Swiper>
               </MainPageBoxOfficeSwiperWrapper>
             </MainPageSliderWrapper>
@@ -143,7 +151,7 @@ function MainPage() {
         </MainPageBodyTopWrapper>
         <MainPageSliderWrapper>
           <MainPageWrapperTitle>{'추천영화'}</MainPageWrapperTitle>
-          <SuggestMovieBox isLogin={isLogIn} />
+          <SuggestMovieBox loading={loading} isLogin={isLogIn} />
         </MainPageSliderWrapper>
       </MainPageBodyContainer>
     </div>

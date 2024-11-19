@@ -4,6 +4,7 @@ import MobileNavigationBar from '../common/MobileNavigationBar'
 import { Outlet } from 'react-router-dom'
 import styled from 'styled-components'
 import BackgroundContainer from '../common/BackgroundContainer'
+import Footer from '../common/Footer'
 
 function MainLayout() {
   const [width, setWidth] = useState(window.innerWidth)
@@ -20,6 +21,7 @@ function MainLayout() {
         <AppWrapper width={width}>
           <Outlet />
         </AppWrapper>
+        <Footer />
         <MobileNavigationBar />
       </BackgroundContainer>
     </div>

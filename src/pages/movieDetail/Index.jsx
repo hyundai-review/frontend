@@ -8,7 +8,7 @@ import arrowLeft from '@/assets/icons/arrow-left.svg'
 import ActorCard from './ActorCard'
 import useResponsive from '@/hooks/useResponsive'
 import MovieSummaryLarge from './MovieSummaryLarge'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { useApi } from '@/libs/useApi'
 import useReviewStore from '@/store/reviewStore'
 import useScrollToTop from '@/hooks/useScrollToTop'
@@ -17,6 +17,12 @@ function MovieDetailPage() {
   useScrollToTop() // 페이지 로드 시 스크롤을 최상단으로 이동
   const { movieId } = useParams()
   const screenSize = useResponsive()
+  const navigate = useNavigate()
+
+  const handleBack = () => {
+    console.log('뒤로가기')
+    navigate(-1) // 뒤로가기
+  }
   const { setBackgroundImg, setCurrentMovieId } = useReviewStore()
 
   useEffect(() => {
@@ -47,7 +53,12 @@ function MovieDetailPage() {
         <BlurOverlay>
           <Container>
             <Header>
-              <LeftIcon src={arrowLeft} />
+              <LeftIcon
+                src={arrowLeft}
+                onClick={() => {
+                  handleBack()
+                }}
+              />
             </Header>
             <ContentsWrap>
               {screenSize === 'medium' || screenSize === 'large' ? (
@@ -76,7 +87,6 @@ const Wrap = styled.div`
   background: url(${(props) => props.$imageurl});
   background-size: cover;
   background-position: center;
-  padding-bottom: 30px;
 `
 
 const BlurOverlay = styled.div`
@@ -91,6 +101,7 @@ const Container = styled.div`
   max-width: 1440px;
   margin: 0 auto;
   padding: 70px 30px;
+  /* background-color: #fff; */
   @media (min-width: 1441px) {
     padding: 0 20px;
   }
