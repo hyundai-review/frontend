@@ -10,19 +10,19 @@ function SearchBar({ defaultValue }) {
   const navigate = useNavigate()
   const inputRef = useRef(null)
   const [inputFieldFocus, setInputFieldFocus] = useState(false)
-  const next = useSearchParamsHelper()
+  // const next = useSearchParamsHelper()
   const handleSubmit = (e) => {
     e.preventDefault()
     const removeBlankValue = encodeURIComponent(inputRef.current.value.trim())
     if (removeBlankValue !== '') {
-      // navigate(`/search?q=${removeBlankValue}`)
-      console.log(next(removeBlankValue, '/search'))
+      navigate(`/search?q=${removeBlankValue}`)
+      // console.log(next(removeBlankValue, '/search'))
     }
   }
   return (
     <div>
       <SearchBarContainer $isfocused={inputFieldFocus} className='hoverBright'>
-        <SearchBarForm onSubmit={() => handleSubmit}>
+        <SearchBarForm onSubmit={handleSubmit}>
           <SearchBarIconButton type='submit'>
             <SearchBarIconButtonImage src={searchBarIcon} alt='searchBarIcon' />
           </SearchBarIconButton>

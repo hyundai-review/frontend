@@ -7,7 +7,6 @@ import useStoryStore from '@/store/storyStore'
 
 function StoryPage() {
   const focusReview = useStoryStore((state) => state.focusReview)
-
   return (
     <Wrap image={focusReview.photocard}>
       <BlurOverlay>
@@ -22,21 +21,35 @@ export default StoryPage
 const Wrap = styled.div`
   position: relative;
   /* width: 100vw; */
-  height: 100vh;
+  /* height: 100vh; */
+  min-height: 100vh;
   background: ${(props) => `url(${props.image})`};
   background-size: cover;
   background-position: center;
 `
 
+// const BlurOverlay = styled.div`
+//   display: flex;
+//   flex-direction: column;
+//   justify-content: center;
+//   align-items: center;
+//   align-content: center;
+//   width: 100%;
+//   height: 100%;
+//   border: 1px solid rgba(255, 255, 255, 0.1);
+//   background: rgba(0, 0, 0, 0.5);
+//   backdrop-filter: blur(20px);
+// `
 const BlurOverlay = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  align-content: center;
   width: 100%;
-  height: 100%;
+  min-height: 100vh;
+  /* height: auto; */
+  /* height: 100%; */
   border: 1px solid rgba(255, 255, 255, 0.1);
   background: rgba(0, 0, 0, 0.5);
   backdrop-filter: blur(20px);
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `

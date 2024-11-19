@@ -94,7 +94,6 @@ export const useBackgroundImage = (imageUrl, dimensions) => {
       img.width = dimensions.width
       img.height = dimensions.height
     }
-
     img.src = imageUrl
   }, [imageUrl, dimensions])
 

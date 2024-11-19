@@ -4,7 +4,6 @@ import styled from 'styled-components'
 import commentWhite from '@/assets/icons/commentWhite.svg'
 import comment from '@/assets/icons/comment.svg'
 import StarRating from '@/components/common/StarRating'
-import { useNavigate } from 'react-router-dom'
 import media from '@/styles/media'
 import * as S from '@/styles/review/comment.style'
 import ReviewComment from '@/components/review/ReviewComment'
@@ -14,8 +13,12 @@ import SearchBar from '@/components/common/SearchBar'
 import * as SText from '@/styles/text'
 import { Checkbox } from '@mui/material'
 import { useApi } from '@/libs/useApi'
+import useModalStore from '@/store/modalStore'
+import { validateReviewForm } from '@/utils/myReviewHandlers'
+import useReviewStore from '@/store/reviewStore'
 // import { review } from '@/assets/data/myReviewData'
-function MyReview({ myReviewData = {} }) {
+function MyReview({ myReviewData = {}, onDataChange }) {
+  const { resetStore } = useReviewStore()
   // ----------data----------
   const {
     reviewId = 0,
@@ -27,26 +30,38 @@ function MyReview({ myReviewData = {} }) {
     isSpoil: reviewIsSpoil = false,
   } = myReviewData
   // ----------API----------
-  const { put } = useApi(true)
-
-  // const navigate = useNavigate()
+  const { put, get, delete: deleteReview } = useApi(true)
+  const { openModal } = useModalStore()
+  // ---------- State ----------
   const [isCommentOpen, setIsCommentOpen] = useState(false)
   const [isEdit, setIsEdit] = useState(false)
   const [isDelete, setIsDelete] = useState(false)
   const [isSpoil, setIsSpoil] = useState(false)
   const [content, setContent] = useState('')
   const [rating, setRating] = useState(0)
+  const [commentList, setCommentList] = useState([])
+  const [fetchData, setFetchData] = useState(false)
   const formRef = useRef({ isSpoil, rating, content })
   useEffect(() => {
     if (myReviewData) {
-      console.log('myReviewData >>> ', myReviewData)
+      // console.log('myReviewData >>> ', myReviewData)
       setRating(reviewRating)
       setContent(reviewContent)
       setIsSpoil(reviewIsSpoil)
+      formRef.current.rating = reviewRating
+      formRef.current.content = reviewContent
+      formRef.current.isSpoil = reviewIsSpoil
     }
+    console.log(myReviewData)
   }, [myReviewData])
-
-  // 함수
+  useEffect(() => {
+    fetchCommentData()
+    setCommentList(commentList)
+  }, [isCommentOpen, fetchData, setFetchData])
+  useEffect(() => {
+    setCommentList(commentList)
+  }, [commentList])
+  // // 함수
   const handleCheckboxChange = (e) => {
     const checked = e.target.checked
     formRef.current.isSpoil = checked // Ref 업데이트
@@ -56,36 +71,59 @@ function MyReview({ myReviewData = {} }) {
     setRating(newRating) // 별점 상태 업데이트
     formRef.current.rating = newRating // 폼 데이터 업데이트
   }
+  const handleEditClick = (e) => {
+    e.stopPropagation()
+    console.log('편집 열려라 참깨 : ', isEdit)
+    const formData = {
+      rating: formRef.current.rating,
+      content: formRef.current.content,
+      isSpoil: formRef.current.isSpoil,
+    }
+    if (isEdit) {
+      // 제출 클릭
+      // 유효성 검사 호출
+      console.log('제출된 데이터 : ', formData) // 제출 데이터 확인
+      const isValid = validateReviewForm(formData, openModal)
+      if (!isValid) return
+      openModal('confirm', { message: '수정하시겠습니까?' }, async () => {
+        const response = await put(`/reviews/${reviewId}`, formData)
+        console.log('-----------------------------------------')
+        console.log('수정 성공:', response)
+        setIsEdit(false) // 편집 모드 종료
+      })
+      return
+    } else {
+      setIsEdit(true)
+    }
+  }
+  const fetchCommentData = async () => {
+    try {
+      const response = await get(`/comments/${reviewId}`)
+      setCommentList(response.data.comments)
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
   const handleCommentClick = (e) => {
     console.log('댓글 열려라 참깨')
     setIsCommentOpen(true)
     e.stopPropagation()
   }
-  const handleEditClick = async (e) => {
-    console.log('편집 열려라 참깨')
-    if (isEdit) {
-      // 제출 클릭
-      const formData = {
-        rating: formRef.current.rating,
-        content: formRef.current.content,
-        isSpoil: formRef.current.isSpoil,
-      }
-      console.log('제출된 데이터nkm: ', formData) // 제출 데이터 확인
-      const response = await put(`/reviews/${reviewId}`, formData)
-      console.log('-----------------------------------------')
-      console.log('수정 성공:', response)
-      // onSubmit(formData) // 부모 컴포넌트에 데이터 전달
-      setIsEdit(false) // 편집 모드 종료
-      e.stopPropagation()
-      return
-    }
-    setIsEdit(true)
-    e.stopPropagation()
-  }
   const handleDeleteClick = (e) => {
-    alert('삭제하시겠습니까?')
-    setIsDelete((prev) => !prev)
     e.stopPropagation()
+    openModal('confirm', { message: '삭제하시겠습니까?' }, async () => {
+      try {
+        const response = await deleteReview(`/reviews/${reviewId}`)
+        console.log('삭제 성공:', response)
+        // 로컬스토리지 값 삭제
+        resetStore()
+
+        onDataChange() // 부모에게 데이터 갱신 요청
+      } catch (error) {
+        console.error('삭제 실패:', error)
+      }
+    })
   }
   // 리뷰 내용 변경
   const handleContentChange = (e) => {
@@ -104,13 +142,15 @@ function MyReview({ myReviewData = {} }) {
           {isEdit ? (
             <EditWrap>
               <EditContents>
-                <StarRating
-                  type='controlled'
-                  initialValue={rating}
-                  onChange={handleRatingChange}
-                  size={16}
-                  max={5}
-                />
+                <IconWrap>
+                  <StarRating
+                    type='controlled'
+                    initialValue={rating}
+                    onChange={handleRatingChange}
+                    size={16}
+                    max={5}
+                  />
+                </IconWrap>
                 <SpoWrap>
                   <SText.Text>스포일러가 포함되어 있나요?</SText.Text>
                   <Checkbox
@@ -121,6 +161,7 @@ function MyReview({ myReviewData = {} }) {
                       padding: '0',
                       color: 'var(--color-gray-50)',
                       filter: 'drop-shadow(0px 0px 10px var(--primary-light-red, #ffd7d7))',
+                      width: '10px',
 
                       '&.Mui-checked': {
                         color: 'var(--color-gray-50)',
@@ -137,34 +178,37 @@ function MyReview({ myReviewData = {} }) {
               <EditContents>
                 <StarRating type='readonly' initialValue={rating} max={5} size={16} />
                 <SpoWrap>
-                  <SText.Text>
-                    스포
-                    <Checkbox
-                      // defaultChecked={!isSpoil}
-                      checked={isSpoil}
-                      disableRipple // 애니 효과 제거
-                      disabled // 체크박스를 읽기 전용으로 설정
-                      sx={{
-                        padding: '0',
+                  <SText.Text>스포</SText.Text>
+                  <Checkbox
+                    // defaultChecked={!isSpoil}
+                    checked={isSpoil}
+                    disableRipple // 애니 효과 제거
+                    disabled // 체크박스를 읽기 전용으로 설정
+                    sx={{
+                      padding: '0',
+                      color: 'var(--color-gray-50)',
+                      filter: 'drop-shadow(0px 0px 10px var(--primary-light-red, #ffd7d7))',
+                      width: '10px',
+                      '&.Mui-checked': {
                         color: 'var(--color-gray-50)',
-                        filter: 'drop-shadow(0px 0px 10px var(--primary-light-red, #ffd7d7))',
-
-                        '&.Mui-checked': {
-                          color: 'var(--color-gray-50)',
-                        },
-                        '& .MuiSvgIcon-root': {},
-                      }}
-                    />
-                  </SText.Text>
+                      },
+                      '&.Mui-disabled': {
+                        opacity: 1, // disabled 상태에서도 가시성을 유지
+                        color: 'var(--color-gray-50)',
+                      },
+                    }}
+                  />
                 </SpoWrap>
               </EditContents>
               <CardContent>{content}</CardContent>
             </>
           )}
         </LeftWrap>
-        <RightWrap>
-          <Photocard src={photocard} />
-        </RightWrap>
+        {photocard && (
+          <RightWrap>
+            <Photocard src={photocard} />
+          </RightWrap>
+        )}
       </Wrap>
       <CommentWrap>
         <CardFooter>
@@ -175,7 +219,7 @@ function MyReview({ myReviewData = {} }) {
                 $iscommentopen={isCommentOpen}
                 onClick={handleCommentClick}
               />
-              <CardCommentCount>{totalComments}</CardCommentCount>
+              <CardCommentCount>{commentList.length}</CardCommentCount>
             </CardCommentLeft>
             <CardCommentRight>
               <CardDate>{updatedAt.slice(0, 10)}</CardDate>
@@ -186,8 +230,19 @@ function MyReview({ myReviewData = {} }) {
         </CardFooter>
         {isCommentOpen && (
           <>
-            <ReviewComment />
-            <ReviewComment />
+            {
+              /*TODO(j) 댓글 불러와서 연동하기 */
+              commentList?.map((item, index) => (
+                <ReviewComment
+                  isEdit={false}
+                  commentData={item}
+                  reviewId={reviewId}
+                  key={index}
+                  setFetchData={setFetchData}
+                />
+              ))
+            }
+            <ReviewComment isEdit={true} reviewId={reviewId} setFetchData={setFetchData} />
           </>
         )}
       </CommentWrap>
@@ -203,7 +258,7 @@ const TitleWrap = styled.div`
   background: rgba(0, 0, 0, 0.1);
   box-shadow: 0px 0px 10px 0px var(--primary-solid-light, rgba(199, 125, 181, 0.5));
   padding: 2px 8px;
-  margin-bottom: 5px;
+  /* margin-bottom: 5px; */
 `
 const Title = styled.div`
   text-align: center;
@@ -228,13 +283,14 @@ const Wrap = styled.div`
   display: flex;
   ${media.medium`
   flex-direction: column;
+  gap : 10px;
 `}
   justify-content: space-between;
 `
 
 const LeftWrap = styled.div`
-  margin-right: 20px;
   flex: 1;
+  padding-right: 10px;
 `
 const CardHeader = styled.div`
   display: flex;
@@ -275,10 +331,14 @@ const CardFooter = styled.div`
 const RightWrap = styled.div``
 
 const Photocard = styled.img`
-  width: 100%;
-  height: 240px;
+  width: 250px;
+  height: 100%;
   border-radius: 5px;
   object-fit: cover;
+  ${media.medium`
+  width: 100%;
+  height: 240px;
+`}
 `
 const CardCommentWrap = styled.div`
   width: 100%;
@@ -318,8 +378,15 @@ const Icon = styled.img`
   ${({ $iscommentopen }) =>
     $iscommentopen && 'filter: drop-shadow(0px 0px 10px var(--primary-light-red, #ffd7d7));'}
   ${({ $isedit }) =>
-    $isedit && 'filter: drop-shadow(0px 0px 10px var(--primary-light-red, #ffd7d7));'}
-      ${({ $isdelete }) =>
+    $isedit &&
+    `
+      filter: 
+        drop-shadow(0px 0px 5px var(--primary-light-red, #ffd7d7)) 
+        brightness(1.2) 
+        contrast(1.5);
+      box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2); /* 부드러운 그림자 추가 */
+    `};
+  ${({ $isdelete }) =>
     $isdelete && 'filter: drop-shadow(0px 0px 10px var(--primary-light-red, #ffd7d7));'}
 `
 const CardCommentCount = styled.span`
@@ -342,6 +409,7 @@ const EditInput = styled.textarea`
   outline: none;
   background-color: transparent;
   border: none;
+  border-radius: 5px;
   color: var(--gray-400, #a1a1aa);
   font-family: Pretendard;
   font-size: 16px;
@@ -357,6 +425,7 @@ const EditInput = styled.textarea`
   border: 1px solid rgba(255, 255, 255, 0.6);
   backdrop-filter: blur(10px);
   box-shadow: 0 0 15px 5px rgba(255, 255, 255, 0.3);
+  padding: 10px;
 `
 
 const EditWrap = styled.div`
@@ -364,10 +433,8 @@ const EditWrap = styled.div`
   flex-direction: column;
   gap: 10px;
   width: 100%;
-  height: 205px;
-  ${media.medium`
-  height:86px;
-`}
+  height: 85%;
+  gap: 10px;
 `
 const EditContents = styled.div`
   display: flex;
@@ -380,4 +447,8 @@ const SpoWrap = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: 10px;
+`
+const IconWrap = styled.div`
+  margin-bottom: 4px;
 `

@@ -1,18 +1,21 @@
 import media from '@/styles/media'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import styled, { css } from 'styled-components'
 import homeIcon from '@/assets/icons/navHomeIcon.svg'
 import searchIcon from '@/assets/icons/navSearchIcon.svg'
 import myIcon from '@/assets/icons/navMyIcon.svg'
 import loginIcon from '@/assets/icons/navLoginIcon.svg'
-import { useNavigate } from 'react-router-dom'
-import useAuthStore from '@/store/authStore'
+import { useLocation, useNavigate } from 'react-router-dom'
+import useNavigateStore from '@/store/navigateStore'
+import { isLoggedIn } from '@/utils/logInManager'
 
-//TODO(j) 다른 버튼 눌러서 이동해도 아래 네비게이션바가 따라오게하기 (store로 저장)
 function MobileNavigationBar() {
   const navigate = useNavigate()
-  const [selectedItem, setSelectedItem] = useState(0)
-  const { isLoggedIn } = useAuthStore()
+  const setNavigatePage = useNavigateStore((state) => state.setNowPage)
+  const nowPage = useNavigateStore((state) => state.nowPage)
+  const [selectedItem, setSelectedItem] = useState(nowPage)
+  const [isLogIn, setisLogIn] = useState(isLoggedIn())
+  const location = useLocation()
   const logInMenuItems = [
     { icon: `${homeIcon}`, url: '/' },
     { icon: `${searchIcon}`, url: '/search' },
@@ -24,14 +27,31 @@ function MobileNavigationBar() {
     { icon: `${loginIcon}`, url: '/user/login' },
   ]
   const handleClick = (url, index) => {
-    navigate(`${url}`)
     setSelectedItem(index)
+    setNavigatePage(index)
+    navigate(`${url}`)
   }
+  useEffect(() => {
+    setSelectedItem(nowPage)
+    setisLogIn(isLoggedIn())
+  }, [nowPage])
+  //TODO(j) 코드 수정하기
+  useEffect(() => {
+    if (location.pathname === '/') {
+      setNavigatePage(0)
+    } else if (location.pathname === '/search') {
+      setNavigatePage(1)
+    } else if (location.pathname === '/mypage') {
+      setNavigatePage(2)
+    } else {
+      setNavigatePage(-1)
+    }
+  }, [location, setNavigatePage])
   return (
     <div>
       <MobileNavigationBarContainer>
         <SelectedButtonSlider $index={selectedItem} />
-        {isLoggedIn
+        {isLogIn
           ? logInMenuItems.map((item, index) => (
               <MobileNavigationBarItemWrapper
                 onClick={() => {
@@ -60,19 +80,16 @@ function MobileNavigationBar() {
 }
 
 const MobileNavigationBarContainer = styled.div`
-  //TODO(j) 이후 outlet연결시 제거
   position: fixed;
-  bottom: 10px;
+  bottom: 30px;
   left: 50%;
   transform: translateX(-50%);
-  //여기까지
   height: 30px;
   z-index: 100;
   border-radius: 10px;
   margin: 0 auto;
   background: rgba(0, 0, 0, 0.5);
   backdrop-filter: blur(10px);
-  /* background: gray; */
   display: none;
   justify-content: space-between;
   ${media.small`
@@ -104,14 +121,7 @@ const SelectedButtonSlider = styled.div`
   box-shadow: 0 0 15px 5px rgba(255, 255, 255, 0.3);
   border-radius: 10px;
   transition: left 0.3s ease;
-`
-
-const SelectedStyle = css`
-  background: rgba(255, 255, 255, 0.2);
-  border: 1px solid rgba(255, 255, 255, 0.6);
-  backdrop-filter: blur(10px);
-  box-shadow: 0 0 15px 5px rgba(255, 255, 255, 0.3);
-  /* animation: slideEffect 0.3 ease; */
+  display: ${(props) => (props.$index === -1 ? 'none' : 'flex')};
 `
 
 export default MobileNavigationBar

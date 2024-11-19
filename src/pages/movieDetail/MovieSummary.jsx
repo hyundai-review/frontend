@@ -5,7 +5,9 @@ import GenreButton from '@/components/common/GenreButton'
 import styled from 'styled-components'
 import media from '@/styles/media'
 import { getStatusColor, mapMovieStatus } from '@/utils/statusMapper'
-function MovieSummary({ data }) {
+import * as S from '@/styles/movieSummary/MovieSummary.style.'
+import SkeletonMovieSummary from './skeleton/SkeletonMovieSummary'
+function MovieSummary({ data, loading }) {
   // const posterImageUrl =
   //   'https://img.cgv.co.kr/Movie/Thumbnail/StillCut/000088/88847/88847230819_727.jpg'
   // const title = '청설'
@@ -22,42 +24,47 @@ function MovieSummary({ data }) {
   const runningTime = `${Math.floor(data?.runtime / 60)}시간 ${data?.runtime % 60}분` // 148 → "2시간 28분"
   const status = mapMovieStatus(data?.status)
   const statusColor = getStatusColor(data?.status)
+  if (loading) {
+    return <SkeletonMovieSummary />
+  }
   return (
-    <MovieSummaryContainer>
-      <LeftSection>
-        <Poster $imageurl={posterImageUrl} />
-      </LeftSection>
-      <RightSection>
-        <RightHeader>
-          <RightTitleWrap>
-            <RightTitle>{title}</RightTitle>
-            <RightYear>({year})</RightYear>
-          </RightTitleWrap>
-          <RightRating>{certification}</RightRating>
-        </RightHeader>
-        <Wrap>
-          <MovieInfo>
-            <InfoWrap>
-              <CalendarIcon src={calendar}></CalendarIcon>
-              <ReleaseDate>{releaseDate}</ReleaseDate>
-            </InfoWrap>
-            <InfoWrap>
-              <ClockIcon src={clock}></ClockIcon>
-              <RunningTime>{runningTime}</RunningTime>
-            </InfoWrap>
-          </MovieInfo>
-          <MovieGenreWrap>
-            {data?.genres.map((genre) => (
-              <GenreButton key={genre.genreId} fontSize={14} radius={10} category={genre.name} />
-            ))}
-          </MovieGenreWrap>
-          <MovieStatusWrap>
-            <StatusCircle $color={statusColor} />
-            <StatusText>{status}</StatusText>
-          </MovieStatusWrap>
-        </Wrap>
-      </RightSection>
-    </MovieSummaryContainer>
+    <>
+      <MovieSummaryContainer>
+        <LeftSection>
+          <Poster $imageurl={posterImageUrl} />
+        </LeftSection>
+        <RightSection>
+          <RightHeader>
+            <RightTitleWrap>
+              <RightTitle>{title}</RightTitle>
+              <RightYear>({year})</RightYear>
+            </RightTitleWrap>
+            <RightRating>{certification}</RightRating>
+          </RightHeader>
+          <Wrap>
+            <MovieInfo>
+              <InfoWrap>
+                <CalendarIcon src={calendar}></CalendarIcon>
+                <ReleaseDate>{releaseDate}</ReleaseDate>
+              </InfoWrap>
+              <InfoWrap>
+                <ClockIcon src={clock}></ClockIcon>
+                <RunningTime>{runningTime}</RunningTime>
+              </InfoWrap>
+            </MovieInfo>
+            <MovieGenreWrap>
+              {data?.genres.map((genre) => (
+                <GenreButton key={genre.genreId} fontSize={14} radius={10} category={genre.name} />
+              ))}
+            </MovieGenreWrap>
+            <MovieStatusWrap>
+              <S.StatusCircle $color={statusColor} />
+              <S.StatusText>{status}</S.StatusText>
+            </MovieStatusWrap>
+          </Wrap>
+        </RightSection>
+      </MovieSummaryContainer>
+    </>
   )
 }
 
@@ -74,7 +81,6 @@ const MovieSummaryContainer = styled.div`
 const LeftSection = styled.div`
   width: auto;
   display: inline-flex;
-  align-items: center;
   justify-content: center;
 `
 
@@ -104,6 +110,7 @@ const Wrap = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  gap: 10px;
 `
 const RightTitleWrap = styled.div`
   display: flex;
@@ -209,29 +216,11 @@ const RunningTime = styled.div`
 const MovieGenreWrap = styled.div`
   display: flex;
   gap: 10px;
+  flex-wrap: wrap;
 `
 const MovieStatusWrap = styled.div`
   display: flex;
   align-items: center;
   justify-content: flex-end;
   gap: 10px;
-`
-
-const StatusCircle = styled.div`
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background-color: var(--semantic-success, #7ed6a0);
-  background-color: ${(props) => props.$color};
-  box-shadow: 0px 0px 10px ${(props) => props.$color};
-`
-const StatusText = styled.div`
-  color: var(--gray-200, #e4e4e7);
-  text-align: right;
-  /* regular/sm */
-  font-family: Pretendard;
-  font-size: 14px;
-  font-style: normal;
-  font-weight: 400;
-  line-height: 21px; /* 150% */
 `

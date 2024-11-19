@@ -1,5 +1,5 @@
 export function transformReviewData(data) {
-  console.log('data : ', data)
+  // console.log('data : ', data)
   if (!data) {
     return []
   }
@@ -7,19 +7,36 @@ export function transformReviewData(data) {
     movieId: review.movieId || '', // 영화 ID
     movieTitle: review.movieTitle || '', // 영화 제목
     // otherReviewList
-    reviewdId: review.reviewId,
+    reviewId: review.reviewId,
     rating: review.rating, // 별점
     reviewContent: review.content, // 리뷰 내용
     commentCount: review.totalComments, // 댓글 수
     cardDate: review.updatedAt.slice(0, 10), // 리뷰 작성 날짜
     photocard: review.photocard, // 포토카드 이미지 URL
-    authorProfile: review.author.profile, // 작성자 프로필
-    authorNickname: review.author.nickname, // 작성자 닉네임
+    authorProfile: review.author.profile || '', // 작성자 프로필
+    authorNickname: review.author.nickname || '', // 작성자 닉네임
     isLike: review.isLike, // 좋아요 여부
     isSpoil: review.isSpoil, // 스포일러 여부
   }))
 }
-
+// 마이페이지 리뷰 데이터 변환
+export function transformMyReviewData(data) {
+  // console.log('My : ', data)
+  if (!data) {
+    return []
+  }
+  return data.map((review) => ({
+    movieId: review.movieId || '', // 영화 ID
+    movieTitle: review.movieTitle || '', // 영화 제목
+    reviewId: review.reviewId,
+    rating: review.rating, // 별점
+    reviewContent: review.content, // 리뷰 내용
+    commentCount: review.totalComments, // 댓글 수
+    cardDate: review.updatedAt.slice(0, 10), // 리뷰 작성 날짜
+    photocard: review.photocard, // 포토카드 이미지 URL
+    isSpoil: review.isSpoil, // 스포일러 여부
+  }))
+}
 /** 스토리 게시 리뷰 생성 시 서버로 보낼 데이터 transform */
 export const transformReviewPost = (reviewPost, photocard) => {
   return {
@@ -34,7 +51,10 @@ export const transformReviewPost = (reviewPost, photocard) => {
 export const transformStillcut = (imageData) => {
   const { posters = [], stillcuts = [] } = imageData
   // const IMG_BASE_URL = 'https://image.tmdb.org/t/p/w500'
-  const IMG_BASE_URL = '/tmdb-images'
+  // const IMG_BASE_URL = '/tmdb-images'
+  // const IMG_BASE_URL = import.meta.env.VITE_IMG_BASE_URL
+  const IMG_BASE_URL = 'https://mylittlefra.me/api/images/tmdb/w500'
+
 
   let id = 0
   const transformedPosters = posters.slice(0, 5).map((poster, index) => ({
@@ -49,5 +69,6 @@ export const transformStillcut = (imageData) => {
 
   const allImages = [...transformedPosters, ...transformedStillcuts]
 
+  console.log('!~!!!~~~~~~~~~~~~~~~~~~~~~~~~', allImages)
   return allImages
 }

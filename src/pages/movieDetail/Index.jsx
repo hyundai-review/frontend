@@ -6,16 +6,23 @@ import MovieReview from './MovieReview'
 import MovieSummary from './MovieSummary'
 import arrowLeft from '@/assets/icons/arrow-left.svg'
 import ActorCard from './ActorCard'
-// import actorData from '@/assets/data/actorsData'
 import useResponsive from '@/hooks/useResponsive'
 import MovieSummaryLarge from './MovieSummaryLarge'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { useApi } from '@/libs/useApi'
 import useReviewStore from '@/store/reviewStore'
+import useScrollToTop from '@/hooks/useScrollToTop'
 
 function MovieDetailPage() {
+  useScrollToTop() // 페이지 로드 시 스크롤을 최상단으로 이동
   const { movieId } = useParams()
   const screenSize = useResponsive()
+  const navigate = useNavigate()
+
+  const handleBack = () => {
+    console.log('뒤로가기')
+    navigate(-1) // 뒤로가기
+  }
   const { setBackgroundImg, setCurrentMovieId } = useReviewStore()
 
   useEffect(() => {
@@ -32,7 +39,7 @@ function MovieDetailPage() {
         setData(data.data)
 
         setCurrentMovieId(movieId)
-        setBackgroundImg(`/tmdb-images${data.data.poster.filePath}`)
+        setBackgroundImg(`${import.meta.env.VITE_IMG_PROXY_URL}${data.data.poster.filePath}`)
       } catch (err) {
         console.error('영화 정보를 가져오는 중 오류가 발생했습니다:', err)
       }
@@ -46,19 +53,24 @@ function MovieDetailPage() {
         <BlurOverlay>
           <Container>
             <Header>
-              <LeftIcon src={arrowLeft} />
+              <LeftIcon
+                src={arrowLeft}
+                onClick={() => {
+                  handleBack()
+                }}
+              />
             </Header>
             <ContentsWrap>
               {screenSize === 'medium' || screenSize === 'large' ? (
-                <MovieSummaryLarge data={data} />
+                <MovieSummaryLarge data={data} loading={loading} />
               ) : (
                 <>
-                  <MovieSummary data={data} />
-                  <MovieOverview data={data} />
+                  <MovieSummary data={data} loading={loading} />
+                  <MovieOverview data={data} loading={loading} />
                 </>
               )}
-              <ActorCard data={data} />
-              <MovieReview />
+              <ActorCard data={data} loading={loading} />
+              <MovieReview loading={loading} />
             </ContentsWrap>
           </Container>
         </BlurOverlay>
@@ -88,9 +100,10 @@ const BlurOverlay = styled.div`
 const Container = styled.div`
   max-width: 1440px;
   margin: 0 auto;
-  padding: 25px;
-  @media (min-width: 1440px) {
-    padding: 0; /* 1440px 이상일 때 패딩 제거 */
+  padding: 70px 30px;
+  /* background-color: #fff; */
+  @media (min-width: 1441px) {
+    padding: 0 20px;
   }
   ${media.small`
     padding: 20px;

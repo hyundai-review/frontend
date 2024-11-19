@@ -5,7 +5,9 @@ import GenreButton from '@/components/common/GenreButton'
 import styled from 'styled-components'
 import media from '@/styles/media'
 import { getStatusColor, mapMovieStatus } from '@/utils/statusMapper'
-function MovieSummaryLarge({ data }) {
+import * as S from '@/styles/movieSummary/MovieSummary.style.'
+import SkeletonMovieSummaryLarge from './skeleton/SkeletonMovieSummaryLarge'
+function MovieSummaryLarge({ data, loading }) {
   // const posterImageUrl =
   //   'https://img.cgv.co.kr/Movie/Thumbnail/StillCut/000088/88847/88847230819_727.jpg'
   // const title = '청설'
@@ -17,7 +19,9 @@ function MovieSummaryLarge({ data }) {
   // const summary = '손으로 설렘을 말하고 가슴으로 사랑을 느끼다'
   // const contents = '대학생활은 끝났지만 하고 싶은 것도, 되고 싶은 것도 없어 고민하던 용준. '
   // ----------------------  API 요청 ----------------------
-  const posterImageUrl = `https://image.tmdb.org/t/p/w500${data?.poster.filePath}`
+  const posterImageUrl = data?.poster.filePath
+    ? `https://image.tmdb.org/t/p/w500${data?.poster.filePath}`
+    : '/images/default.png'
   const title = data?.title
   const year = data?.releaseDate.split('-')[0] // "2024-11-13" → "2024"
   const certification = data?.certification === '19' ? '19+' : 'all' // 예제에 따라 변환
@@ -27,59 +31,64 @@ function MovieSummaryLarge({ data }) {
   const statusColor = getStatusColor(data?.status)
   const summary = data?.tagline
   const contents = data?.overview
+  if (loading) {
+    return <SkeletonMovieSummaryLarge />
+  }
   return (
-    <MovieSummaryContainer>
-      <ImageWrap>
-        <Poster $imageurl={posterImageUrl} />
-      </ImageWrap>
-      <ContentsContainer>
-        <Header>
-          <TitleWrap>
-            <Title>{title}</Title>
-            <Year>({year})</Year>
-          </TitleWrap>
-          <Rating>{certification}</Rating>
-        </Header>
-        <Wrap>
-          <MovieInfo>
-            <InfoWrapLeft>
-              <InfoText>정보</InfoText>
-              <BlackBoxLeft>
-                <LineWrap>
-                  <CalendarIcon src={calendar}></CalendarIcon>
-                  <ReleaseDate>{releaseDate}</ReleaseDate>
-                </LineWrap>
-                <LineWrap>
-                  <ClockIcon src={clock}></ClockIcon>
-                  <RunningTime>{runningTime}</RunningTime>
-                </LineWrap>
-                <MovieGenreWrap>
-                  {data?.genres.map((genre) => (
-                    <GenreButton
-                      key={genre.genreId}
-                      fontSize={14}
-                      radius={10}
-                      category={genre.name}
-                    />
-                  ))}
-                </MovieGenreWrap>
-                <MovieStatusWrap>
-                  <StatusCircle $color={statusColor} />
-                  <StatusText>{status}</StatusText>
-                </MovieStatusWrap>
-              </BlackBoxLeft>
-            </InfoWrapLeft>
-            <InfoWrapRight>
-              <InfoText>개요</InfoText>
-              <BlackBoxRight>
-                <Summary>{summary}</Summary>
-                <Contents>{contents}</Contents>
-              </BlackBoxRight>
-            </InfoWrapRight>
-          </MovieInfo>
-        </Wrap>
-      </ContentsContainer>
-    </MovieSummaryContainer>
+    <>
+      <MovieSummaryContainer>
+        <ImageWrap>
+          <Poster $imageurl={posterImageUrl} />
+        </ImageWrap>
+        <ContentsContainer>
+          <Header>
+            <TitleWrap>
+              <Title>{title}</Title>
+              <Year>({year})</Year>
+            </TitleWrap>
+            <Rating>{certification}</Rating>
+          </Header>
+          <Wrap>
+            <MovieInfo>
+              <InfoWrapLeft>
+                <InfoText>정보</InfoText>
+                <BlackBoxLeft>
+                  <LineWrap>
+                    <CalendarIcon src={calendar}></CalendarIcon>
+                    <ReleaseDate>{releaseDate}</ReleaseDate>
+                  </LineWrap>
+                  <LineWrap>
+                    <ClockIcon src={clock}></ClockIcon>
+                    <RunningTime>{runningTime}</RunningTime>
+                  </LineWrap>
+                  <MovieGenreWrap>
+                    {data?.genres.map((genre) => (
+                      <GenreButton
+                        key={genre.genreId}
+                        fontSize={14}
+                        radius={10}
+                        category={genre.name}
+                      />
+                    ))}
+                  </MovieGenreWrap>
+                  <MovieStatusWrap>
+                    <S.StatusCircle $color={statusColor} />
+                    <S.StatusText>{status}</S.StatusText>
+                  </MovieStatusWrap>
+                </BlackBoxLeft>
+              </InfoWrapLeft>
+              <InfoWrapRight>
+                <InfoText>개요</InfoText>
+                <BlackBoxRight>
+                  <Summary>{summary}</Summary>
+                  <Contents>{contents}</Contents>
+                </BlackBoxRight>
+              </InfoWrapRight>
+            </MovieInfo>
+          </Wrap>
+        </ContentsContainer>
+      </MovieSummaryContainer>
+    </>
   )
 }
 
@@ -277,23 +286,23 @@ const MovieStatusWrap = styled.div`
   gap: 10px;
 `
 
-const StatusCircle = styled.div`
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background-color: ${(props) => props.$color};
-  box-shadow: 0px 0px 10px ${(props) => props.$color};
-`
-const StatusText = styled.div`
-  color: var(--gray-200, #e4e4e7);
-  text-align: right;
-  /* regular/sm */
-  font-family: Pretendard;
-  font-size: 14px;
-  font-style: normal;
-  font-weight: 400;
-  line-height: 21px; /* 150% */
-`
+// const StatusCircle = styled.div`
+//   width: 6px;
+//   height: 6px;
+//   border-radius: 50%;
+//   background-color: ${(props) => props.$color};
+//   box-shadow: 0px 0px 10px ${(props) => props.$color};
+// `
+// const StatusText = styled.div`
+//   color: var(--gray-200, #e4e4e7);
+//   text-align: right;
+//   /* regular/sm */
+//   font-family: Pretendard;
+//   font-size: 14px;
+//   font-style: normal;
+//   font-weight: 400;
+//   line-height: 21px; /* 150% */
+// `
 
 const Summary = styled.div`
   color: var(--gray-50, #fafafa);

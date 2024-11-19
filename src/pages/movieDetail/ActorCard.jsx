@@ -1,7 +1,9 @@
 import media from '@/styles/media'
 import React from 'react'
+import Skeleton from 'react-loading-skeleton'
 import styled from 'styled-components'
-function ActorCard({ data }) {
+import SkeletonActorCard from './skeleton/SkeletonActorCard'
+function ActorCard({ data, loading }) {
   // 배우 목록 앞에 감독 추가
   const actorsWithDirector = [
     {
@@ -19,6 +21,9 @@ function ActorCard({ data }) {
       role: actor?.role || '단',
     })) || []),
   ]
+  if (loading) {
+    return <SkeletonActorCard />
+  }
   return (
     <>
       <Wrap>
