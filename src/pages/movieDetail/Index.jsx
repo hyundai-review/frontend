@@ -33,8 +33,7 @@ function MovieDetailPage() {
         setData(data.data)
 
         setCurrentMovieId(movieId)
-        // setBackgroundImg(`/tmdb-images${data.data.poster.filePath}`)
-        setBackgroundImg(`https://image.tmdb.org/t/p/w500${data.data.poster.filePath}`)
+        setBackgroundImg(`${import.meta.env.VITE_IMG_PROXY_URL}${data.data.poster.filePath}`)
       } catch (err) {
         console.error('영화 정보를 가져오는 중 오류가 발생했습니다:', err)
       }
