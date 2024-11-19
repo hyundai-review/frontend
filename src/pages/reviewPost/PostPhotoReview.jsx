@@ -47,6 +47,7 @@ function PostPhotoReview() {
           <OptionBackList />
         </OptionWrap>
       </MainWrap>
+
       {/* 촬영버튼 */}
       <SBoxContainer.Box
         $width='100%'
@@ -55,7 +56,7 @@ function PostPhotoReview() {
         $justifyContent='center'
         style={{
           position: 'relative',
-          marginTop: '50px',
+          // marginTop: '50px',
         }}
       >
         <IconBtn onClick={handleTakePhoto}>
@@ -86,6 +87,7 @@ const Container = styled.div`
   width: 100%;
   display: flex;
   flex-direction: column;
+  gap: 15px;
 `
 const MainWrap = styled.div`
   display: flex;

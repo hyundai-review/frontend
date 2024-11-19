@@ -23,7 +23,14 @@ export const useApi = (requireAuth = true) => {
       setLoading(true)
       setError(null)
 
-      const config = isMultipart ? { headers: { 'Content-Type': 'multipart/form-data' } } : {}
+      // const config = isMultipart ? { headers: { 'Content-Type': 'multipart/form-data' } } : {}
+      // multipart/form-data의 경우 별도의 config 설정하지 않음
+      const config = {}
+
+      // FormData가 아닌 경우에만 JSON으로 변환
+      if (!isMultipart) {
+        config.headers = { 'Content-Type': 'application/json' }
+      }
 
       const response = await api({ method, url, data, ...config })
 
@@ -33,9 +40,10 @@ export const useApi = (requireAuth = true) => {
       setError(err.response?.data || err.message)
 
       const errorMessage = ERROR_MESSAGES[err.response?.status]
-      if (errorMessage) {
-        alert(errorMessage)
-      }
+      // if (errorMessage) {
+      //   alert(errorMessage)
+      // }
+
       throw err
       //
     } finally {
