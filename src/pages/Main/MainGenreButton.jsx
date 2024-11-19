@@ -1,10 +1,11 @@
+import { useEffect } from 'react'
 import styled from 'styled-components'
 /*사용 예시
  <Button text='로그아웃' onClick={handleLogout} />*/
 function MainGenreButton({ text, onClick, isactive }) {
   const StyledText = isactive ? ActiveButtonText : InactiveButtonText
   return (
-    <ButtonContainer onClick={onClick} isactive={isactive}>
+    <ButtonContainer onClick={onClick} $isactive={isactive}>
       <StyledText>{text}</StyledText>
     </ButtonContainer>
   )

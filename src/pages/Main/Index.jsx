@@ -26,8 +26,8 @@ suggestMovieData - moviePosterUrl, movieID */
 // TODO(j) 로컬 스토리지로 불러오는 값 훅으로 빼기 + 시간 계산도 util로 빼기 > 혜정이가 뺐다
 function MainPage() {
   const navigate = useNavigate()
-  const [isLogIn, setIsLogIn] = useState(isLoggedIn())
-  // const [isLogIn, setIsLogIn] = useState(true)
+  // const [isLogIn, setIsLogIn] = useState(isLoggedIn())
+  const [isLogIn, setIsLogIn] = useState(true)
   const [data, setData] = useState(getUserData())
   const nowDate = new Date()
   const timeText = chkTime(nowDate.getHours())
@@ -49,13 +49,7 @@ function MainPage() {
   useEffect(() => {
     setNavigatePage(0)
   }, [setNavigatePage])
-  const suggestMovieData = [...Array(10)].map((_, index) => ({
-    movieId: index,
-    poster: 'https://image.tmdb.org/t/p/w300/tKV0etz5OIsAjSNG1hJktsjbNJk.jpg',
-    title: '청설',
-    releaseDate: '2024',
-    tagline: '',
-  }))
+
   // ----------------------  API 요청 ----------------------
   const [boxOfficeMovies, setBoxOfficeMovies] = useState([])
   const { get, loading, error } = useApi(false)
@@ -145,7 +139,7 @@ function MainPage() {
         </MainPageBodyTopWrapper>
         <MainPageSliderWrapper>
           <MainPageWrapperTitle>{'추천영화'}</MainPageWrapperTitle>
-          <SuggestMovieBox isLogin={isLogIn} suggestMovieData={suggestMovieData} />
+          <SuggestMovieBox isLogin={isLogIn} />
         </MainPageSliderWrapper>
       </MainPageBodyContainer>
     </div>
@@ -160,6 +154,9 @@ const MainPageTopContainer = styled.div`
   padding-top: 131px;
   padding-bottom: 110px;
   gap: 40px;
+  ${media.small`
+    padding-top:75px
+  `}
 `
 const MainPageTitle = styled.div`
   width: fit-content;

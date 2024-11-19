@@ -6,7 +6,9 @@ import styled from 'styled-components'
 import { useSearchParams } from 'react-router-dom'
 import { nonAuthenticated } from '@/libs/axiosInstance'
 import useNavigateStore from '@/store/navigateStore'
+import { isLoggedIn } from '@/utils/logInManager'
 //TODO(j) axios 한군데 모으기
+
 function SearchPage() {
   const [movieDataArray, setMovieDataArray] = useState([])
   const [searchParams] = useSearchParams()
@@ -14,6 +16,7 @@ function SearchPage() {
   const [checkMoreData, setCheckMoreData] = useState(true)
   const [nowPage, setNowPage] = useState(0)
   const setNavigatePage = useNavigateStore((state) => state.setNowPage)
+  const [isLogin, setIsLogin] = useState(isLoggedIn())
   const query = searchParams.get('q') || ''
   const searchWihValue = async (inputValue, page, fetch) => {
     const queryParams = { keyword: inputValue, page: 0, size: 24, fetch: fetch }
@@ -34,7 +37,11 @@ function SearchPage() {
     async (inputValue, page) => {
       if (isLoading || !checkMoreData) return // 중복 호출 및 더 가져올 데이터 없을 경우 종료
       setIsLoading(true) // 로딩 시작
-      const queryParams = { keyword: inputValue, page: page, size: 24, fetch: false }
+      const queryParams =
+        isLogin === true
+          ? { keyword: inputValue, page: page, size: 24, fetch: true }
+          : { keyword: inputValue, page: page, size: 24, fetch: false }
+
       try {
         const getMovieData = await nonAuthenticated.get('/movies/search', {
           params: queryParams,
@@ -67,6 +74,9 @@ function SearchPage() {
   useEffect(() => {
     fetchMovies(query, 0)
   }, [checkMoreData, query])
+  useEffect(() => {
+    setIsLogin(isLoggedIn())
+  })
   //화면감지
   useEffect(() => {
     const handleScroll = () => {
@@ -104,7 +114,10 @@ function SearchPage() {
             ))}
           </MoviePosterWrapper>
           {isLoading && <LoadingIndicator>로딩 중...</LoadingIndicator>}
-          {!checkMoreData && <EndMessage>더 이상 결과가 없습니다.</EndMessage>}
+          {!checkMoreData && nowPage !== 0 && <EndMessage>더 이상 결과가 없습니다.</EndMessage>}
+          {nowPage === 0 && movieDataArray.length == 0 && (
+            <EndMessage>더 이상 결과가 없습니다.</EndMessage>
+          )}
         </SearchPageBodyWrapper>
       </SearchPageContainer>
     </div>
@@ -138,6 +151,9 @@ const SearchPageContainer = styled.div`
   gap: 20px;
   padding-top: 130px;
   padding-bottom: 20px;
+  ${media.small`
+    padding-top:75px
+  `}
 `
 
 const MoviePosterWrapper = styled.div`

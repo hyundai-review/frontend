@@ -79,6 +79,9 @@ const ProfileContainer = styled.div`
   align-items: center;
   justify-content: center;
   padding-top: 131px;
+  ${media.small`
+    padding-top:75px
+  `}
 `
 const ProfileImage = styled.img`
   width: 128px;
