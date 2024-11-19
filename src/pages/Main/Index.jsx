@@ -49,13 +49,7 @@ function MainPage() {
   useEffect(() => {
     setNavigatePage(0)
   }, [setNavigatePage])
-  const suggestMovieData = [...Array(10)].map((_, index) => ({
-    movieId: index,
-    poster: 'https://image.tmdb.org/t/p/w300/tKV0etz5OIsAjSNG1hJktsjbNJk.jpg',
-    title: '청설',
-    releaseDate: '2024',
-    tagline: '',
-  }))
+
   // ----------------------  API 요청 ----------------------
   const { get, loading } = useApi(false)
   const { get: authGet } = useApi(true)
@@ -150,7 +144,7 @@ function MainPage() {
         </MainPageBodyTopWrapper>
         <MainPageSliderWrapper>
           <MainPageWrapperTitle>{'추천영화'}</MainPageWrapperTitle>
-          <SuggestMovieBox isLogin={isLogIn} suggestMovieData={suggestMovieData} />
+          <SuggestMovieBox isLogin={isLogIn} />
         </MainPageSliderWrapper>
       </MainPageBodyContainer>
     </div>
@@ -165,6 +159,9 @@ const MainPageTopContainer = styled.div`
   padding-top: 131px;
   padding-bottom: 110px;
   gap: 40px;
+  ${media.small`
+    padding-top:75px
+  `}
 `
 const MainPageTitle = styled.div`
   width: fit-content;

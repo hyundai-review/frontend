@@ -77,6 +77,7 @@ const Wrap = styled.div`
   background: url(${(props) => props.$imageurl});
   background-size: cover;
   background-position: center;
+  padding-bottom: 30px;
 `
 
 const BlurOverlay = styled.div`

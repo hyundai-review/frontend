@@ -14,9 +14,10 @@ export const authenticated = axios.create({
 /** 요청 인터셉터 : 헤더에 access token 추가 */
 authenticated.interceptors.request.use((config) => {
   // const ACCESS_TOKEN = getCookie('ACCESS_TOKEN')
-
   const ACCESS_TOKEN =
-    'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiI0IiwiaWF0IjoxNzMxOTc0NzA1LCJleHAiOjE3MzE5NzY1MDV9.SpH96pZQc_NOzKhrE1-Q-OTZ7L4gIuAYOdS4Az66c_Fcky81Sa5nZrMrGjb9aedKxTrm57Rx0OV6h0oXfcAFFA'
+    'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiI1IiwiaWF0IjoxNzMxOTc1OTY1LCJleHAiOjE3MzE5Nzc3NjV9.J6_B-vKPuLaOTb75oAfnaz6tu1nQsXL1_qXy7Z15jlj1ahvOvgck7FXP5KqhpgYkcYmCHKjLvmbnKa9xTnM2ag'
+  // TODO(k) 임시 엑세스 토큰
+
   if (ACCESS_TOKEN) {
     config.headers['Authorization'] = `Bearer ${ACCESS_TOKEN}`
   } else {
@@ -34,7 +35,10 @@ authenticated.interceptors.response.use(
   async (error) => {
     // access token 만료된 경우
     //TODO(j) 400대 에러는 다 추가할 것 (요청사항)
-    if (error.response && error.response.status === 401) {
+    if (
+      (error.response && error.response.status === 401) ||
+      (error.response && error.response.status === 403)
+    ) {
       alert('재로그인 필요')
       window.location.href = '/user/login'
       try {

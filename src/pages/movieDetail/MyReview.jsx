@@ -28,7 +28,7 @@ function MyReview({ myReviewData = {}, onDataChange }) {
     isSpoil: reviewIsSpoil = false,
   } = myReviewData
   // ----------API----------
-  const { put, delete: deleteReview } = useApi(true)
+  const { put, get, delete: deleteReview } = useApi(true)
   const { openModal } = useModalStore()
   // ---------- State ----------
   const [isCommentOpen, setIsCommentOpen] = useState(false)
@@ -37,6 +37,8 @@ function MyReview({ myReviewData = {}, onDataChange }) {
   const [isSpoil, setIsSpoil] = useState(false)
   const [content, setContent] = useState('')
   const [rating, setRating] = useState(0)
+  const [commentList, setCommentList] = useState([])
+  const [fetchData, setFetchData] = useState(false)
   const formRef = useRef({ isSpoil, rating, content })
   useEffect(() => {
     if (myReviewData) {
@@ -48,7 +50,15 @@ function MyReview({ myReviewData = {}, onDataChange }) {
       formRef.current.content = reviewContent
       formRef.current.isSpoil = reviewIsSpoil
     }
+    console.log(myReviewData)
   }, [myReviewData])
+  useEffect(() => {
+    fetchCommentData()
+    setCommentList(commentList)
+  }, [isCommentOpen, fetchData, setFetchData])
+  useEffect(() => {
+    setCommentList(commentList)
+  }, [commentList])
   // // 함수
   const handleCheckboxChange = (e) => {
     const checked = e.target.checked
@@ -84,6 +94,15 @@ function MyReview({ myReviewData = {}, onDataChange }) {
       setIsEdit(true)
     }
   }
+  const fetchCommentData = async () => {
+    try {
+      const response = await get(`/comments/${reviewId}`)
+      setCommentList(response.data.comments)
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
   const handleCommentClick = (e) => {
     console.log('댓글 열려라 참깨')
     setIsCommentOpen(true)
@@ -195,7 +214,7 @@ function MyReview({ myReviewData = {}, onDataChange }) {
                 $iscommentopen={isCommentOpen}
                 onClick={handleCommentClick}
               />
-              <CardCommentCount>{totalComments}</CardCommentCount>
+              <CardCommentCount>{commentList.length}</CardCommentCount>
             </CardCommentLeft>
             <CardCommentRight>
               <CardDate>{updatedAt.slice(0, 10)}</CardDate>
@@ -204,7 +223,23 @@ function MyReview({ myReviewData = {}, onDataChange }) {
             </CardCommentRight>
           </CardCommentWrap>
         </CardFooter>
-        {isCommentOpen && <>{/*TODO(j) 댓글 불러와서 연동하기 */}</>}
+        {isCommentOpen && (
+          <>
+            {
+              /*TODO(j) 댓글 불러와서 연동하기 */
+              commentList?.map((item, index) => (
+                <ReviewComment
+                  isEdit={false}
+                  commentData={item}
+                  reviewId={reviewId}
+                  key={index}
+                  setFetchData={setFetchData}
+                />
+              ))
+            }
+            <ReviewComment isEdit={true} reviewId={reviewId} setFetchData={setFetchData} />
+          </>
+        )}
       </CommentWrap>
     </Container>
   )

@@ -19,7 +19,9 @@ function MovieSummaryLarge({ data, loading }) {
   // const summary = '손으로 설렘을 말하고 가슴으로 사랑을 느끼다'
   // const contents = '대학생활은 끝났지만 하고 싶은 것도, 되고 싶은 것도 없어 고민하던 용준. '
   // ----------------------  API 요청 ----------------------
-  const posterImageUrl = `https://image.tmdb.org/t/p/w500${data?.poster.filePath}`
+  const posterImageUrl = data?.poster.filePath
+    ? `https://image.tmdb.org/t/p/w500${data?.poster.filePath}`
+    : '/images/default.png'
   const title = data?.title
   const year = data?.releaseDate.split('-')[0] // "2024-11-13" → "2024"
   const certification = data?.certification === '19' ? '19+' : 'all' // 예제에 따라 변환

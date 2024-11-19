@@ -93,11 +93,15 @@ function ReviewCard({ review, pageType }) {
 
   useEffect(() => {
     setCommentList(commentList)
+    console.log(commentList)
+    console.log('1')
   }, [commentList])
 
   useEffect(() => {
     fetchCommentData()
     setCommentList(commentList)
+    console.log(commentList)
+    console.log('2')
   }, [isCommentOpen, fetchData, setFetchData])
 
   // const handleComment = () => {
