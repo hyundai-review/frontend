@@ -12,12 +12,13 @@ import { useWindowSize } from '@/utils/useWindowSize'
 import { useApi } from '@/libs/useApi'
 import { useParams } from 'react-router-dom'
 import { transformStillcut } from '@/utils/dataTransform'
+import SkeletonPhotoReview from '@/pages/reviewPost/skeleton/SkeletonPhotoReview'
 
 function OptionBackList() {
   const { setOptionBackImg, optionBackImg } = useReviewStore()
   const { width } = useWindowSize() // 윈도우 크기 추적
   const isMobile = width <= 752
-  const { get } = useApi()
+  const { get, loading } = useApi()
   const [stillcut, setStillcut] = useState([])
   const { movieId } = useParams()
 
@@ -30,18 +31,22 @@ function OptionBackList() {
 
   return (
     <SwiperContainer>
-      <Swiper
-        direction={isMobile ? 'horizontal' : 'vertical'}
-        modules={[Navigation]}
-        slidesPerView={isMobile ? 3.5 : 5.5}
-        spaceBetween={isMobile ? 10 : 0}
-      >
-        {stillcut?.map((item, index) => (
-          <SwiperSlide key={index}>
-            <OptionBackItem backImg={item.imgURL} backImgId={item.imgId} />
-          </SwiperSlide>
-        ))}
-      </Swiper>
+      {!loading ? (
+        <Swiper
+          direction={isMobile ? 'horizontal' : 'vertical'}
+          modules={[Navigation]}
+          slidesPerView={isMobile ? 3.5 : 5.5}
+          spaceBetween={isMobile ? 10 : 0}
+        >
+          {stillcut?.map((item, index) => (
+            <SwiperSlide key={index}>
+              <OptionBackItem backImg={item.imgURL} backImgId={item.imgId} />
+            </SwiperSlide>
+          ))}
+        </Swiper>
+      ) : (
+        <SkeletonPhotoReview />
+      )}
     </SwiperContainer>
   )
 }

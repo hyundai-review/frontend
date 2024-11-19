@@ -55,7 +55,6 @@ export const transformStillcut = (imageData) => {
   // const IMG_BASE_URL = import.meta.env.VITE_IMG_BASE_URL
   const IMG_BASE_URL = 'https://mylittlefra.me/api/images/tmdb/w500'
 
-
   let id = 0
   const transformedPosters = posters.slice(0, 5).map((poster, index) => ({
     imgId: id++,
@@ -69,6 +68,6 @@ export const transformStillcut = (imageData) => {
 
   const allImages = [...transformedPosters, ...transformedStillcuts]
 
-  console.log('!~!!!~~~~~~~~~~~~~~~~~~~~~~~~', allImages)
+  // console.log('!~!!!~~~~~~~~~~~~~~~~~~~~~~~~', allImages)
   return allImages
 }
