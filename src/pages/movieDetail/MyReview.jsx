@@ -4,7 +4,6 @@ import styled from 'styled-components'
 import commentWhite from '@/assets/icons/commentWhite.svg'
 import comment from '@/assets/icons/comment.svg'
 import StarRating from '@/components/common/StarRating'
-import { useNavigate } from 'react-router-dom'
 import media from '@/styles/media'
 import * as S from '@/styles/review/comment.style'
 import ReviewComment from '@/components/review/ReviewComment'
@@ -16,8 +15,10 @@ import { Checkbox } from '@mui/material'
 import { useApi } from '@/libs/useApi'
 import useModalStore from '@/store/modalStore'
 import { validateReviewForm } from '@/utils/myReviewHandlers'
+import useReviewStore from '@/store/reviewStore'
 // import { review } from '@/assets/data/myReviewData'
 function MyReview({ myReviewData = {}, onDataChange }) {
+  const { resetStore } = useReviewStore()
   // ----------data----------
   const {
     reviewId = 0,
@@ -29,7 +30,7 @@ function MyReview({ myReviewData = {}, onDataChange }) {
     isSpoil: reviewIsSpoil = false,
   } = myReviewData
   // ----------API----------
-  const { put, delete: deleteReview } = useApi(true)
+  const { put, get, delete: deleteReview } = useApi(true)
   const { openModal } = useModalStore()
   // ---------- State ----------
   const [isCommentOpen, setIsCommentOpen] = useState(false)
@@ -38,6 +39,8 @@ function MyReview({ myReviewData = {}, onDataChange }) {
   const [isSpoil, setIsSpoil] = useState(false)
   const [content, setContent] = useState('')
   const [rating, setRating] = useState(0)
+  const [commentList, setCommentList] = useState([])
+  const [fetchData, setFetchData] = useState(false)
   const formRef = useRef({ isSpoil, rating, content })
   useEffect(() => {
     if (myReviewData) {
@@ -49,7 +52,15 @@ function MyReview({ myReviewData = {}, onDataChange }) {
       formRef.current.content = reviewContent
       formRef.current.isSpoil = reviewIsSpoil
     }
+    console.log(myReviewData)
   }, [myReviewData])
+  useEffect(() => {
+    fetchCommentData()
+    setCommentList(commentList)
+  }, [isCommentOpen, fetchData, setFetchData])
+  useEffect(() => {
+    setCommentList(commentList)
+  }, [commentList])
   // // 함수
   const handleCheckboxChange = (e) => {
     const checked = e.target.checked
@@ -85,6 +96,15 @@ function MyReview({ myReviewData = {}, onDataChange }) {
       setIsEdit(true)
     }
   }
+  const fetchCommentData = async () => {
+    try {
+      const response = await get(`/comments/${reviewId}`)
+      setCommentList(response.data.comments)
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
   const handleCommentClick = (e) => {
     console.log('댓글 열려라 참깨')
     setIsCommentOpen(true)
@@ -96,6 +116,9 @@ function MyReview({ myReviewData = {}, onDataChange }) {
       try {
         const response = await deleteReview(`/reviews/${reviewId}`)
         console.log('삭제 성공:', response)
+        // 로컬스토리지 값 삭제
+        resetStore()
+
         onDataChange() // 부모에게 데이터 갱신 요청
       } catch (error) {
         console.error('삭제 실패:', error)
@@ -119,13 +142,15 @@ function MyReview({ myReviewData = {}, onDataChange }) {
           {isEdit ? (
             <EditWrap>
               <EditContents>
-                <StarRating
-                  type='controlled'
-                  initialValue={rating}
-                  onChange={handleRatingChange}
-                  size={16}
-                  max={5}
-                />
+                <IconWrap>
+                  <StarRating
+                    type='controlled'
+                    initialValue={rating}
+                    onChange={handleRatingChange}
+                    size={16}
+                    max={5}
+                  />
+                </IconWrap>
                 <SpoWrap>
                   <SText.Text>스포일러가 포함되어 있나요?</SText.Text>
                   <Checkbox
@@ -136,6 +161,7 @@ function MyReview({ myReviewData = {}, onDataChange }) {
                       padding: '0',
                       color: 'var(--color-gray-50)',
                       filter: 'drop-shadow(0px 0px 10px var(--primary-light-red, #ffd7d7))',
+                      width: '10px',
 
                       '&.Mui-checked': {
                         color: 'var(--color-gray-50)',
@@ -152,28 +178,26 @@ function MyReview({ myReviewData = {}, onDataChange }) {
               <EditContents>
                 <StarRating type='readonly' initialValue={rating} max={5} size={16} />
                 <SpoWrap>
-                  <SText.Text>
-                    스포
-                    <Checkbox
-                      // defaultChecked={!isSpoil}
-                      checked={isSpoil}
-                      disableRipple // 애니 효과 제거
-                      disabled // 체크박스를 읽기 전용으로 설정
-                      sx={{
-                        padding: '0',
+                  <SText.Text>스포</SText.Text>
+                  <Checkbox
+                    // defaultChecked={!isSpoil}
+                    checked={isSpoil}
+                    disableRipple // 애니 효과 제거
+                    disabled // 체크박스를 읽기 전용으로 설정
+                    sx={{
+                      padding: '0',
+                      color: 'var(--color-gray-50)',
+                      filter: 'drop-shadow(0px 0px 10px var(--primary-light-red, #ffd7d7))',
+                      width: '10px',
+                      '&.Mui-checked': {
                         color: 'var(--color-gray-50)',
-                        filter: 'drop-shadow(0px 0px 10px var(--primary-light-red, #ffd7d7))',
-
-                        '&.Mui-checked': {
-                          color: 'var(--color-gray-50)',
-                        },
-                        '&.Mui-disabled': {
-                          opacity: 1, // disabled 상태에서도 가시성을 유지
-                          color: 'var(--color-gray-50)',
-                        },
-                      }}
-                    />
-                  </SText.Text>
+                      },
+                      '&.Mui-disabled': {
+                        opacity: 1, // disabled 상태에서도 가시성을 유지
+                        color: 'var(--color-gray-50)',
+                      },
+                    }}
+                  />
                 </SpoWrap>
               </EditContents>
               <CardContent>{content}</CardContent>
@@ -195,7 +219,7 @@ function MyReview({ myReviewData = {}, onDataChange }) {
                 $iscommentopen={isCommentOpen}
                 onClick={handleCommentClick}
               />
-              <CardCommentCount>{totalComments}</CardCommentCount>
+              <CardCommentCount>{commentList.length}</CardCommentCount>
             </CardCommentLeft>
             <CardCommentRight>
               <CardDate>{updatedAt.slice(0, 10)}</CardDate>
@@ -204,7 +228,23 @@ function MyReview({ myReviewData = {}, onDataChange }) {
             </CardCommentRight>
           </CardCommentWrap>
         </CardFooter>
-        {isCommentOpen && <>{/*TODO(j) 댓글 불러와서 연동하기 */}</>}
+        {isCommentOpen && (
+          <>
+            {
+              /*TODO(j) 댓글 불러와서 연동하기 */
+              commentList?.map((item, index) => (
+                <ReviewComment
+                  isEdit={false}
+                  commentData={item}
+                  reviewId={reviewId}
+                  key={index}
+                  setFetchData={setFetchData}
+                />
+              ))
+            }
+            <ReviewComment isEdit={true} reviewId={reviewId} setFetchData={setFetchData} />
+          </>
+        )}
       </CommentWrap>
     </Container>
   )
@@ -243,12 +283,14 @@ const Wrap = styled.div`
   display: flex;
   ${media.medium`
   flex-direction: column;
+  gap : 10px;
 `}
   justify-content: space-between;
 `
 
 const LeftWrap = styled.div`
   flex: 1;
+  padding-right: 10px;
 `
 const CardHeader = styled.div`
   display: flex;
@@ -289,10 +331,14 @@ const CardFooter = styled.div`
 const RightWrap = styled.div``
 
 const Photocard = styled.img`
-  width: 100%;
-  height: 240px;
+  width: 250px;
+  height: 100%;
   border-radius: 5px;
   object-fit: cover;
+  ${media.medium`
+  width: 100%;
+  height: 240px;
+`}
 `
 const CardCommentWrap = styled.div`
   width: 100%;
@@ -363,6 +409,7 @@ const EditInput = styled.textarea`
   outline: none;
   background-color: transparent;
   border: none;
+  border-radius: 5px;
   color: var(--gray-400, #a1a1aa);
   font-family: Pretendard;
   font-size: 16px;
@@ -378,6 +425,7 @@ const EditInput = styled.textarea`
   border: 1px solid rgba(255, 255, 255, 0.6);
   backdrop-filter: blur(10px);
   box-shadow: 0 0 15px 5px rgba(255, 255, 255, 0.3);
+  padding: 10px;
 `
 
 const EditWrap = styled.div`
@@ -385,10 +433,8 @@ const EditWrap = styled.div`
   flex-direction: column;
   gap: 10px;
   width: 100%;
-  height: 205px;
-  ${media.medium`
-  height:86px;
-`}
+  height: 85%;
+  gap: 10px;
 `
 const EditContents = styled.div`
   display: flex;
@@ -401,4 +447,8 @@ const SpoWrap = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: 10px;
+`
+const IconWrap = styled.div`
+  margin-bottom: 4px;
 `

@@ -8,6 +8,7 @@ import { isLoggedIn } from '@/utils/logInManager'
 import { getUserData, removeData, setUserNickname } from '@/utils/logInManager'
 import { useApi } from '@/libs/useApi'
 import useNavigateStore from '@/store/navigateStore'
+import media from '@/styles/media'
 
 function Profile() {
   const navigate = useNavigate()
@@ -79,6 +80,9 @@ const ProfileContainer = styled.div`
   align-items: center;
   justify-content: center;
   padding-top: 131px;
+  ${media.small`
+    padding-top:75px
+  `}
 `
 const ProfileImage = styled.img`
   width: 128px;

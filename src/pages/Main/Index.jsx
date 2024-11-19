@@ -16,10 +16,10 @@ import OverlayPosterCard from '@/components/moviePosterCard/OverlayPosterCard'
 import { isLoggedIn, getUserData } from '@/utils/logInManager'
 import { chkTime } from '@/utils/timeUtils'
 import { useApi } from '@/libs/useApi'
-import { Button } from '@mui/material'
-import useModalStore from '@/store/modalStore'
 import useNavigateStore from '@/store/navigateStore'
 import useStoryStore from '@/store/storyStore'
+import { fetchBoxOfficeMovies } from '@/apis/movieQuery'
+import { useQuery, useQueryClient } from '@tanstack/react-query'
 
 /*boxOfficeMovieData - url, rank, date
 suggestMovieData - moviePosterUrl, movieID */
@@ -27,7 +27,6 @@ suggestMovieData - moviePosterUrl, movieID */
 function MainPage() {
   const navigate = useNavigate()
   const [isLogIn, setIsLogIn] = useState(isLoggedIn())
-  // const [isLogIn, setIsLogIn] = useState(true)
   const [data, setData] = useState(getUserData())
   const nowDate = new Date()
   const timeText = chkTime(nowDate.getHours())
@@ -49,18 +48,12 @@ function MainPage() {
   useEffect(() => {
     setNavigatePage(0)
   }, [setNavigatePage])
-  const suggestMovieData = [...Array(10)].map((_, index) => ({
-    movieId: index,
-    poster: 'https://image.tmdb.org/t/p/w300/tKV0etz5OIsAjSNG1hJktsjbNJk.jpg',
-    title: '청설',
-    releaseDate: '2024',
-    tagline: '',
-  }))
+
   // ----------------------  API 요청 ----------------------
-  const [boxOfficeMovies, setBoxOfficeMovies] = useState([])
-  const { get, loading, error } = useApi(false)
+  const { get, loading } = useApi(false)
   const { get: authGet } = useApi(true)
 
+  const [boxOfficeMovies, setBoxOfficeMovies] = useState([])
   useEffect(() => {
     if (isLogIn) {
       authGet(`/reviews/recents`).then((response) => {
@@ -81,28 +74,33 @@ function MainPage() {
     }
     fetchBoxoffice()
   }, [])
-  // ---------------------------모달 테스트중---------------------
-  const { openModal } = useModalStore()
-  const handleModalClick = () => {
-    console.log('모달 클릭')
-    // 모달 열기
-    openModal(
-      'confirm',
-      {
-        message: '계속 진행하시겠습니까?',
-      },
-      // 확인 버튼 클릭 시 실행될 콜백 함수
-      () => {
-        console.log('확인 누름')
-      },
-    )
-  }
-
+  // ---------------------- 리액트 쿼리 ----------------------
+  // const queryClient = useQueryClient()
+  // const {
+  //   data: boxOfficeMovies,
+  //   isLoading,
+  //   error,
+  // } = useQuery({
+  //   queryKey: ['boxOfficeMovies'], // React Query의 쿼리 키
+  //   queryFn: () => fetchBoxOfficeMovies(get), // 데이터 요청 함수
+  //   staleTime: 1000 * 60 * 60, // 60분 동안 데이터를 신선하게 유지
+  //   retry: 2, // 요청 실패 시 2번 재시도
+  // })
+  // const prefetchBoxOfficeMovies = () => {
+  //   queryClient.prefetchQuery(['boxOfficeMovies'], () => fetchBoxOfficeMovies(get))
+  // }
+  // const handlePrefetch = async () => {
+  //   try {
+  //     await queryClient.prefetchQuery(['boxOfficeMovies'], () => fetchBoxOfficeMovies(get))
+  //     console.log('프리패칭 성공: ', queryClient.getQueryData(['boxOfficeMovies']))
+  //   } catch (err) {
+  //     console.error('프리패칭 실패:', err)
+  //   }
+  // }
   return (
     <div>
       <MainPageTopContainer>
         <MainPageTopWrapper>
-          <Button onClick={handleModalClick}>모달 테스트 중</Button>
           <MainPageTitle>{!isLogIn ? '로그인이 필요합니다.' : `${data.nickname}님,`}</MainPageTitle>
           {!isLogIn ? (
             ''
@@ -145,7 +143,7 @@ function MainPage() {
         </MainPageBodyTopWrapper>
         <MainPageSliderWrapper>
           <MainPageWrapperTitle>{'추천영화'}</MainPageWrapperTitle>
-          <SuggestMovieBox isLogin={isLogIn} suggestMovieData={suggestMovieData} />
+          <SuggestMovieBox isLogin={isLogIn} />
         </MainPageSliderWrapper>
       </MainPageBodyContainer>
     </div>
@@ -160,6 +158,9 @@ const MainPageTopContainer = styled.div`
   padding-top: 131px;
   padding-bottom: 110px;
   gap: 40px;
+  ${media.small`
+    padding-top:75px
+  `}
 `
 const MainPageTitle = styled.div`
   width: fit-content;
@@ -253,6 +254,7 @@ const MainPageSliderWrapper = styled.div`
 const Wrap = styled.div`
   display: flex;
   justify-content: center;
+  padding: 40px 0;
 `
 
 export default MainPage

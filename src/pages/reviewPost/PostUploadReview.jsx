@@ -6,14 +6,17 @@ import * as SBtn from '@/styles/button'
 import * as SBoxContainer from '@/styles/boxContainer'
 import DOWNLOAD from '@/assets/icons/download.svg?react'
 import { useApi } from '@/libs/useApi'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { transformReviewPost } from '@/utils/dataTransform'
 import { objectToFormData } from '@/utils/objectToFormdata'
+import useModalStore from '@/store/modalStore'
 
 function PostUploadReview() {
   const { processPhotocard, reviewPost } = useReviewStore()
   const { post, error } = useApi()
   const { movieId } = useParams()
+  const { openModal } = useModalStore()
+  const navigate = useNavigate()
 
   const handleDownload = async () => {
     try {
@@ -33,24 +36,52 @@ function PostUploadReview() {
   const handleSubmitReview = async (includeStory = false) => {
     if (!includeStory) {
       // 리뷰만 올리기
-      const response = await post(`/reviews/${movieId}`, reviewPost)
-      if (response.status === 200) {
-        alert('리뷰가 등록되었습니다.')
-        //TODO navigate
-      }
-    } else {
+      openModal('confirm', { message: '리뷰를 등록하시겠습니까?' }, async () => {
+        try {
+          console.log('adsfasdfsa', reviewPost)
+          const response = await post(`/reviews/${movieId}`, reviewPost)
+
+          if (response.status === 200) {
+            navigate(`/movie/${movieId}/detail`)
+          }
+        } catch (err) {
+          if (err.response?.status === 409) {
+            openModal('alert', {
+              message: '이미 리뷰를 작성하셨습니다.',
+            })
+          }
+        }
+      })
+
       // 스토리 게시
+
       const transformData = transformReviewPost(reviewPost, processPhotocard.step2)
+      console.log('transformData:', transformData)
       const formData = objectToFormData(transformData, {
         fileKeys: {
           photocard: 'photocard.jpg',
         },
       })
-      const response = await post(`/reviews/photo/${movieId}`, formData, true)
-      if (response.status === 200) {
-        alert('포토 리뷰가 등록되었습니다.')
-        //TODO navigate
-      }
+
+      const object = {}
+      formData.forEach((value, key) => (object[key] = value))
+      console.log('FormData as object:', object)
+
+      openModal('confirm', { message: '리뷰를 등록하시겠습니까?' }, async () => {
+        try {
+          const response = await post(`/reviews/${movieId}`, formData, true)
+
+          if (response.status === 200) {
+            navigate(`/movie/${movieId}/detail`)
+          }
+        } catch (err) {
+          if (err.response?.status === 409) {
+            openModal('alert', {
+              message: '이미 리뷰를 작성하셨습니다.',
+            })
+          }
+        }
+      })
     }
   }
 

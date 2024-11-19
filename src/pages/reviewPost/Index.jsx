@@ -51,7 +51,7 @@ function ReviewPostPage() {
 
   return (
     <Container $image={backgroundImg}>
-      <S.BlurOverlay>
+      <BlurOverlay>
         <Wrap>
           <TopWrap>
             {/* 단계 바 */}
@@ -87,29 +87,64 @@ function ReviewPostPage() {
           </TopWrap>
 
           {/* 공통 */}
-          <Outlet />
+          <OutletWrap>
+            <Outlet />
+          </OutletWrap>
         </Wrap>
-      </S.BlurOverlay>
+      </BlurOverlay>
     </Container>
   )
 }
 
 export default ReviewPostPage
 
+// const Container = styled.div`
+//   width: 100vw;
+//   height: 100vh;
+//   background: ${(props) => `url(${props.$image})`};
+//   background-size: cover;
+//   background-position: center;
+//   background-repeat: no-repeat;
+// `
 const Container = styled.div`
-  width: 100vw;
-  height: 100vh;
+  min-height: 100vh;
+  /* height: auto; */
   background: ${(props) => `url(${props.$image})`};
   background-size: cover;
   background-position: center;
-  background-repeat: no-repeat;
+
+  background-attachment: fixed;
 `
+
+const BlurOverlay = styled.div`
+  width: 100%;
+  min-height: 100vh;
+  /* height: auto; */
+  /* height: 100%; */
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(20px);
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`
+
 const Wrap = styled.div`
+  padding: 25px 0;
+  box-sizing: border-box;
+
+  //
+  height: 100%;
+  /* min-height: 100vh; */
+  min-height: calc(100vh - 50px); // 중요!
+  display: flex;
+  flex-direction: column;
+  //
+
   width: calc(100% - 240px);
   margin: 0 auto;
   min-width: 362px;
-  /* width: 100%; */
-  /* padding: 0 100px; */
   ${media.small`
     width: calc(100% - 100px);
   `}
@@ -138,4 +173,14 @@ const BackBtn = styled.button`
     height: 24px;
     fill: white; // SVG 색상이 필요한 경우
   } */
+`
+
+const OutletWrap = styled.div`
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  /* overflow-y: auto; */
+  min-height: 0;
 `

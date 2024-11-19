@@ -16,6 +16,7 @@ function MovieReview() {
   const { movieId } = useParams()
   const [isReviewWritten, setIsReviewWritten] = useState(false)
   const [transformedData, setTransformedData] = useState([])
+  const [transformedFullData, setTransformedFullData] = useState([])
   // ---------------------------API---------------------------
   const { get, loading, error } = useApi(true) // 테스트중 true로 바꿔야함
 
@@ -25,6 +26,10 @@ function MovieReview() {
       // TODO(k) 무한스크롤 페이지네이션 이후 추가해야함, 일단 빼고 진행
       const response = await get(`/reviews/${movieId}?page=0&size=10&sort=date`)
       setData(response.data)
+      const repeatedData = Array(5) // 길이 5의 배열 생성
+        .fill(response.otherReviewList) // 응답 데이터를 채워넣음
+        .flat()
+
       setIsReviewWritten(response.data.myReview !== null)
       // console.log('movie review >>> ', response.data)
     } catch (err) {
@@ -38,14 +43,28 @@ function MovieReview() {
 
   useEffect(() => {
     if (data) {
-      // console.log('other reviewlist : ', data.otherReviewList)
+      console.log('other reviewlist : ', data.otherReviewList)
+      //TODO (k) 마이리뷰도 추가, 리뷰스와이퍼에다가도 데이터 길이
+
+      const transformedOther = transformReviewData(data.otherReviewList)
+      const myReview = data.myReview
+      myReview.authorProfile = ''
+      myReview.authorNickname = ''
+      myReview.cardDate = ''
+      transformedOther.unshift(myReview)
+
+      setTransformedFullData(transformedOther)
       const transformed = transformReviewData(data.otherReviewList)
       setTransformedData(transformed) // 상태 업데이트
+      // setTransformedData(transformedOther) // 상태 업데이트
     }
   }, [data])
   const onDataChange = () => {
     fetchReviewData() // 데이터 다시 요청
   }
+  // useEffect(() => {
+  //   console.log('transformedData : ', transformedData)
+  // }, [transformedData])
   return (
     <Wrap>
       <TitleWrap>
@@ -69,7 +88,7 @@ function MovieReview() {
       ) : (
         <>
           <ReviewContentsContainer>
-            <ReviewSwiper dataList={transformedData} />
+            <ReviewSwiper dataList={transformedFullData} />
             {!isReviewWritten ? (
               <ButtonWrap
                 className='hoverBright'

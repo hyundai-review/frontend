@@ -8,9 +8,12 @@ const useModalStore = create((set) => ({
   // openModal: (type, props = {}) => set({ isOpen: true, modalType: type, modalProps: props }),
   // closeModal: () => set({ isOpen: false, modalType: null, modalProps: {} }),
   confirmCallback: null, // 확인 버튼 클릭 시 실행될 콜백 함수
+  
   openModal: (type, props = {}, confirmCallback = null) =>
     set({ isOpen: true, modalType: type, modalProps: props, confirmCallback }),
+ 
   closeModal: () => set({ isOpen: false, modalType: null, modalProps: {}, confirmCallback: null }),
+  
   confirmModal: () => {
     set((state) => {
       if (state.confirmCallback) {

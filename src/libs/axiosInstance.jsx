@@ -14,9 +14,7 @@ export const authenticated = axios.create({
 /** 요청 인터셉터 : 헤더에 access token 추가 */
 authenticated.interceptors.request.use((config) => {
   const ACCESS_TOKEN = getCookie('ACCESS_TOKEN')
-
   // TODO(k) 임시 엑세스 토큰
-
   if (ACCESS_TOKEN) {
     config.headers['Authorization'] = `Bearer ${ACCESS_TOKEN}`
   } else {
@@ -34,7 +32,10 @@ authenticated.interceptors.response.use(
   async (error) => {
     // access token 만료된 경우
     //TODO(j) 400대 에러는 다 추가할 것 (요청사항)
-    if (error.response && error.response.status === 401) {
+    if (
+      (error.response && error.response.status === 401) ||
+      (error.response && error.response.status === 403)
+    ) {
       alert('재로그인 필요')
       window.location.href = '/user/login'
       try {

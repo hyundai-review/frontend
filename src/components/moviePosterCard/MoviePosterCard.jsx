@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom'
 /*moviePosterUrl, movieID */
 function MoviePosterCard({ movieInfo }) {
   const moviePosterUrl = movieInfo.poster
-    ? `http://image.tmdb.org/t/p/w500${movieInfo.poster}`
+    ? `http://image.tmdb.org/t/p/w342${movieInfo.poster}`
     : '/images/default.png'
   const movieId = movieInfo.movieId
   const movieTitle = movieInfo.title
