@@ -5,6 +5,7 @@ import { useNavigate, useSearchParams } from 'react-router-dom'
 import { lazy, Suspense } from 'react'
 import MainLayout from '@/components/layout/MainLayout'
 import { replace } from 'lodash'
+import { BeatLoader } from 'react-spinners'
 
 const MainPage = lazy(() => import('@/pages/Main/Index'))
 function KaKaoRedirectPage() {
@@ -26,7 +27,23 @@ function KaKaoRedirectPage() {
     }
     fetchAccessToken()
   }, [])
-  return <div></div>
+  return (
+    <div
+      style={{
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        height: '100vh',
+      }}
+    >
+      <div className='wrapper'>
+        <p style={{ fontSize: '36px', color: 'var(--color-gray-50)', marginBottom: '30px' }}>
+          {'카카오 로그인 중입니다.'}
+        </p>
+        <BeatLoader color={`var(--color-gray-50)`} margin={15} size={100} speedMultiplier={0.5} />
+      </div>
+    </div>
+  )
 }
 
 export default KaKaoRedirectPage
