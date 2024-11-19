@@ -26,8 +26,7 @@ suggestMovieData - moviePosterUrl, movieID */
 // TODO(j) 로컬 스토리지로 불러오는 값 훅으로 빼기 + 시간 계산도 util로 빼기 > 혜정이가 뺐다
 function MainPage() {
   const navigate = useNavigate()
-  // const [isLogIn, setIsLogIn] = useState(isLoggedIn())
-  const [isLogIn, setIsLogIn] = useState(true) // 테스트용 로그인
+  const [isLogIn, setIsLogIn] = useState(isLoggedIn())
   const [data, setData] = useState(getUserData())
   const nowDate = new Date()
   const timeText = chkTime(nowDate.getHours())

@@ -15,8 +15,10 @@ import { Checkbox } from '@mui/material'
 import { useApi } from '@/libs/useApi'
 import useModalStore from '@/store/modalStore'
 import { validateReviewForm } from '@/utils/myReviewHandlers'
+import useReviewStore from '@/store/reviewStore'
 // import { review } from '@/assets/data/myReviewData'
 function MyReview({ myReviewData = {}, onDataChange }) {
+  const { resetStore } = useReviewStore()
   // ----------data----------
   const {
     reviewId = 0,
@@ -114,6 +116,9 @@ function MyReview({ myReviewData = {}, onDataChange }) {
       try {
         const response = await deleteReview(`/reviews/${reviewId}`)
         console.log('삭제 성공:', response)
+        // 로컬스토리지 값 삭제
+        resetStore()
+
         onDataChange() // 부모에게 데이터 갱신 요청
       } catch (error) {
         console.error('삭제 실패:', error)
