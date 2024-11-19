@@ -81,7 +81,7 @@ function MobileNavigationBar() {
 
 const MobileNavigationBarContainer = styled.div`
   position: fixed;
-  bottom: 10px;
+  bottom: 30px;
   left: 50%;
   transform: translateX(-50%);
   height: 30px;
