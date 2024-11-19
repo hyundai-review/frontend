@@ -107,6 +107,7 @@ const Container = styled.div`
   }
   ${media.small`
     padding: 20px;
+    padding-bottom: 80px;
     `}
 `
 const ContentsWrap = styled.div`

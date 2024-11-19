@@ -12,6 +12,7 @@ const SBackgroundContainer = styled.div`
     object-fit: cover;
     z-index: -1; /* 비디오를 배경으로 배치 */
     filter: blur(10px);
+    pointer-events: none; /* 비디오 클릭 방지 */
   }
 `
 
@@ -35,7 +36,7 @@ function BackgroundContainer({ children }) {
   }, [])
   return (
     <SBackgroundContainer>
-      <video autoPlay loop muted>
+      <video autoPlay loop muted playsInline>
         <source
           src={screenSize === 'medium' ? '/video/ver4.mp4' : '/video/ver3.mp4'}
           type='video/mp4'

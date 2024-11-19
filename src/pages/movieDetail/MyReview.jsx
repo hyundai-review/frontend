@@ -89,6 +89,7 @@ function MyReview({ myReviewData = {}, onDataChange }) {
         const response = await put(`/reviews/${reviewId}`, formData)
         console.log('-----------------------------------------')
         console.log('수정 성공:', response)
+        onDataChange() // 부모에게 데이터 갱신 요청
         setIsEdit(false) // 편집 모드 종료
       })
       return
