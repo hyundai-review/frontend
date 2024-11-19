@@ -19,7 +19,7 @@ function MovieSummary({ data, loading }) {
   const posterImageUrl = `https://image.tmdb.org/t/p/w300${data?.poster.filePath}`
   const title = data?.title
   const year = data?.releaseDate.split('-')[0] // "2024-11-13" → "2024"
-  const certification = data?.certification === '19' ? '19+' : 'all' // 예제에 따라 변환
+  const certification = data?.certification || ''
   const releaseDate = data?.releaseDate
   const runningTime = `${Math.floor(data?.runtime / 60)}시간 ${data?.runtime % 60}분` // 148 → "2시간 28분"
   const status = mapMovieStatus(data?.status)
