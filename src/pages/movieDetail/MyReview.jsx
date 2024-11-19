@@ -107,7 +107,7 @@ function MyReview({ myReviewData = {}, onDataChange }) {
 
   const handleCommentClick = (e) => {
     console.log('댓글 열려라 참깨')
-    setIsCommentOpen(true)
+    setIsCommentOpen((prev) => !prev)
     e.stopPropagation()
   }
   const handleDeleteClick = (e) => {
