@@ -52,6 +52,7 @@ const Wrap = styled.div`
   background-color: #fff;
 `
 const ImgFrame = styled.div`
+  cursor: pointer;
   width: 240px;
   height: 240px;
   flex-shrink: 0;

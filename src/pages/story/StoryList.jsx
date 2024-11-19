@@ -123,6 +123,7 @@ const StyledSwiperSlide = styled(SwiperSlide)`
   display: flex;
   justify-content: center;
   align-items: center;
+  cursor: pointer;
 
   @media (max-width: 779px) {
     width: 100% !important;
