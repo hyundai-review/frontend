@@ -1,8 +1,9 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import media from '@/styles/media'
 import styled from 'styled-components'
 import OverlayPosterCard from './OverlayPosterCard'
 import { useNavigate } from 'react-router-dom'
+import { useApi } from '@/libs/useApi'
 /*moviePosterUrl, movieID */
 function MoviePosterCard({ movieInfo }) {
   const moviePosterUrl = movieInfo.poster
@@ -17,7 +18,6 @@ function MoviePosterCard({ movieInfo }) {
     <div>
       <MoviePosterCardContainer
         onClick={() => {
-          //TODO(j) 영화 디테일 페이지로 이동할것
           navigate(`/movie/${movieId}/detail`)
           console.log(movieId, '여기에 movie detailpage로 이동')
         }}

@@ -20,13 +20,14 @@ import useNavigateStore from '@/store/navigateStore'
 import useStoryStore from '@/store/storyStore'
 import { fetchBoxOfficeMovies } from '@/apis/movieQuery'
 import { useQuery, useQueryClient } from '@tanstack/react-query'
+import SkeletonBoxOfiicePosterCard from '@/components/common/Skeleton/SkeletonBoxOfiicePosterCard'
 
 /*boxOfficeMovieData - url, rank, date
 suggestMovieData - moviePosterUrl, movieID */
 // TODO(j) 로컬 스토리지로 불러오는 값 훅으로 빼기 + 시간 계산도 util로 빼기 > 혜정이가 뺐다
 function MainPage() {
   const navigate = useNavigate()
-  const [isLogIn, setIsLogIn] = useState(isLoggedIn())
+  const [isLogIn, setIsLogIn] = useState(true)
   const [data, setData] = useState(getUserData())
   const nowDate = new Date()
   const timeText = chkTime(nowDate.getHours())
@@ -35,7 +36,7 @@ function MainPage() {
   const [stories, setStories] = useState(reviewData)
   const { setReviewList } = useStoryStore()
   useEffect(() => {
-    setIsLogIn(isLoggedIn())
+    setIsLogIn(true)
     setData(getUserData())
     const handleResize = () => {
       setScreenWidth(document.documentElement.clientWidth)
@@ -131,11 +132,18 @@ function MainPage() {
               <MainPageWrapperTitle>{`${nowDate.getMonth() + 1}월 ${nowDate.getDate()}일 박스오피스 순위`}</MainPageWrapperTitle>
               <MainPageBoxOfficeSwiperWrapper $width={screenWidth - 402}>
                 <Swiper spaceBetween={7} slidesPerView={'auto'}>
-                  {boxOfficeMovies?.map((item, index) => (
-                    <MainPageSwiperSlide key={index}>
-                      <BoxOfficePosterCard movieInfo={item} />
-                    </MainPageSwiperSlide>
-                  ))}
+                  {loading
+                    ? Array.from({ length: 10 }).map((_, index) => (
+                        <MainPageSwiperSlide key={index}>
+                          <SkeletonBoxOfiicePosterCard key={index} />
+                        </MainPageSwiperSlide>
+                      ))
+                    : boxOfficeMovies?.map((item, index) => (
+                        <MainPageSwiperSlide key={index}>
+                          <BoxOfficePosterCard movieInfo={item} />
+                        </MainPageSwiperSlide>
+                      ))}
+                  {}
                 </Swiper>
               </MainPageBoxOfficeSwiperWrapper>
             </MainPageSliderWrapper>
@@ -143,7 +151,7 @@ function MainPage() {
         </MainPageBodyTopWrapper>
         <MainPageSliderWrapper>
           <MainPageWrapperTitle>{'추천영화'}</MainPageWrapperTitle>
-          <SuggestMovieBox isLogin={isLogIn} />
+          <SuggestMovieBox loading={loading} isLogin={isLogIn} />
         </MainPageSliderWrapper>
       </MainPageBodyContainer>
     </div>
