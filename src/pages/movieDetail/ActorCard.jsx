@@ -62,8 +62,11 @@ const ActorCardContainer = styled.div`
   display: grid;
   grid-template-columns: repeat(auto-fill, 130px);
   gap: 10px;
+  justify-content: start;
   ${media.medium`
-    grid-template-columns: repeat(auto-fill, 90px)
+    justify-content: center;
+    display:grid;
+    grid-template-columns: repeat(auto-fill, 130px);
   `}
 `
 
@@ -77,8 +80,8 @@ const ActorCardWrap = styled.div`
   justify-content: flex-start;
   align-items: center;
   box-sizing: border-box;
-  ${media.medium`
-    width:80px;
+  ${media.small`
+    width:120px;
   `}
 `
 const TextWrap = styled.div`
