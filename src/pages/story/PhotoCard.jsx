@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import HEART from '@/assets/icons/heart.svg?react'
 import COMMENT from '@/assets/icons/comment.svg?react'
@@ -8,13 +8,27 @@ import { ProgressBar } from '@/components/story/ProgressBar'
 import useStoryStore from '@/store/storyStore'
 import CLOSE from '@/assets/icons/close.svg?react'
 import { useNavigate } from 'react-router-dom'
-
+import heart from '@/assets/icons/heart.svg'
+import heartActive from '@/assets/icons/heartActive.svg'
+import { useApi } from '@/libs/useApi'
 function PhotoCard({ reviewInfo, slideNext, index }) {
   const { focusReview } = useStoryStore()
   const navigate = useNavigate()
-
+  const [isLike, setIsLike] = useState(false)
+  const { post } = useApi(true)
   const isCurrentFocus = focusReview?.reviewId === reviewInfo.reviewId
+  useEffect(() => {
+    setIsLike(reviewInfo.isLike)
+  }, [reviewInfo])
 
+  const handleLikeClick = async (e) => {
+    e.stopPropagation()
+    const response = await post(`/reviews/${reviewInfo.reviewId}/like`)
+    console.log('-----------------------------------------')
+    console.log('좋아요 성공:', response)
+    console.log('like')
+    setIsLike((prev) => !prev)
+  }
   return (
     <Container>
       <div style={{ marginBottom: '10px' }}>
@@ -32,7 +46,12 @@ function PhotoCard({ reviewInfo, slideNext, index }) {
               <COMMENT />
               <span>{reviewInfo.totalComments}</span>
             </CommentWrap>
-            <HEART />
+            {/* <HEART onClick={handleLikeClick} /> */}
+            {!isLike ? (
+              <LikeIcon src={heart} $islike={isLike} onClick={handleLikeClick} />
+            ) : (
+              <LikeIcon src={heartActive} $islike={isLike} onClick={handleLikeClick} />
+            )}
           </Tab>
         </ContentWrap>
       </CardWrap>
@@ -145,4 +164,11 @@ const BottomWrap = styled.div`
 const CloseWrap = styled.div`
   display: flex;
   justify-content: center;
+`
+const LikeIcon = styled.img`
+  width: 24px;
+  height: 24px;
+  cursor: pointer;
+  ${({ $islike }) =>
+    $islike && 'filter: drop-shadow(0px 0px 10px var(--primary-light-red, #ffd7d7));'}
 `
