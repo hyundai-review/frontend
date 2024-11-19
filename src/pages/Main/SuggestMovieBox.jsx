@@ -45,6 +45,7 @@ function SuggestMovieBox({ isLogin }) {
     setNowPage(0)
     setSuggestMovieData([])
     fetchMovieData(selectedGenre, 0)
+    setCheckMoreData(true)
     setSelectedGenre(selectedGenre)
   }, [selectedGenre])
   useEffect(() => {}, [suggestMovieData])
@@ -71,6 +72,7 @@ function SuggestMovieBox({ isLogin }) {
 
   const handleGenreClick = (id) => {
     setSelectedGenre(id)
+    setCheckMoreData(true)
     // navigate(`/movie/category/${id}`)
     // NOTE(k) 스크롤 유지 처리
   }
