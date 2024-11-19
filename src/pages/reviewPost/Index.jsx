@@ -108,7 +108,7 @@ export default ReviewPostPage
 // `
 const Container = styled.div`
   min-height: 100vh;
-  height: auto;
+  /* height: auto; */
   background: ${(props) => `url(${props.$image})`};
   background-size: cover;
   background-position: center;
@@ -120,10 +120,14 @@ const BlurOverlay = styled.div`
   width: 100%;
   min-height: 100vh;
   /* height: auto; */
-  height: 100%;
+  /* height: 100%; */
   border: 1px solid rgba(255, 255, 255, 0.1);
   background: rgba(0, 0, 0, 0.5);
   backdrop-filter: blur(20px);
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `
 
 const Wrap = styled.div`
@@ -132,7 +136,8 @@ const Wrap = styled.div`
 
   //
   height: 100%;
-  min-height: 100vh;
+  /* min-height: 100vh; */
+  min-height: calc(100vh - 50px); // 중요!
   display: flex;
   flex-direction: column;
   //
@@ -140,12 +145,9 @@ const Wrap = styled.div`
   width: calc(100% - 240px);
   margin: 0 auto;
   min-width: 362px;
-  /* width: 100%; */
-  /* padding: 0 100px; */
   ${media.small`
     width: calc(100% - 100px);
   `}
-  background-color: blue;
 `
 const TopWrap = styled.div`
   display: flex;
@@ -174,8 +176,7 @@ const BackBtn = styled.button`
 `
 
 const OutletWrap = styled.div`
-  background-color: red;
-  flex: 1; // 남은 공간 모두 차지
+  flex: 1;
   display: flex;
   align-items: center;
   justify-content: center;
