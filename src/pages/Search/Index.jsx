@@ -7,6 +7,7 @@ import { useSearchParams } from 'react-router-dom'
 import { nonAuthenticated } from '@/libs/axiosInstance'
 import useNavigateStore from '@/store/navigateStore'
 import { isLoggedIn } from '@/utils/logInManager'
+import SkeletonMoviePosterCard from '@/components/moviePosterCard/skeleton/SkeletonMoviePosterCard'
 //TODO(j) axios 한군데 모으기
 
 function SearchPage() {
@@ -109,9 +110,13 @@ function SearchPage() {
             {query == '' ? '검색어를 입력해주세요' : `"${query}" 에 대한 검색결과`}
           </SearchPageResultWrapper>
           <MoviePosterWrapper>
-            {movieDataArray.map((item, index) => (
-              <MoviePosterCard movieInfo={item} key={index} />
-            ))}
+            {isLoading
+              ? Array.from({ length: 18 }).map((_, index) => (
+                  <SkeletonMoviePosterCard key={index} />
+                ))
+              : movieDataArray.map((item, index) => (
+                  <MoviePosterCard movieInfo={item} key={index} />
+                ))}
           </MoviePosterWrapper>
           {/* {isLoading && <LoadingIndicator>로딩 중...</LoadingIndicator>} */}
           {!checkMoreData && nowPage !== 0 && <EndMessage>더 이상 결과가 없습니다.</EndMessage>}
