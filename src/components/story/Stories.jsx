@@ -20,8 +20,8 @@ function Stories({ dataList, path }) {
   )
   //
   const { handleSlideChange, handleSlideClick } = useCarousel(1)
-  // const [isLogIn, setIsLogIn] = useState(isLoggedIn())
-  const [isLogIn, setIsLogIn] = useState(true)
+  const [isLogIn, setIsLogIn] = useState(isLoggedIn())
+  // const [isLogIn, setIsLogIn] = useState(true)
   const openModal = useModalStore((state) => state.openModal)
   const navigate = useNavigate()
 
