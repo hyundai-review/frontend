@@ -84,46 +84,46 @@ function PostUploadReview() {
       })
     }
   }
+
+  return (
+    <Container>
+      <Wrap>
+        <PhotoWrap>
+          <img src={processPhotocard.step2} />
+        </PhotoWrap>
+
+        <BottomWrap>
+          <SBoxContainer.Box
+            // $width='280px'
+            $minWidth='300px'
+            $height='50px'
+            $display='flex'
+            $justifyContent='center'
+            $alignItems='center'
+          >
+            <DownloadWrap>
+              <SText.Text>영화 포토카드를 저장해보세요!</SText.Text>
+              <SBtn.CircleIconWrapperBtn onClick={handleDownload}>
+                <DownloadIcon />
+              </SBtn.CircleIconWrapperBtn>
+            </DownloadWrap>
+          </SBoxContainer.Box>
+
+          <BtnWrap>
+            <button style={{ all: 'unset', cursor: 'pointer', whiteSpace: 'nowrap' }}>
+              <BtnText style={{ padding: '0 50px' }} onClick={() => handleSubmitReview()}>
+                리뷰만 올리기
+              </BtnText>
+            </button>
+            <SBtn.ReviewPostBtn onClick={() => handleSubmitReview(true)}>
+              <BtnText>스토리 게시</BtnText>
+            </SBtn.ReviewPostBtn>
+          </BtnWrap>
+        </BottomWrap>
+      </Wrap>
+    </Container>
+  )
 }
-
-return (
-  <Container>
-    <Wrap>
-      <PhotoWrap>
-        <img src={processPhotocard.step2} />
-      </PhotoWrap>
-
-      <BottomWrap>
-        <SBoxContainer.Box
-          // $width='280px'
-          $minWidth='300px'
-          $height='50px'
-          $display='flex'
-          $justifyContent='center'
-          $alignItems='center'
-        >
-          <DownloadWrap>
-            <SText.Text>영화 포토카드를 저장해보세요!</SText.Text>
-            <SBtn.CircleIconWrapperBtn onClick={handleDownload}>
-              <DownloadIcon />
-            </SBtn.CircleIconWrapperBtn>
-          </DownloadWrap>
-        </SBoxContainer.Box>
-
-        <BtnWrap>
-          <button style={{ all: 'unset', cursor: 'pointer', whiteSpace: 'nowrap' }}>
-            <BtnText style={{ padding: '0 50px' }} onClick={() => handleSubmitReview()}>
-              리뷰만 올리기
-            </BtnText>
-          </button>
-          <SBtn.ReviewPostBtn onClick={() => handleSubmitReview(true)}>
-            <BtnText>스토리 게시</BtnText>
-          </SBtn.ReviewPostBtn>
-        </BtnWrap>
-      </BottomWrap>
-    </Wrap>
-  </Container>
-)
 
 export default PostUploadReview
 
