@@ -1,22 +1,48 @@
 import useReviewStore from '@/store/reviewStore'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import * as SText from '@/styles/text'
 import * as SBtn from '@/styles/button'
 import * as SBoxContainer from '@/styles/boxContainer'
 import DOWNLOAD from '@/assets/icons/download.svg?react'
+import KAKAO from '@/assets/icons/kakaoYellow.svg'
 import { useApi } from '@/libs/useApi'
 import { useNavigate, useParams } from 'react-router-dom'
 import { transformReviewPost } from '@/utils/dataTransform'
 import { objectToFormData } from '@/utils/objectToFormdata'
 import useModalStore from '@/store/modalStore'
-
 function PostUploadReview() {
   const { processPhotocard, reviewPost } = useReviewStore()
   const { post, error } = useApi()
   const { movieId } = useParams()
   const { openModal } = useModalStore()
   const navigate = useNavigate()
+  const [reviewContent, setReviewContent] = useState('')
+
+  useEffect(() => {
+    // 카카오 SDK 초기화
+    if (!window.Kakao.isInitialized()) {
+      window.Kakao.init('18b0ff3c3023edbbd19587b0c2440163')
+    }
+  }, [])
+
+  const handleShare = (title, content, image, id) => {
+    console.log(image)
+    if (window.Kakao) {
+      window.Kakao.Link.sendDefault({
+        objectType: 'feed',
+        content: {
+          title: `${title}`, // 공유할 글귀
+          description: content, // 설명 텍스트
+          imageUrl: `${image}`, // 이미지 URL
+          link: {
+            mobileWebUrl: `https://mylittlefra.me/movie/${movieId}/detail`, // 링크 (모바일 웹)
+            webUrl: `https://mylittlefra.me/movie/${movieId}/detail`, // 링크 (웹)
+          },
+        },
+      })
+    }
+  }
 
   const handleDownload = async () => {
     try {
@@ -56,7 +82,7 @@ function PostUploadReview() {
 
       const transformData = transformReviewPost(reviewPost, processPhotocard.step2)
       console.log('transformData:', transformData)
-
+      setReviewContent(transformData.content)
       // 고유한 파일명 생성
       const timestamp = new Date().getTime()
       const filename = `photocard_${timestamp}.jpg`
@@ -76,7 +102,16 @@ function PostUploadReview() {
           const response = await post(`/reviews/photo/${movieId}`, formData, true)
 
           https: if (response.status === 200) {
-            navigate(`/movie/${movieId}/detail`)
+            openModal('confirm', { message: '카카오톡에 공유하시겠습니까?' }, () => {
+              console.log(response.data)
+              handleShare(
+                'mylittleframe에 참여해 보세요',
+                response.data.content,
+                response.data.photocard,
+                response.data.reviewId,
+              )
+              navigate(`/movie/${movieId}/detail`)
+            })
           }
         } catch (err) {
           if (err.response?.status === 409) {
@@ -104,6 +139,7 @@ function PostUploadReview() {
             $display='flex'
             $justifyContent='center'
             $alignItems='center'
+            style={{ flexDirection: 'column', gap: '10px' }}
           >
             <DownloadWrap>
               <SText.Text>영화 포토카드를 저장해보세요!</SText.Text>
