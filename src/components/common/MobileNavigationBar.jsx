@@ -84,7 +84,7 @@ const MobileNavigationBarContainer = styled.div`
   bottom: 30px;
   left: 50%;
   transform: translateX(-50%);
-  height: 50px;
+  height: 40px;
   z-index: 100;
   border-radius: 10px;
   margin: 0 auto;
@@ -112,9 +112,9 @@ const MobileNavigationBarItemWrapper = styled.div`
 
 const SelectedButtonSlider = styled.div`
   position: fixed;
-  left: ${(props) => props.$index * 80}px;
-  width: 80px;
-  height: 30px;
+  left: ${(props) => props.$index * 100}px;
+  width: 100px;
+  height: 40px;
   background: rgba(255, 255, 255, 0.2);
   border: 1px solid rgba(255, 255, 255, 0.6);
   backdrop-filter: blur(10px);

@@ -26,10 +26,22 @@ export const useCamera = () => {
   const videoRef = useRef(null)
 
   const setupCamera = async () => {
+    // 사용 가능한 미디어 장치 가져오기
+    const devices = await navigator.mediaDevices.enumerateDevices()
+
+    // 비디오 입력 장치만 필터링
+    const videoDevices = devices.filter((device) => device.kind === 'videoinput')
+
+    if (videoDevices.length === 0) {
+      throw new Error('사용 가능한 카메라가 없습니다.')
+    }
+
+    // USB 웹캠이 있으면 이를 선택, 없으면 첫 번째 장치를 선택
+    const usbCamera = videoDevices.find((device) => device.label.includes('USB')) || videoDevices[0]
     try {
       // 먼저 기본 스트림을 가져옴
       const stream = await navigator.mediaDevices.getUserMedia({
-        video: true,
+        video: { deviceId: usbCamera.deviceId },
         audio: false,
       })
 
