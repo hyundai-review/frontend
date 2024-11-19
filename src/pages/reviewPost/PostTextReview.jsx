@@ -8,24 +8,50 @@ import * as SBtn from '@/styles/button'
 import { Checkbox } from '@mui/material'
 import useReviewStore from '@/store/reviewStore'
 import { useApi } from '@/libs/useApi'
-import { useParams } from 'react-router-dom'
+import { Navigate, useNavigate, useParams } from 'react-router-dom'
+import useModalStore from '@/store/modalStore'
+import MovieSummaryLarge from '../movieDetail/MovieSummaryLarge'
+import MovieSummary from '../movieDetail/MovieSummary'
+import useResponsive from '@/hooks/useResponsive'
+import { useWindowSize } from '@/utils/useWindowSize'
 
 /** step 1. 텍스트 리뷰 작성 */
 function PostTextReview() {
   const { nextStep, reviewPost, setReviewPost } = useReviewStore()
   const { post, error } = useApi()
+  const { get: nonAuthGet } = useApi(false)
   const { movieId } = useParams()
 
+  const { openModal } = useModalStore()
+  const { width } = useWindowSize() // 윈도우 크기 추적
+  const isMobil = width <= 968
+  const [data, setData] = useState(null)
+
+  const navigate = useNavigate()
   const [starRating, setStarRating] = useState(reviewPost.rating)
   const formRef = useRef({
     content: reviewPost.content,
     isSpoil: reviewPost.isSpoil,
   })
 
+  useEffect(() => {
+    const fetchMovieDetail = async () => {
+      try {
+        const data = await nonAuthGet(`/movies/details/${movieId}`)
+        setData(data.data)
+      } catch (err) {
+        console.error('영화 정보를 가져오는 중 오류가 발생했습니다:', err)
+      }
+    }
+    fetchMovieDetail()
+  }, [movieId])
+
   // 리뷰만 올리기
   const handleSubmitReview = async (isPhotocard = false) => {
     if (!starRating || !formRef.current.content.trim()) {
-      alert('별점과 리뷰를 모두 작성해주세요.')
+      openModal('alert', {
+        message: '별점과 리뷰를 모두 작성해주세요',
+      })
       return
     }
 
@@ -37,18 +63,35 @@ function PostTextReview() {
     if (isPhotocard) {
       nextStep()
     } else {
-      console.log('확인용', formRef.current)
+      try {
+        const response = await post(`/reviews/${movieId}`, reviewPost)
 
-      const response = await post(`/reviews/${movieId}`, reviewPost)
-      if (response.status === 200) {
-        alert('리뷰가 등록되었습니다.')
-        //TODO navigate
+        if (response.status === 200) {
+          openModal('confirm', { message: '리뷰를 등록하시겠습니까?' }, () => {
+            navigate(`/movie/${movieId}/detail`)
+          })
+        }
+      } catch (err) {
+        if (err.response?.status === 409) {
+          openModal('alert', {
+            message: '이미 리뷰를 작성하셨습니다.',
+          })
+        }
       }
     }
   }
 
   return (
     <Container>
+      <div>
+        {!isMobil ? (
+          <MovieSummaryLarge data={data} />
+        ) : (
+          <>
+            <MovieSummary data={data} />
+          </>
+        )}
+      </div>
       <div>
         <SText.Text style={{ marginBottom: '6px' }}>별점을 선택해주세요</SText.Text>
         <Wrap $width='362px' $height='48px'>
