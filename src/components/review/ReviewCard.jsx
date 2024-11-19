@@ -53,7 +53,11 @@ function ReviewCard({ review, pageType }) {
   }, [review, pageType])
   // 함수
   const handleCommentClick = (e) => {
-    setIsCommentOpen((prev) => !prev)
+    if (pageType === 'mypage') {
+      setIsCommentOpen(false)
+    } else {
+      setIsCommentOpen((prev) => !prev)
+    }
     e.stopPropagation()
   }
   const handleLikeClick = (e) => {
@@ -156,7 +160,11 @@ function ReviewCard({ review, pageType }) {
       <CommentWrap>
         <CardFooter>
           <CardCommentWrap>
-            <CardCommentLeft onClick={handleCommentClick}>
+            <CardCommentLeft
+              onClick={() => {
+                pageType === 'mypage' ? setIsCommentOpen(false) : handleCommentClick
+              }}
+            >
               <CardCommentIcon
                 src={isCommentOpen ? commentWhite : comment}
                 $iscommentopen={isCommentOpen}
