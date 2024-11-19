@@ -108,9 +108,9 @@ function ReviewCard({ review, pageType }) {
     // console.log('2')
   }, [isCommentOpen, fetchData, setFetchData])
 
-  const handleComment = () => {
-    setFetchData((prev) => !prev)
-  }
+  // const handleComment = () => {
+  //   setFetchData((prev) => !prev)
+  // }
   // useEffect(() => {
   //   const fetchCommentData = async () => {
   //     try {
