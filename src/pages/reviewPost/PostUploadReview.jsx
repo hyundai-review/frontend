@@ -36,22 +36,23 @@ function PostUploadReview() {
   const handleSubmitReview = async (includeStory = false) => {
     if (!includeStory) {
       // 리뷰만 올리기
-      try {
-        const response = await post(`/reviews/${movieId}`, reviewPost)
+      openModal('confirm', { message: '리뷰를 등록하시겠습니까?' }, async () => {
+        try {
+          console.log('adsfasdfsa', reviewPost)
+          const response = await post(`/reviews/${movieId}`, reviewPost)
 
-        if (response.status === 200) {
-          openModal('confirm', { message: '리뷰를 등록하시겠습니까?' }, () => {
+          if (response.status === 200) {
             navigate(`/movie/${movieId}/detail`)
-          })
+          }
+        } catch (err) {
+          if (err.response?.status === 409) {
+            openModal('alert', {
+              message: '이미 리뷰를 작성하셨습니다.',
+            })
+          }
         }
-      } catch (err) {
-        if (err.response?.status === 409) {
-          openModal('alert', {
-            message: '이미 리뷰를 작성하셨습니다.',
-          })
-        }
-      }
-    } else {
+      })
+
       // 스토리 게시
 
       const transformData = transformReviewPost(reviewPost, processPhotocard.step2)
