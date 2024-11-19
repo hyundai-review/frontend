@@ -113,7 +113,7 @@ function SearchPage() {
               <MoviePosterCard movieInfo={item} key={index} />
             ))}
           </MoviePosterWrapper>
-          {isLoading && <LoadingIndicator>로딩 중...</LoadingIndicator>}
+          {/* {isLoading && <LoadingIndicator>로딩 중...</LoadingIndicator>} */}
           {!checkMoreData && nowPage !== 0 && <EndMessage>더 이상 결과가 없습니다.</EndMessage>}
           {!isLoading && nowPage === 0 && movieDataArray.length == 0 && (
             <EndMessage>더 이상 결과가 없습니다.</EndMessage>
