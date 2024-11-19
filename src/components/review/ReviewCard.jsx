@@ -53,12 +53,12 @@ function ReviewCard({ review, pageType }) {
   }, [review, pageType])
   // 함수
   const handleCommentClick = (e) => {
+    e.stopPropagation()
     if (pageType === 'mypage') {
       setIsCommentOpen(false)
     } else {
       setIsCommentOpen((prev) => !prev)
     }
-    e.stopPropagation()
   }
   const handleLikeClick = (e) => {
     e.stopPropagation()

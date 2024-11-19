@@ -55,7 +55,7 @@ function MovieReview() {
   return (
     <Wrap>
       <TitleWrap>
-        <Title>리뷰({data?.totalReviews})</Title>
+        <Title>리뷰({data ? data.totalReviews : 0})</Title>
         {isLogin && (
           <RatingWrap>
             <StarRating type='readonly' initialValue='1' max={1} size={24} />
