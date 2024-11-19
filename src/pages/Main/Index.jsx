@@ -27,7 +27,7 @@ suggestMovieData - moviePosterUrl, movieID */
 function MainPage() {
   const navigate = useNavigate()
   // const [isLogIn, setIsLogIn] = useState(isLoggedIn())
-  const [isLogIn, setIsLogIn] = useState(false)
+  const [isLogIn, setIsLogIn] = useState(true)
   const [data, setData] = useState(getUserData())
   const nowDate = new Date()
   const timeText = chkTime(nowDate.getHours())

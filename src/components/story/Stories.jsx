@@ -13,6 +13,7 @@ import { useNavigate } from 'react-router-dom'
 import block from '@/assets/icons/block.svg'
 function Stories({ dataList, path }) {
   const { handleSlideChange, handleSlideClick } = useCarousel(1)
+  const [isLogIn, setIsLogIn] = useState(true) // 테스트용 로그인
   const openModal = useModalStore((state) => state.openModal)
   const navigate = useNavigate()
 
@@ -29,11 +30,36 @@ function Stories({ dataList, path }) {
 
   return (
     <SwiperContainer>
-      <Wrap>
-        <Content>
-          <Icon src={block} />
-          <Text>로그인하고 스토리 보기</Text>
-        </Content>
+      {!isLogIn ? (
+        <Wrap>
+          <Content>
+            <Icon src={block} />
+            <Text>로그인하고 스토리 보기</Text>
+          </Content>
+          <Swiper
+            modules={[EffectCoverflow]}
+            effect={'coverflow'}
+            centeredSlides={true}
+            slidesPerView={3}
+            initialSlide={1}
+            onSlideChange={handleSlideChange}
+            coverflowEffect={{
+              rotate: 0,
+              stretch: 60, // 슬라이드 사이의 거리를 조절
+              depth: 100, // 슬라이드의 앞뒤 거리감
+              modifier: 1,
+              slideShadows: false,
+              scale: 0.8, // 비활성 슬라이드의 크기를 조절
+            }}
+          >
+            {dataList.map((review, index) => (
+              <SwiperSlide key={index} onClick={() => handleClick(index, path, review)}>
+                <StoryItem photocardImg={review.photocard} reviewId={review.reveiwId} />
+              </SwiperSlide>
+            ))}
+          </Swiper>
+        </Wrap>
+      ) : (
         <Swiper
           modules={[EffectCoverflow]}
           effect={'coverflow'}
@@ -56,7 +82,7 @@ function Stories({ dataList, path }) {
             </SwiperSlide>
           ))}
         </Swiper>
-      </Wrap>
+      )}
     </SwiperContainer>
   )
 }
