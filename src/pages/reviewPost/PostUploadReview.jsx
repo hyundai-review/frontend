@@ -52,7 +52,7 @@ function PostUploadReview() {
           }
         }
       })
-
+    } else {
       // 스토리 게시
 
       const transformData = transformReviewPost(reviewPost, processPhotocard.step2)

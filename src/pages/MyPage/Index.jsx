@@ -51,7 +51,6 @@ function MyPage() {
             <ReviewCard pageType='mypage' key={review.movieId} review={review} />
           ))}
         </ReviewContainer>
-        {loading && <PuffLoader />}
         <div ref={observerRef} style={{ height: '20px' }} />
       </div>
     </>

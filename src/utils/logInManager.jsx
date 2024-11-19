@@ -35,6 +35,7 @@ export const isLoggedIn = () => {
 export const removeData = () => {
   removeCookie('userInfo')
   removeCookie('isLogIn')
+  removeCookie('ACCESS_TOKEN')
 }
 
 export const setUserNickname = (newData) => {

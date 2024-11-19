@@ -14,7 +14,7 @@ export const authenticated = axios.create({
 /** 요청 인터셉터 : 헤더에 access token 추가 */
 authenticated.interceptors.request.use((config) => {
   const ACCESS_TOKEN = getCookie('ACCESS_TOKEN')
-  // TODO(k) 임시 엑세스 토큰
+
   if (ACCESS_TOKEN) {
     config.headers['Authorization'] = `Bearer ${ACCESS_TOKEN}`
   } else {
@@ -36,14 +36,22 @@ authenticated.interceptors.response.use(
       (error.response && error.response.status === 401) ||
       (error.response && error.response.status === 403)
     ) {
-      alert('재로그인 필요')
-      window.location.href = '/user/login'
       try {
-        //TODO(j) refreshtoken 요청 로직
-        const newAccessToken = await nonAuthenticated.post('/auth/refresh')
+        // 리프레시 토큰으로 새로운 액세스 토큰 요청
+        const refreshResponse = await nonAuthenticated.post('/auth/refresh')
+        const newAccessToken = refreshResponse.data.accessToken
+
+        // 새로운 토큰을 쿠키에 저장
         setCookie('ACCESS_TOKEN', newAccessToken, 7)
-      } catch (error) {
-        console.log(error)
+
+        // 원래 요청의 헤더를 업데이트
+        error.config.headers['Authorization'] = `Bearer ${newAccessToken}`
+
+        // 원래 요청 재시도
+        return authenticated.request(error.config)
+      } catch (refreshError) {
+        // 로그인 페이지로 이동
+        window.location.href = '/user/login'
       }
     }
 
