@@ -180,7 +180,6 @@ const OutletWrap = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-
   /* overflow-y: auto; */
   min-height: 0;
 `

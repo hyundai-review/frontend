@@ -175,6 +175,7 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   gap: 20px;
+  width: 100%;
 `
 const Wrap = styled(SBoxContainer.Box)`
   display: flex;
