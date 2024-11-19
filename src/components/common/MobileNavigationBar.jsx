@@ -84,7 +84,7 @@ const MobileNavigationBarContainer = styled.div`
   bottom: 30px;
   left: 50%;
   transform: translateX(-50%);
-  height: 30px;
+  height: 50px;
   z-index: 100;
   border-radius: 10px;
   margin: 0 auto;
@@ -97,7 +97,7 @@ const MobileNavigationBarContainer = styled.div`
   `}
 `
 const MobileNavigationBarItemWrapper = styled.div`
-  width: 80px;
+  width: 100px;
   color: var(--color-gray-200);
   font-size: 13px;
   margin-top: 2px;

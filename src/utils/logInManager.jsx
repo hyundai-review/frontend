@@ -30,6 +30,7 @@ export const isLoggedIn = () => {
   } else {
     return false
   }
+  // return true
 }
 
 export const removeData = () => {

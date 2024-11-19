@@ -54,6 +54,7 @@ function ReviewCard({ review, pageType }) {
   // 함수
   const handleCommentClick = (e) => {
     e.stopPropagation()
+    console.log('댓글 클릭')
     if (pageType === 'mypage') {
       setIsCommentOpen(false)
     } else {
@@ -160,11 +161,7 @@ function ReviewCard({ review, pageType }) {
       <CommentWrap>
         <CardFooter>
           <CardCommentWrap>
-            <CardCommentLeft
-              onClick={() => {
-                pageType === 'mypage' ? setIsCommentOpen(false) : handleCommentClick
-              }}
-            >
+            <CardCommentLeft $iscursor={pageType === 'movieDetail'} onClick={handleCommentClick}>
               <CardCommentIcon
                 src={isCommentOpen ? commentWhite : comment}
                 $iscommentopen={isCommentOpen}
@@ -324,7 +321,7 @@ const CardCommentWrap = styled.div`
 const CardCommentLeft = styled.div`
   display: flex;
   align-items: center;
-  cursor: pointer;
+  ${({ $iscursor }) => $iscursor && 'cursor: pointer;'}
 `
 const CardComment = styled.span`
   /* font-size: 14px;

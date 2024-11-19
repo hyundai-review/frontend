@@ -18,12 +18,12 @@ function StoryList() {
   const { get } = useApi()
   const { setReviewList, reviewList, focusReview } = useStoryStore()
 
-  const { handleSlideChange, handleSlideClick, setSwiper, slideNext } = useCarousel(2)
   const { width } = useWindowSize()
   const isMobile = width < 780
 
   const focusIndex =
-    reviewList?.findIndex((review) => review.reviewId === focusReview?.reviewId) ?? 2
+    reviewList?.findIndex((review) => review.reviewId === focusReview?.reviewId) ?? 1
+  const { handleSlideChange, handleSlideClick, setSwiper, slideNext } = useCarousel(focusIndex)
 
   return (
     <SwiperContainer>
