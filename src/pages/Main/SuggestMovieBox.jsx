@@ -8,7 +8,7 @@ import MainGenreButton from './MainGenreButton'
 import { useNavigate } from 'react-router-dom'
 import { genres } from '@/assets/data/genresData'
 import { useApi } from '@/libs/useApi'
-import { authenticated } from '@/libs/axiosInstance'
+import { authenticated, nonAuthenticated } from '@/libs/axiosInstance'
 
 function SuggestMovieBox({ isLogin }) {
   const [selectedGenre, setSelectedGenre] = useState('0')
@@ -16,26 +16,27 @@ function SuggestMovieBox({ isLogin }) {
   const [isLoading, setIsLoading] = useState(false)
   const [checkMoreData, setCheckMoreData] = useState(true)
   const [nowPage, setNowPage] = useState(0)
-  const { get } = useApi(isLogin ? true : false)
   const navigate = useNavigate()
   const fetchMovieData = useCallback(
     async (genre, page) => {
-      if (isLoading || !checkMoreData) return
-      setIsLoading(true)
-      try {
-        const queryParams = { genre: genre, page: page, size: 24 }
-        const getMovieData = await get(`/movies/recommend`, {
-          params: queryParams,
-        })
-        const newMovies = getMovieData.data.content
-        if (newMovies.length > 0) {
-          setSuggestMovieData((prev) => [...prev, ...newMovies]) // 기존 데이터에 추가
+      if (isLogin) {
+        if (isLoading || !checkMoreData) return
+        setIsLoading(true)
+        try {
+          const queryParams = { genre: genre, page: page, size: 24 }
+          const getMovieData = await authenticated.get(`/movies/recommend`, {
+            params: queryParams,
+          })
+          const newMovies = getMovieData.data.content
+          if (newMovies.length > 0) {
+            setSuggestMovieData((prev) => [...prev, ...newMovies]) // 기존 데이터에 추가
+          }
+          setCheckMoreData(newMovies.length === 24)
+        } catch (err) {
+          console.error('영화 정보를 가져오는 중 오류가 발생했습니다:', err)
+        } finally {
+          setIsLoading(false) // 로딩 종료
         }
-        setCheckMoreData(newMovies.length === 24)
-      } catch (err) {
-        console.error('영화 정보를 가져오는 중 오류가 발생했습니다:', err)
-      } finally {
-        setIsLoading(false) // 로딩 종료
       }
     },
     [selectedGenre, isLoading],
@@ -45,8 +46,8 @@ function SuggestMovieBox({ isLogin }) {
     setSuggestMovieData([])
     fetchMovieData(selectedGenre, 0)
     setSelectedGenre(selectedGenre)
-    console.log(suggestMovieData)
   }, [selectedGenre])
+  useEffect(() => {}, [suggestMovieData])
   useEffect(() => {
     const handleScroll = () => {
       if (
