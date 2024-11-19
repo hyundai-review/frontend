@@ -15,7 +15,7 @@ function ActorCard({ data, loading }) {
     },
     ...(data?.actors?.map((actor) => ({
       img: actor?.profile
-        ? `https://image.tmdb.org/t/p/w500${actor.profile}`
+        ? `https://image.tmdb.org/t/p/w300${actor.profile}`
         : '/images/default.png',
       name: actor?.name || '배우 정보 없음',
       role: actor?.role || '단',

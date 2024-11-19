@@ -16,7 +16,7 @@ function MovieSummary({ data, loading }) {
   // const releaseDate = '2024.11.09'
   // const runningTime = '1시간 50분'
   // const status = '상영 중'
-  const posterImageUrl = `https://image.tmdb.org/t/p/w500${data?.poster.filePath}`
+  const posterImageUrl = `https://image.tmdb.org/t/p/w300${data?.poster.filePath}`
   const title = data?.title
   const year = data?.releaseDate.split('-')[0] // "2024-11-13" → "2024"
   const certification = data?.certification === '19' ? '19+' : 'all' // 예제에 따라 변환
