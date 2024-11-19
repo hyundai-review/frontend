@@ -93,11 +93,15 @@ function ReviewCard({ review, pageType }) {
 
   useEffect(() => {
     setCommentList(commentList)
+    console.log(commentList)
+    console.log('1')
   }, [commentList])
 
   useEffect(() => {
     fetchCommentData()
     setCommentList(commentList)
+    console.log(commentList)
+    console.log('2')
   }, [isCommentOpen, fetchData, setFetchData])
 
   // const handleComment = () => {
@@ -289,7 +293,7 @@ const CardFooter = styled.div`
 const RightWrap = styled.div``
 
 const Photocard = styled.img`
-  width: 170px;
+  width: 250px;
   height: 100%;
   border-radius: 5px;
   object-fit: cover;

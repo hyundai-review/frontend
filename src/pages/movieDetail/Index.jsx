@@ -52,15 +52,15 @@ function MovieDetailPage() {
             </Header>
             <ContentsWrap>
               {screenSize === 'medium' || screenSize === 'large' ? (
-                <MovieSummaryLarge data={data} />
+                <MovieSummaryLarge data={data} loading={loading} />
               ) : (
                 <>
-                  <MovieSummary data={data} />
-                  <MovieOverview data={data} />
+                  <MovieSummary data={data} loading={loading} />
+                  <MovieOverview data={data} loading={loading} />
                 </>
               )}
-              <ActorCard data={data} />
-              <MovieReview />
+              <ActorCard data={data} loading={loading} />
+              <MovieReview loading={loading} />
             </ContentsWrap>
           </Container>
         </BlurOverlay>
@@ -77,6 +77,7 @@ const Wrap = styled.div`
   background: url(${(props) => props.$imageurl});
   background-size: cover;
   background-position: center;
+  padding-bottom: 30px;
 `
 
 const BlurOverlay = styled.div`
@@ -90,9 +91,9 @@ const BlurOverlay = styled.div`
 const Container = styled.div`
   max-width: 1440px;
   margin: 0 auto;
-  padding: 25px;
-  @media (min-width: 1440px) {
-    padding: 0; /* 1440px 이상일 때 패딩 제거 */
+  padding: 70px 30px;
+  @media (min-width: 1441px) {
+    padding: 0 20px;
   }
   ${media.small`
     padding: 20px;

@@ -13,22 +13,19 @@ function ReviewComment({ isEdit, commentData, reviewId, setFetchData }) {
   const { openModal } = useModalStore()
   const userInfo = getUserData()
   //댓글 데이터
-  const [commentId, setCommentId] = useState(isEdit ? '' : commentData.commentId)
-  const [commentProfileImage, setCommentProfileImage] = useState(
-    isEdit ? '' : commentData.author.profile,
-  )
-  const [commentNickname, setCommentNickname] = useState(isEdit ? '' : commentData.author.nickname)
-  const [commentDate, setCommentDate] = useState(
-    isEdit ? '' : commentData.createdAt.substring(0, 10),
-  )
+  const commentId = isEdit ? '' : commentData.commentId
+  const commentProfileImage = isEdit ? '' : commentData.author.profile
+  const commentNickname = isEdit ? '' : commentData.author.nickname
+  const commentDate = isEdit ? '' : commentData.createdAt.substring(0, 10)
   const [commentContent, setCommentContent] = useState(isEdit ? '' : commentData.content)
   const [isFocused, setIsFocused] = useState(false)
   const [isEdited, setIsEdited] = useState(isEdit)
   const [isModified, setIsModified] = useState(false)
   const [autoPlay, setAutoPlay] = useState(false)
-  // const [inputValue, setInputValue] = useState('')
   const inputRef = useRef(null)
-
+  useEffect(() => {
+    setCommentContent(isEdit ? '' : commentData.content)
+  }, [commentData])
   const submitComment = async (commentInput) => {
     const commentData = { content: commentInput }
     const response = await post(`/comments/${reviewId}`, commentData)
@@ -37,7 +34,6 @@ function ReviewComment({ isEdit, commentData, reviewId, setFetchData }) {
   const modifyComment = async (commentInput) => {
     const commentData = { content: commentInput }
     const response = await put(`/comments/${commentId}`, commentData)
-
     setFetchData((prev) => !prev)
   }
   const deleteComment = async () => {
@@ -47,6 +43,13 @@ function ReviewComment({ isEdit, commentData, reviewId, setFetchData }) {
 
   const handleClicked = () => {
     const inputValue = inputRef.current.value
+    if (inputValue.trim() == '') {
+      openModal('alert', { message: '내용을 입력하세요!' })
+      setIsFocused(false)
+      setAutoPlay(false)
+      inputRef.current.value = ''
+      return
+    }
     if (inputRef.current) {
       inputRef.current.blur()
       //댓글 처음 등록일 떄
@@ -66,11 +69,11 @@ function ReviewComment({ isEdit, commentData, reviewId, setFetchData }) {
           setCommentContent(inputValue)
           // reloadData()
         })
-
         setIsEdited(false)
       }
     }
     setIsFocused(false)
+    setAutoPlay(false)
     inputRef.current.value = ''
   }
   const handleDelete = async () => {
@@ -111,7 +114,6 @@ function ReviewComment({ isEdit, commentData, reviewId, setFetchData }) {
                 text={'완료'}
                 onClick={() => {
                   handleClicked()
-                  setAutoPlay(false)
                 }}
               />
             </div>
@@ -219,7 +221,7 @@ const CommentInput = styled.textarea`
   vertical-align: top;
   text-align: left;
   resize: none;
-  /* cursor: pointer; */
+  cursor: default;
   &:focus {
     height: 82px;
   }

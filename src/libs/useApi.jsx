@@ -32,6 +32,9 @@ export const useApi = (requireAuth = true) => {
         config.headers = { 'Content-Type': 'application/json' }
       }
 
+      // 테스트용 지연 추가
+      await new Promise((resolve) => setTimeout(resolve, 1000))
+
       const response = await api({ method, url, data, ...config })
 
       return response
