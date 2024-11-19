@@ -46,14 +46,14 @@ function MovieReview() {
       console.log('other reviewlist : ', data.otherReviewList)
       //TODO (k) 마이리뷰도 추가, 리뷰스와이퍼에다가도 데이터 길이
 
-      const transformedOther = transformReviewData(data.otherReviewList)
-      const myReview = data.myReview
-      myReview.authorProfile = ''
-      myReview.authorNickname = ''
-      myReview.cardDate = ''
-      transformedOther.unshift(myReview)
+      // const transformedOther = transformReviewData(data.otherReviewList)
+      // const myReview = data.myReview
+      // myReview.authorProfile = ''
+      // myReview.authorNickname = ''
+      // myReview.cardDate = ''
+      // transformedOther.unshift(myReview)
+      // setTransformedFullData(transformedOther)
 
-      setTransformedFullData(transformedOther)
       const transformed = transformReviewData(data.otherReviewList)
       setTransformedData(transformed) // 상태 업데이트
       // setTransformedData(transformedOther) // 상태 업데이트
