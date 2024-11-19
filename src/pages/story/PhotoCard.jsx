@@ -39,7 +39,7 @@ function PhotoCard({ reviewInfo, slideNext, index }) {
   }
   return (
     <Container>
-      <div style={{ marginBottom: '10px' }}>
+      <div style={{ marginBottom: '10px', marginTop: '10px' }}>
         <StoryStarRating max={reviewInfo.rating} />
       </div>
 
@@ -66,7 +66,7 @@ function PhotoCard({ reviewInfo, slideNext, index }) {
         </ContentWrap>
       </CardWrap>
       {isCurrentFocus && (
-        <BottomWrap>
+        <BottomWrap style={{ marginBottom: '10px' }}>
           <ProgressBar slideNext={slideNext} />
           <CloseWrap onClick={handleClose}>
             {/* <CloseWrap onClick={() => navigate('/', { replace: true })}> */}
