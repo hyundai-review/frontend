@@ -8,6 +8,7 @@ import { isLoggedIn } from '@/utils/logInManager'
 import { getUserData, removeData, setUserNickname } from '@/utils/logInManager'
 import { useApi } from '@/libs/useApi'
 import useNavigateStore from '@/store/navigateStore'
+import media from '@/styles/media'
 
 function Profile() {
   const navigate = useNavigate()

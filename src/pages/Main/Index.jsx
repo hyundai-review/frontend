@@ -27,7 +27,7 @@ suggestMovieData - moviePosterUrl, movieID */
 function MainPage() {
   const navigate = useNavigate()
   // const [isLogIn, setIsLogIn] = useState(isLoggedIn())
-  const [isLogIn, setIsLogIn] = useState(false)
+  const [isLogIn, setIsLogIn] = useState(true) // 테스트용 로그인
   const [data, setData] = useState(getUserData())
   const nowDate = new Date()
   const timeText = chkTime(nowDate.getHours())
@@ -255,6 +255,7 @@ const MainPageSliderWrapper = styled.div`
 const Wrap = styled.div`
   display: flex;
   justify-content: center;
+  padding: 40px 0;
 `
 
 export default MainPage
