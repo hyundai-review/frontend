@@ -97,7 +97,7 @@ const Contents = styled.div`
   line-height: 21px; /* 150% */
   overflow: hidden;
   display: -webkit-box;
-  -webkit-line-clamp: ${({ $isExpanded }) => ($isExpanded ? 'none' : 2)};
+  -webkit-line-clamp: ${({ $isexpanded }) => ($isexpanded ? 'none' : 2)};
   -webkit-box-orient: vertical;
   text-overflow: ellipsis;
 `
