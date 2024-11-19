@@ -16,7 +16,7 @@ function SuggestMovieBox({ isLogin }) {
   const [isLoading, setIsLoading] = useState(false)
   const [checkMoreData, setCheckMoreData] = useState(true)
   const [nowPage, setNowPage] = useState(0)
-  const { get } = useApi()
+  const { get } = useApi(isLogin ? true : false)
   const navigate = useNavigate()
   const fetchMovieData = useCallback(
     async (genre, page) => {
@@ -24,7 +24,7 @@ function SuggestMovieBox({ isLogin }) {
       setIsLoading(true)
       try {
         const queryParams = { genre: genre, page: page, size: 24 }
-        const getMovieData = await authenticated.get(`/movies/recommend`, {
+        const getMovieData = await get(`/movies/recommend`, {
           params: queryParams,
         })
         const newMovies = getMovieData.data.content
