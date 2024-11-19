@@ -49,7 +49,9 @@ function PostTextReview() {
   // 리뷰만 올리기
   const handleSubmitReview = async (isPhotocard = false) => {
     if (!starRating || !formRef.current.content.trim()) {
-      alert('별점과 리뷰를 모두 작성해주세요.')
+      openModal('alert', {
+        message: '별점과 리뷰를 모두 작성해주세요',
+      })
       return
     }
 
