@@ -55,29 +55,36 @@ function PostTextReview() {
       return
     }
 
-    setReviewPost({
+    // setReviewPost({
+    //   ...formRef.current,
+    //   rating: starRating,
+    // })
+    const newReviewData = {
       ...formRef.current,
       rating: starRating,
-    })
+    }
+    setReviewPost(newReviewData)
 
     if (isPhotocard) {
       nextStep()
     } else {
-      try {
-        const response = await post(`/reviews/${movieId}`, reviewPost)
+      openModal('confirm', { message: '리뷰를 등록하시겠습니까?' }, async () => {
+        try {
+          console.log('reviewPost:', newReviewData)
+          // const response = await post(`/reviews/${movieId}`, reviewPost)
+          const response = await post(`/reviews/${movieId}`, newReviewData)
 
-        if (response.status === 200) {
-          openModal('confirm', { message: '리뷰를 등록하시겠습니까?' }, () => {
+          if (response.status === 200) {
             navigate(`/movie/${movieId}/detail`)
-          })
+          }
+        } catch (err) {
+          if (err.response?.status === 409) {
+            openModal('alert', {
+              message: '이미 리뷰를 작성하셨습니다.',
+            })
+          }
         }
-      } catch (err) {
-        if (err.response?.status === 409) {
-          openModal('alert', {
-            message: '이미 리뷰를 작성하셨습니다.',
-          })
-        }
-      }
+      })
     }
   }
 
