@@ -22,15 +22,15 @@ export const getUserData = () => {
 export const testisLoggedIn = true
 
 export const isLoggedIn = () => {
-  // const checkLogIn = getCookie('isLogIn')
-  // if (checkLogIn === null) {
-  //   return false
-  // } else if (checkLogIn === true) {
-  //   return true
-  // } else {
-  //   return false
-  // }
-  return true
+  const checkLogIn = getCookie('isLogIn')
+  if (checkLogIn === null) {
+    return false
+  } else if (checkLogIn === true) {
+    return true
+  } else {
+    return false
+  }
+  // return true
 }
 
 export const removeData = () => {
