@@ -20,7 +20,6 @@ export const useApi = (requireAuth = true) => {
    */
   const request = async (method, url, data = null, isMultipart = false) => {
     try {
-      console.log('adsf', data)
       setLoading(true)
       setError(null)
 

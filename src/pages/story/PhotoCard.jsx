@@ -29,6 +29,10 @@ function PhotoCard({ reviewInfo, slideNext, index }) {
     console.log('like')
     setIsLike((prev) => !prev)
   }
+  const handleClose = () => {
+    e.stopPropagation()
+    navigate('/', { replace: true })
+  }
   return (
     <Container>
       <div style={{ marginBottom: '10px' }}>
@@ -59,7 +63,7 @@ function PhotoCard({ reviewInfo, slideNext, index }) {
       {isCurrentFocus && (
         <BottomWrap>
           <ProgressBar slideNext={slideNext} />
-          <CloseWrap onClick={() => navigate('/', { replace: true })}>
+          <CloseWrap onClick={handleClose}>
             <CLOSE />
           </CloseWrap>
         </BottomWrap>

@@ -38,7 +38,6 @@ function PostUploadReview() {
       // 리뷰만 올리기
       openModal('confirm', { message: '리뷰를 등록하시겠습니까?' }, async () => {
         try {
-          console.log('adsfasdfsa', reviewPost)
           const response = await post(`/reviews/${movieId}`, reviewPost)
 
           if (response.status === 200) {
