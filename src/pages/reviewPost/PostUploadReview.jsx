@@ -57,9 +57,14 @@ function PostUploadReview() {
 
       const transformData = transformReviewPost(reviewPost, processPhotocard.step2)
       console.log('transformData:', transformData)
+
+      // 고유한 파일명 생성
+      const timestamp = new Date().getTime()
+      const filename = `photocard_${timestamp}.jpg`
+
       const formData = objectToFormData(transformData, {
         fileKeys: {
-          photocard: 'photocard.jpg',
+          photocard: filename,
         },
       })
 
@@ -69,9 +74,9 @@ function PostUploadReview() {
 
       openModal('confirm', { message: '리뷰를 등록하시겠습니까?' }, async () => {
         try {
-          const response = await post(`/reviews/${movieId}`, formData, true)
+          const response = await post(`/reviews/photo/${movieId}`, formData, true)
 
-          if (response.status === 200) {
+          https: if (response.status === 200) {
             navigate(`/movie/${movieId}/detail`)
           }
         } catch (err) {
