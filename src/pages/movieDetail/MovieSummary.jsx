@@ -8,15 +8,9 @@ import { getStatusColor, mapMovieStatus } from '@/utils/statusMapper'
 import * as S from '@/styles/movieSummary/MovieSummary.style.'
 import SkeletonMovieSummary from './skeleton/SkeletonMovieSummary'
 function MovieSummary({ data, loading }) {
-  // const posterImageUrl =
-  //   'https://img.cgv.co.kr/Movie/Thumbnail/StillCut/000088/88847/88847230819_727.jpg'
-  // const title = '청설'
-  // const year = '2024'
-  // const rating = 'all'
-  // const releaseDate = '2024.11.09'
-  // const runningTime = '1시간 50분'
-  // const status = '상영 중'
-  const posterImageUrl = `https://image.tmdb.org/t/p/w300${data?.poster.filePath}`
+  const posterImageUrl = data?.poster?.filePath
+    ? `https://image.tmdb.org/t/p/w300${data.poster.filePath}`
+    : '/images/default.png'
   const title = data?.title
   const year = data?.releaseDate.split('-')[0] // "2024-11-13" → "2024"
   const certification = data?.certification || ''
