@@ -15,7 +15,9 @@ import { isLoggedIn } from '@/utils/logInManager'
 import { data } from '@tensorflow/tfjs'
 function Stories({ dataList, path }) {
   // photocard가 null인 요소를 필터링
-  const filteredDataList = dataList.filter((data) => data.photocard !== null)
+  const filteredDataList = dataList.filter(
+    (data) => data && Object.keys(data).length > 0 && data.photocard !== null,
+  )
   //
   const { handleSlideChange, handleSlideClick } = useCarousel(1)
   // const [isLogIn, setIsLogIn] = useState(isLoggedIn())
@@ -32,7 +34,7 @@ function Stories({ dataList, path }) {
   }
   useEffect(() => {
     console.log('-----------------------------------------------')
-    console.log('stories dataList', dataList)
+    console.log('filteredDataList : ', filteredDataList)
   }, [dataList])
 
   return (
