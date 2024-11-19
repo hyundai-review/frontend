@@ -110,7 +110,7 @@ function SearchPage() {
             {query == '' ? '검색어를 입력해주세요' : `"${query}" 에 대한 검색결과`}
           </SearchPageResultWrapper>
           <MoviePosterWrapper>
-            {isLoading && movieDataArray.length === 0 ? (
+            {isLoading && movieDataArray.length === 0 && query.length !== 0 ? (
               Array.from({ length: 18 }).map((item, index) => (
                 <SkeletonMoviePosterCard key={index} />
               ))
@@ -123,7 +123,7 @@ function SearchPage() {
           </MoviePosterWrapper>
           {/* {isLoading && <LoadingIndicator>로딩 중...</LoadingIndicator>} */}
           {!checkMoreData && nowPage !== 0 && <EndMessage>더 이상 결과가 없습니다.</EndMessage>}
-          {!isLoading && nowPage === 0 && movieDataArray.length == 0 && (
+          {!isLoading && nowPage === 0 && movieDataArray.length != 0 && (
             <EndMessage>더 이상 결과가 없습니다.</EndMessage>
           )}
         </SearchPageBodyWrapper>
