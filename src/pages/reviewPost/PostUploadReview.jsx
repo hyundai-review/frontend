@@ -6,7 +6,7 @@ import * as SBtn from '@/styles/button'
 import * as SBoxContainer from '@/styles/boxContainer'
 import DOWNLOAD from '@/assets/icons/download.svg?react'
 import { useApi } from '@/libs/useApi'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { transformReviewPost } from '@/utils/dataTransform'
 import { objectToFormData } from '@/utils/objectToFormdata'
 import useModalStore from '@/store/modalStore'
@@ -16,6 +16,7 @@ function PostUploadReview() {
   const { post, error } = useApi()
   const { movieId } = useParams()
   const { openModal } = useModalStore()
+  const navigate = useNavigate()
 
   const handleDownload = async () => {
     try {
@@ -52,12 +53,18 @@ function PostUploadReview() {
       }
     } else {
       // 스토리 게시
+
       const transformData = transformReviewPost(reviewPost, processPhotocard.step2)
+      console.log('transformData:', transformData)
       const formData = objectToFormData(transformData, {
         fileKeys: {
           photocard: 'photocard.jpg',
         },
       })
+
+      const object = {}
+      formData.forEach((value, key) => (object[key] = value))
+      console.log('FormData as object:', object)
       try {
         const response = await post(`/reviews/${movieId}`, formData, true)
 

@@ -87,7 +87,9 @@ function ReviewPostPage() {
           </TopWrap>
 
           {/* 공통 */}
-          <Outlet />
+          <OutletWrap>
+            <Outlet />
+          </OutletWrap>
         </Wrap>
       </BlurOverlay>
     </Container>
@@ -107,16 +109,18 @@ export default ReviewPostPage
 const Container = styled.div`
   min-height: 100vh;
   height: auto;
-
   background: ${(props) => `url(${props.$image})`};
   background-size: cover;
   background-position: center;
+
+  background-attachment: fixed;
 `
 
 const BlurOverlay = styled.div`
   width: 100%;
   min-height: 100vh;
-  height: auto;
+  /* height: auto; */
+  height: 100%;
   border: 1px solid rgba(255, 255, 255, 0.1);
   background: rgba(0, 0, 0, 0.5);
   backdrop-filter: blur(20px);
@@ -124,6 +128,14 @@ const BlurOverlay = styled.div`
 
 const Wrap = styled.div`
   padding: 25px 0;
+  box-sizing: border-box;
+
+  //
+  height: 100%;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  //
 
   width: calc(100% - 240px);
   margin: 0 auto;
@@ -133,6 +145,7 @@ const Wrap = styled.div`
   ${media.small`
     width: calc(100% - 100px);
   `}
+  background-color: blue;
 `
 const TopWrap = styled.div`
   display: flex;
@@ -158,4 +171,15 @@ const BackBtn = styled.button`
     height: 24px;
     fill: white; // SVG 색상이 필요한 경우
   } */
+`
+
+const OutletWrap = styled.div`
+  background-color: red;
+  flex: 1; // 남은 공간 모두 차지
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  overflow-y: auto;
+  min-height: 0;
 `
