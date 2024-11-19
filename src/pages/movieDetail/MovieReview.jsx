@@ -25,6 +25,10 @@ function MovieReview() {
       // TODO(k) 무한스크롤 페이지네이션 이후 추가해야함, 일단 빼고 진행
       const response = await get(`/reviews/${movieId}?page=0&size=10&sort=date`)
       setData(response.data)
+      const repeatedData = Array(5) // 길이 5의 배열 생성
+        .fill(response.otherReviewList) // 응답 데이터를 채워넣음
+        .flat()
+
       setIsReviewWritten(response.data.myReview !== null)
       // console.log('movie review >>> ', response.data)
     } catch (err) {
@@ -38,8 +42,13 @@ function MovieReview() {
 
   useEffect(() => {
     if (data) {
-      // console.log('other reviewlist : ', data.otherReviewList)
-      const transformed = transformReviewData(data.otherReviewList)
+      console.log('other reviewlist : ', data.otherReviewList)
+      const repeatedData = Array(10) // 길이 5의 배열 생성
+        .fill(data.otherReviewList) // 응답 데이터를 채워넣음
+        .flat()
+
+      // const transformed = transformReviewData(data.otherReviewList)
+      const transformed = transformReviewData(repeatedData)
       setTransformedData(transformed) // 상태 업데이트
     }
   }, [data])
