@@ -76,7 +76,6 @@ const Wrap = styled.div`
   background: url(${(props) => props.$imageurl});
   background-size: cover;
   background-position: center;
-  padding-bottom: 30px;
 `
 
 const BlurOverlay = styled.div`
@@ -91,6 +90,7 @@ const Container = styled.div`
   max-width: 1440px;
   margin: 0 auto;
   padding: 70px 30px;
+  /* background-color: #fff; */
   @media (min-width: 1441px) {
     padding: 0 20px;
   }
