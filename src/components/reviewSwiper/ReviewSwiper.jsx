@@ -24,6 +24,15 @@ function ReviewSwiper({ dataList }) {
       },
     })
   }
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 428)
+    }
+    window.addEventListener('resize', handleResize)
+    return () => {
+      window.removeEventListener('resize', handleResize)
+    }
+  }, [])
 
   useEffect(() => {
     const checkSwiperLength = swiperRef.current?.swiper
@@ -82,10 +91,10 @@ const SwiperWrapper = styled.div`
   position: relative;
   justify-content: flex-start;
   align-items: flex-start;
-  ${media.small`
+  /* ${media.small`
         display:none
-    `}
-  &::after {
+    `} */
+  /* &::after {
     content: '';
     position: absolute;
     top: 0;
@@ -94,14 +103,14 @@ const SwiperWrapper = styled.div`
     height: ${(props) => (props.$isFull ? 0 : 100)}%;
     background: linear-gradient(to left, rgba(0, 0, 0, 1), rgba(255, 255, 255, 0));
     z-index: 1;
-  }
+  } */
 `
 
 const StoriesWrapper = styled.div`
-  display: none;
+  /* display: none;
   ${media.small`
     display:flex
-  `}
+  `} */
   justify-content: center;
 `
 
