@@ -35,7 +35,7 @@ function MainPage() {
   const [stories, setStories] = useState(reviewData)
   const { setReviewList } = useStoryStore()
   useEffect(() => {
-    // setIsLogIn(isLoggedIn())
+    setIsLogIn(isLoggedIn())
     setData(getUserData())
     const handleResize = () => {
       setScreenWidth(document.documentElement.clientWidth)

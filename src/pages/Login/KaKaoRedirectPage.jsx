@@ -1,5 +1,5 @@
 import { GET_AccessToken } from '@/apis/loginApi'
-import { getCookie, setCookie } from '@/utils/cookie'
+import { getCookie, removeCookie, setCookie } from '@/utils/cookie'
 import React, { useEffect } from 'react'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 import { lazy, Suspense } from 'react'
@@ -14,6 +14,7 @@ function KaKaoRedirectPage() {
   useEffect(() => {
     const fetchAccessToken = async () => {
       try {
+        removeCookie('ACCESS_TOKEN')
         const userData = await GET_AccessToken(authCode)
         setCookie('ACCESS_TOKEN', userData.accessToken, 7)
         setCookie('userInfo', JSON.stringify(userData), 7)
@@ -25,11 +26,7 @@ function KaKaoRedirectPage() {
     }
     fetchAccessToken()
   }, [])
-  return (
-    <div>
-      <MainPage />
-    </div>
-  )
+  return <div></div>
 }
 
 export default KaKaoRedirectPage
