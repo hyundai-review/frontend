@@ -11,12 +11,16 @@ import { useNavigate } from 'react-router-dom'
 import heart from '@/assets/icons/heart.svg'
 import heartActive from '@/assets/icons/heartActive.svg'
 import { useApi } from '@/libs/useApi'
+import { useCarousel } from '@/libs/useCarousel'
+
 function PhotoCard({ reviewInfo, slideNext, index }) {
   const { focusReview } = useStoryStore()
   const navigate = useNavigate()
   const [isLike, setIsLike] = useState(false)
   const { post } = useApi(true)
   const isCurrentFocus = focusReview?.reviewId === reviewInfo.reviewId
+  const { handleSlideClick } = useCarousel(1)
+
   useEffect(() => {
     setIsLike(reviewInfo.isLike)
   }, [reviewInfo])
@@ -38,6 +42,8 @@ function PhotoCard({ reviewInfo, slideNext, index }) {
       <div style={{ marginBottom: '10px' }}>
         <StoryStarRating max={reviewInfo.rating} />
       </div>
+
+      {/* <CardWrap onClick={() => handleSlideClick(index, `/movie/${reviewInfo.movieId}/detail`)}> */}
       <CardWrap>
         <ImgWrap>
           <img src={reviewInfo.photocard} alt='' />
@@ -59,11 +65,11 @@ function PhotoCard({ reviewInfo, slideNext, index }) {
           </Tab>
         </ContentWrap>
       </CardWrap>
-
       {isCurrentFocus && (
         <BottomWrap>
           <ProgressBar slideNext={slideNext} />
           <CloseWrap onClick={handleClose}>
+            {/* <CloseWrap onClick={() => navigate('/', { replace: true })}> */}
             <CLOSE />
           </CloseWrap>
         </BottomWrap>
