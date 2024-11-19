@@ -62,7 +62,7 @@ function Profile() {
               defaultValue={`${userinfo.nickname}`}
               length={userNicknameLength}
               ref={inputRef}
-              maxLength={10}
+              maxLength={12}
             ></ProfileNicknameInput>
             <Icon onClick={() => handleEditNickname()} src={edit} alt='아이콘' />
           </form>
