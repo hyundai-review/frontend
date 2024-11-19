@@ -16,8 +16,6 @@ import OverlayPosterCard from '@/components/moviePosterCard/OverlayPosterCard'
 import { isLoggedIn, getUserData } from '@/utils/logInManager'
 import { chkTime } from '@/utils/timeUtils'
 import { useApi } from '@/libs/useApi'
-import { Button } from '@mui/material'
-import useModalStore from '@/store/modalStore'
 import useNavigateStore from '@/store/navigateStore'
 import useStoryStore from '@/store/storyStore'
 
@@ -81,28 +79,10 @@ function MainPage() {
     }
     fetchBoxoffice()
   }, [])
-  // ---------------------------모달 테스트중---------------------
-  const { openModal } = useModalStore()
-  const handleModalClick = () => {
-    console.log('모달 클릭')
-    // 모달 열기
-    openModal(
-      'confirm',
-      {
-        message: '계속 진행하시겠습니까?',
-      },
-      // 확인 버튼 클릭 시 실행될 콜백 함수
-      () => {
-        console.log('확인 누름')
-      },
-    )
-  }
-
   return (
     <div>
       <MainPageTopContainer>
         <MainPageTopWrapper>
-          <Button onClick={handleModalClick}>모달 테스트 중</Button>
           <MainPageTitle>{!isLogIn ? '로그인이 필요합니다.' : `${data.nickname}님,`}</MainPageTitle>
           {!isLogIn ? (
             ''
