@@ -12,14 +12,19 @@ import useModalStore from '@/store/modalStore'
 import { useNavigate } from 'react-router-dom'
 import block from '@/assets/icons/block.svg'
 import { isLoggedIn } from '@/utils/logInManager'
+import { data } from '@tensorflow/tfjs'
 function Stories({ dataList, path }) {
+  // photocard가 null인 요소를 필터링
+  const filteredDataList = dataList.filter(
+    (data) => data && Object.keys(data).length > 0 && data.photocard !== null,
+  )
+  //
   const { handleSlideChange, handleSlideClick } = useCarousel(1)
   // const [isLogIn, setIsLogIn] = useState(isLoggedIn())
   const [isLogIn, setIsLogIn] = useState(true)
   const openModal = useModalStore((state) => state.openModal)
   const navigate = useNavigate()
 
-  console.log('dataList', dataList)
   const handleClick = (index, path, review) => {
     if (path === '/user/login') {
       navigate(path) // /user/login 경로로 이동
@@ -27,6 +32,10 @@ function Stories({ dataList, path }) {
       handleSlideClick(index, path, review)
     }
   }
+  useEffect(() => {
+    console.log('-----------------------------------------------')
+    console.log('filteredDataList : ', filteredDataList)
+  }, [dataList])
 
   return (
     <SwiperContainer>
@@ -76,7 +85,7 @@ function Stories({ dataList, path }) {
             scale: 0.8, // 비활성 슬라이드의 크기를 조절
           }}
         >
-          {dataList.map((review, index) => (
+          {filteredDataList.map((review, index) => (
             <SwiperSlide key={index} onClick={() => handleClick(index, path, review)}>
               <StoryItem photocardImg={review.photocard} reviewId={review.reveiwId} />
             </SwiperSlide>

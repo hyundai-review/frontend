@@ -9,8 +9,9 @@ import { useNavigate } from 'react-router-dom'
 import { genres } from '@/assets/data/genresData'
 import { useApi } from '@/libs/useApi'
 import { authenticated, nonAuthenticated } from '@/libs/axiosInstance'
+import SkeletonMoviePosterCard from '@/components/moviePosterCard/skeleton/SkeletonMoviePosterCard'
 
-function SuggestMovieBox({ isLogin }) {
+function SuggestMovieBox({ isLogin, loading }) {
   const [selectedGenre, setSelectedGenre] = useState('0')
   const [suggestMovieData, setSuggestMovieData] = useState([])
   const [isLoading, setIsLoading] = useState(false)
@@ -45,6 +46,7 @@ function SuggestMovieBox({ isLogin }) {
     setNowPage(0)
     setSuggestMovieData([])
     fetchMovieData(selectedGenre, 0)
+    setCheckMoreData(true)
     setSelectedGenre(selectedGenre)
   }, [selectedGenre])
   useEffect(() => {}, [suggestMovieData])
@@ -71,6 +73,7 @@ function SuggestMovieBox({ isLogin }) {
 
   const handleGenreClick = (id) => {
     setSelectedGenre(id)
+    setCheckMoreData(true)
     // navigate(`/movie/category/${id}`)
     // NOTE(k) 스크롤 유지 처리
   }
@@ -95,9 +98,13 @@ function SuggestMovieBox({ isLogin }) {
             ))}
           </MainPageButtonWrapper>
           <MainPageSuggestMovieWrapper>
-            {suggestMovieData.map((item, index) => (
-              <MoviePosterCard movieInfo={item} key={index} />
-            ))}
+            {loading
+              ? Array.from({ length: 24 }).map((_, index) => (
+                  <SkeletonMoviePosterCard key={index} />
+                ))
+              : suggestMovieData.map((item, index) => (
+                  <MoviePosterCard loading={loading} movieInfo={item} key={index} />
+                ))}
           </MainPageSuggestMovieWrapper>
         </div>
       )}

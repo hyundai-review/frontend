@@ -20,7 +20,7 @@ function MovieSummaryLarge({ data, loading }) {
   // const contents = '대학생활은 끝났지만 하고 싶은 것도, 되고 싶은 것도 없어 고민하던 용준. '
   // ----------------------  API 요청 ----------------------
   const posterImageUrl = data?.poster.filePath
-    ? `https://image.tmdb.org/t/p/w500${data?.poster.filePath}`
+    ? `https://image.tmdb.org/t/p/w300${data?.poster.filePath}`
     : '/images/default.png'
   const title = data?.title
   const year = data?.releaseDate.split('-')[0] // "2024-11-13" → "2024"
