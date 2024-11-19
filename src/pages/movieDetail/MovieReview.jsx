@@ -8,11 +8,12 @@ import ReviewCard from '../../components/review/ReviewCard'
 import MyReview from './MyReview'
 import { useNavigate, useParams } from 'react-router-dom'
 import { useApi } from '@/libs/useApi'
+import { isLoggedIn } from '@/utils/logInManager'
 
 function MovieReview() {
   const navigate = useNavigate()
   // ---------------------------login---------------------------
-  const [isLogin, setIsLogin] = useState(true)
+  const [isLogin, setIsLogin] = useState(isLoggedIn())
   const { movieId } = useParams()
   const [isReviewWritten, setIsReviewWritten] = useState(false)
   const [transformedData, setTransformedData] = useState([])
@@ -39,15 +40,6 @@ function MovieReview() {
   useEffect(() => {
     if (data) {
       console.log('other reviewlist : ', data.otherReviewList)
-      //TODO (k) 마이리뷰도 추가, 리뷰스와이퍼에다가도 데이터 길이
-
-      // const transformedOther = transformReviewData(data.otherReviewList)
-      // const myReview = data.myReview
-      // myReview.authorProfile = ''
-      // myReview.authorNickname = ''
-      // myReview.cardDate = ''
-      // transformedOther.unshift(myReview)
-      // setTransformedFullData(transformedOther)
 
       const transformed = transformReviewData(data.otherReviewList)
       setTransformedData(transformed) // 상태 업데이트
