@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useCallback, useEffect } from 'react'
 import * as bodyPix from '@tensorflow-models/body-pix'
 import '@tensorflow/tfjs'
 import useReviewStore from '@/store/reviewStore'
@@ -10,6 +10,7 @@ import {
   useVideoProcessing,
 } from '@/libs/useVideo'
 import styled from 'styled-components'
+import { usePhotoTimer } from '@/utils/usePhotoTimer'
 
 function Photography({ setTakePhotoFunc }) {
   const { optionBackImg } = useReviewStore()
@@ -18,9 +19,6 @@ function Photography({ setTakePhotoFunc }) {
   const { videoRef, dimensions, setupCamera } = useCamera() // 웹캠 설정
   const { canvasRef, offCanvasRef, offCtxRef, initializeCanvas } = useCanvas() // canvas 관리
   const backgroundImageObj = useBackgroundImage(optionBackImg.imgURL, dimensions) // 배경 이미지 관리
-
-  console.log('Background Image URL:', optionBackImg.imgURL)
-  console.log('Background Image Object:', backgroundImageObj.current)
 
   // 비디오 처리
   const { renderVideo } = useVideoProcessing(
@@ -45,7 +43,7 @@ function Photography({ setTakePhotoFunc }) {
     initializePhotograpy()
   }, [])
 
-  const takePhoto = () => {
+  const takePhoto = useCallback(() => {
     const canvas = document.createElement('canvas')
     const context = canvas.getContext('2d')
     canvas.width = dimensions.width
@@ -54,12 +52,14 @@ function Photography({ setTakePhotoFunc }) {
     const imageData = canvas.toDataURL('image/png')
     console.log('Photo taken:', imageData)
     return imageData
-  }
+  }, [dimensions, canvasRef])
 
-  // 상위 컴포넌트로 takePhoto 함수 전달
+  const { isTimerRunning, countdown, startTimer } = usePhotoTimer(takePhoto)
+
+  // 상위 컴포넌트로 타이머 시작 함수 전달
   useEffect(() => {
-    setTakePhotoFunc(() => takePhoto)
-  }, [])
+    setTakePhotoFunc(() => startTimer)
+  }, [setTakePhotoFunc, startTimer])
 
   return (
     <Container>
@@ -67,7 +67,12 @@ function Photography({ setTakePhotoFunc }) {
         <div>model 로딩중</div>
       ) : (
         <Wrap>
-          Copy
+          {isTimerRunning && (
+            <TimerOverlay>
+              <CountdownText>{countdown}</CountdownText>
+            </TimerOverlay>
+          )}
+
           <VideoWrap width={dimensions.width} height={dimensions.height}>
             <video ref={videoRef} autoPlay playsInline />
           </VideoWrap>
@@ -124,4 +129,18 @@ const CanvasWrap = styled.div`
     /* object-fit: cover; */
     object-fit: contain;
   }
+`
+
+const TimerOverlay = styled.div`
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 10;
+`
+
+const CountdownText = styled.div`
+  font-size: 120px;
+  color: white;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
 `
