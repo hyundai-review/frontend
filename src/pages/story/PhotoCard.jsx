@@ -33,7 +33,7 @@ function PhotoCard({ reviewInfo, slideNext, index }) {
     console.log('like')
     setIsLike((prev) => !prev)
   }
-  const handleClose = () => {
+  const handleClose = (e) => {
     e.stopPropagation()
     navigate('/', { replace: true })
   }
