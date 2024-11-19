@@ -10,6 +10,7 @@ import Photography from '@/components/reviewPost/Photography'
 import PHOTOBTN from '@/assets/icons/photoBtn.svg?react'
 import { useNavigate } from 'react-router-dom'
 import { useReviewValidation } from '@/utils/useValidation'
+import SkeletonPhotoReview from './skeleton/SkeletonPhotoReview'
 
 /** step 2. 사진 촬영 */
 function PostPhotoReview() {
@@ -26,7 +27,7 @@ function PostPhotoReview() {
       })
     }
   }
-
+  // if (isLoading) return <SkeletonPhotoReview />
   return (
     <Container>
       <MainWrap>
