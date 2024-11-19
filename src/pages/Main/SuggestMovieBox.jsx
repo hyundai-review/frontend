@@ -18,28 +18,26 @@ function SuggestMovieBox({ isLogin }) {
   const [nowPage, setNowPage] = useState(0)
   const navigate = useNavigate()
   const fetchMovieData = useCallback(
-    {
-      if(isLogin) {
-        ;async (genre, page) => {
-          if (isLoading || !checkMoreData) return
-          setIsLoading(true)
-          try {
-            const queryParams = { genre: genre, page: page, size: 24 }
-            const getMovieData = await authenticated.get(`/movies/recommend`, {
-              params: queryParams,
-            })
-            const newMovies = getMovieData.data.content
-            if (newMovies.length > 0) {
-              setSuggestMovieData((prev) => [...prev, ...newMovies]) // 기존 데이터에 추가
-            }
-            setCheckMoreData(newMovies.length === 24)
-          } catch (err) {
-            console.error('영화 정보를 가져오는 중 오류가 발생했습니다:', err)
-          } finally {
-            setIsLoading(false) // 로딩 종료
+    async (genre, page) => {
+      if (isLogin) {
+        if (isLoading || !checkMoreData) return
+        setIsLoading(true)
+        try {
+          const queryParams = { genre: genre, page: page, size: 24 }
+          const getMovieData = await authenticated.get(`/movies/recommend`, {
+            params: queryParams,
+          })
+          const newMovies = getMovieData.data.content
+          if (newMovies.length > 0) {
+            setSuggestMovieData((prev) => [...prev, ...newMovies]) // 기존 데이터에 추가
           }
+          setCheckMoreData(newMovies.length === 24)
+        } catch (err) {
+          console.error('영화 정보를 가져오는 중 오류가 발생했습니다:', err)
+        } finally {
+          setIsLoading(false) // 로딩 종료
         }
-      },
+      }
     },
     [selectedGenre, isLoading],
   )
