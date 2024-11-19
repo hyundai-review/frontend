@@ -27,15 +27,25 @@ function Stories({ dataList, path }) {
 
   const handleClick = (index, path, review) => {
     if (path === '/user/login') {
-      navigate(path) // /user/login 경로로 이동
-    } else if (path) {
+      // 비회원 메인페이지
+      navigate(path)
+    } else if (path === '#') {
+      // 리뷰스와이퍼
+      openModal('photoCard', {
+        photocard: {
+          image: review.photocard,
+          name: review.movieTitle,
+        },
+      })
+    } else {
+      // 회원 메인페이지
       handleSlideClick(index, path, review)
     }
   }
-  useEffect(() => {
-    console.log('-----------------------------------------------')
-    console.log('filteredDataList : ', filteredDataList)
-  }, [dataList])
+  // useEffect(() => {
+  //   console.log('-----------------------------------------------')
+  //   console.log('filteredDataList : ', filteredDataList)
+  // }, [dataList])
 
   return (
     <SwiperContainer>
