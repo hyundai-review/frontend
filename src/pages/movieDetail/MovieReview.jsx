@@ -83,7 +83,7 @@ function MovieReview() {
       ) : (
         <>
           <ReviewContentsContainer>
-            <ReviewSwiper dataList={transformedData} />
+            <ReviewSwiper myReviewData={data?.myReview} dataList={transformedData} />
             {!isReviewWritten ? (
               <ButtonWrap
                 className='hoverBright'

@@ -8,7 +8,7 @@ import { useNavigate } from 'react-router-dom'
 import useModalStore from '@/store/modalStore'
 import { data } from '@tensorflow/tfjs'
 
-function ReviewSwiper({ dataList }) {
+function ReviewSwiper({ myReviewData, dataList }) {
   const navigate = useNavigate()
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 428)
   const { openModal } = useModalStore()
@@ -24,6 +24,10 @@ function ReviewSwiper({ dataList }) {
       },
     })
   }
+  //
+  const newData = { ...myReviewData }
+  const updatedDataList = [newData, ...dataList]
+
   useEffect(() => {
     const handleResize = () => {
       setIsMobile(window.innerWidth <= 428)
@@ -45,12 +49,12 @@ function ReviewSwiper({ dataList }) {
     <>
       {isMobile ? (
         <StoriesWrapper>
-          <Stories dataList={dataList} path='#' />
+          <Stories dataList={updatedDataList} path='#' />
         </StoriesWrapper>
       ) : (
         <SwiperWrapper $isFull={!isMobile}>
           <Swiper style={{ margin: 0 }} slidesPerView={'auto'} ref={swiperRef}>
-            {dataList.map(
+            {updatedDataList.map(
               (review, index) =>
                 review.photocard && (
                   <SwiperSlide
