@@ -65,21 +65,22 @@ function PostUploadReview() {
       const object = {}
       formData.forEach((value, key) => (object[key] = value))
       console.log('FormData as object:', object)
-      try {
-        const response = await post(`/reviews/${movieId}`, formData, true)
 
-        if (response.status === 200) {
-          openModal('confirm', { message: '포토리뷰를 등록하시겠습니까?' }, () => {
+      openModal('confirm', { message: '리뷰를 등록하시겠습니까?' }, async () => {
+        try {
+          const response = await post(`/reviews/${movieId}`, formData, true)
+
+          if (response.status === 200) {
             navigate(`/movie/${movieId}/detail`)
-          })
+          }
+        } catch (err) {
+          if (err.response?.status === 409) {
+            openModal('alert', {
+              message: '이미 리뷰를 작성하셨습니다.',
+            })
+          }
         }
-      } catch (err) {
-        if (err.response?.status === 409) {
-          openModal('alert', {
-            message: '이미 리뷰를 작성하셨습니다.',
-          })
-        }
-      }
+      })
     }
   }
 
