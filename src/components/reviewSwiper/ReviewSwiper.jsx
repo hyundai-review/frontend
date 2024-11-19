@@ -10,6 +10,7 @@ import { data } from '@tensorflow/tfjs'
 
 function ReviewSwiper({ dataList }) {
   const navigate = useNavigate()
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 428)
   const { openModal } = useModalStore()
   const [isFull, setIsFull] = useState(true)
   const swiperRef = useRef(null)
@@ -32,29 +33,32 @@ function ReviewSwiper({ dataList }) {
     }
   }, [dataList])
   return (
-    <div>
-      <SwiperWrapper $isFull={isFull}>
-        <Swiper style={{ margin: 0 }} slidesPerView={'auto'} ref={swiperRef}>
-          {dataList.map(
-            (review, index) =>
-              review.photocard && (
-                <SwiperSlide
-                  key={index}
-                  onClick={() => handleSlideClick(review)}
-                  style={{ width: 250 }}
-                >
-                  <ImageSlideWrap>
-                    <ImageSlide $imageurl={review.photocard}></ImageSlide>
-                  </ImageSlideWrap>
-                </SwiperSlide>
-              ),
-          )}
-        </Swiper>
-      </SwiperWrapper>
-      <StoriesWrapper>
-        <Stories dataList={dataList} />
-      </StoriesWrapper>
-    </div>
+    <>
+      {isMobile ? (
+        <StoriesWrapper>
+          <Stories dataList={dataList} />
+        </StoriesWrapper>
+      ) : (
+        <SwiperWrapper $isFull={!isMobile}>
+          <Swiper style={{ margin: 0 }} slidesPerView={'auto'} ref={swiperRef}>
+            {dataList.map(
+              (review, index) =>
+                review.photocard && (
+                  <SwiperSlide
+                    key={index}
+                    onClick={() => handleSlideClick(review)}
+                    style={{ width: 250 }}
+                  >
+                    <ImageSlideWrap>
+                      <ImageSlide $imageurl={review.photocard}></ImageSlide>
+                    </ImageSlideWrap>
+                  </SwiperSlide>
+                ),
+            )}
+          </Swiper>
+        </SwiperWrapper>
+      )}
+    </>
   )
 }
 
