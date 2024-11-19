@@ -6,7 +6,8 @@ import styled from 'styled-components'
 import media from '@/styles/media'
 import { getStatusColor, mapMovieStatus } from '@/utils/statusMapper'
 import * as S from '@/styles/movieSummary/MovieSummary.style.'
-function MovieSummaryLarge({ data }) {
+import SkeletonMovieSummaryLarge from './skeleton/SkeletonMovieSummaryLarge'
+function MovieSummaryLarge({ data, loading }) {
   // const posterImageUrl =
   //   'https://img.cgv.co.kr/Movie/Thumbnail/StillCut/000088/88847/88847230819_727.jpg'
   // const title = '청설'
@@ -30,59 +31,64 @@ function MovieSummaryLarge({ data }) {
   const statusColor = getStatusColor(data?.status)
   const summary = data?.tagline
   const contents = data?.overview
+  if (loading) {
+    return <SkeletonMovieSummaryLarge />
+  }
   return (
-    <MovieSummaryContainer>
-      <ImageWrap>
-        <Poster $imageurl={posterImageUrl} />
-      </ImageWrap>
-      <ContentsContainer>
-        <Header>
-          <TitleWrap>
-            <Title>{title}</Title>
-            <Year>({year})</Year>
-          </TitleWrap>
-          <Rating>{certification}</Rating>
-        </Header>
-        <Wrap>
-          <MovieInfo>
-            <InfoWrapLeft>
-              <InfoText>정보</InfoText>
-              <BlackBoxLeft>
-                <LineWrap>
-                  <CalendarIcon src={calendar}></CalendarIcon>
-                  <ReleaseDate>{releaseDate}</ReleaseDate>
-                </LineWrap>
-                <LineWrap>
-                  <ClockIcon src={clock}></ClockIcon>
-                  <RunningTime>{runningTime}</RunningTime>
-                </LineWrap>
-                <MovieGenreWrap>
-                  {data?.genres.map((genre) => (
-                    <GenreButton
-                      key={genre.genreId}
-                      fontSize={14}
-                      radius={10}
-                      category={genre.name}
-                    />
-                  ))}
-                </MovieGenreWrap>
-                <MovieStatusWrap>
-                  <S.StatusCircle $color={statusColor} />
-                  <S.StatusText>{status}</S.StatusText>
-                </MovieStatusWrap>
-              </BlackBoxLeft>
-            </InfoWrapLeft>
-            <InfoWrapRight>
-              <InfoText>개요</InfoText>
-              <BlackBoxRight>
-                <Summary>{summary}</Summary>
-                <Contents>{contents}</Contents>
-              </BlackBoxRight>
-            </InfoWrapRight>
-          </MovieInfo>
-        </Wrap>
-      </ContentsContainer>
-    </MovieSummaryContainer>
+    <>
+      <MovieSummaryContainer>
+        <ImageWrap>
+          <Poster $imageurl={posterImageUrl} />
+        </ImageWrap>
+        <ContentsContainer>
+          <Header>
+            <TitleWrap>
+              <Title>{title}</Title>
+              <Year>({year})</Year>
+            </TitleWrap>
+            <Rating>{certification}</Rating>
+          </Header>
+          <Wrap>
+            <MovieInfo>
+              <InfoWrapLeft>
+                <InfoText>정보</InfoText>
+                <BlackBoxLeft>
+                  <LineWrap>
+                    <CalendarIcon src={calendar}></CalendarIcon>
+                    <ReleaseDate>{releaseDate}</ReleaseDate>
+                  </LineWrap>
+                  <LineWrap>
+                    <ClockIcon src={clock}></ClockIcon>
+                    <RunningTime>{runningTime}</RunningTime>
+                  </LineWrap>
+                  <MovieGenreWrap>
+                    {data?.genres.map((genre) => (
+                      <GenreButton
+                        key={genre.genreId}
+                        fontSize={14}
+                        radius={10}
+                        category={genre.name}
+                      />
+                    ))}
+                  </MovieGenreWrap>
+                  <MovieStatusWrap>
+                    <S.StatusCircle $color={statusColor} />
+                    <S.StatusText>{status}</S.StatusText>
+                  </MovieStatusWrap>
+                </BlackBoxLeft>
+              </InfoWrapLeft>
+              <InfoWrapRight>
+                <InfoText>개요</InfoText>
+                <BlackBoxRight>
+                  <Summary>{summary}</Summary>
+                  <Contents>{contents}</Contents>
+                </BlackBoxRight>
+              </InfoWrapRight>
+            </MovieInfo>
+          </Wrap>
+        </ContentsContainer>
+      </MovieSummaryContainer>
+    </>
   )
 }
 

@@ -4,7 +4,6 @@ import styled from 'styled-components'
 import commentWhite from '@/assets/icons/commentWhite.svg'
 import comment from '@/assets/icons/comment.svg'
 import StarRating from '@/components/common/StarRating'
-import { useNavigate } from 'react-router-dom'
 import media from '@/styles/media'
 import * as S from '@/styles/review/comment.style'
 import ReviewComment from '@/components/review/ReviewComment'
@@ -138,13 +137,15 @@ function MyReview({ myReviewData = {}, onDataChange }) {
           {isEdit ? (
             <EditWrap>
               <EditContents>
-                <StarRating
-                  type='controlled'
-                  initialValue={rating}
-                  onChange={handleRatingChange}
-                  size={16}
-                  max={5}
-                />
+                <IconWrap>
+                  <StarRating
+                    type='controlled'
+                    initialValue={rating}
+                    onChange={handleRatingChange}
+                    size={16}
+                    max={5}
+                  />
+                </IconWrap>
                 <SpoWrap>
                   <SText.Text>스포일러가 포함되어 있나요?</SText.Text>
                   <Checkbox
@@ -155,6 +156,7 @@ function MyReview({ myReviewData = {}, onDataChange }) {
                       padding: '0',
                       color: 'var(--color-gray-50)',
                       filter: 'drop-shadow(0px 0px 10px var(--primary-light-red, #ffd7d7))',
+                      width: '10px',
 
                       '&.Mui-checked': {
                         color: 'var(--color-gray-50)',
@@ -171,28 +173,26 @@ function MyReview({ myReviewData = {}, onDataChange }) {
               <EditContents>
                 <StarRating type='readonly' initialValue={rating} max={5} size={16} />
                 <SpoWrap>
-                  <SText.Text>
-                    스포
-                    <Checkbox
-                      // defaultChecked={!isSpoil}
-                      checked={isSpoil}
-                      disableRipple // 애니 효과 제거
-                      disabled // 체크박스를 읽기 전용으로 설정
-                      sx={{
-                        padding: '0',
+                  <SText.Text>스포</SText.Text>
+                  <Checkbox
+                    // defaultChecked={!isSpoil}
+                    checked={isSpoil}
+                    disableRipple // 애니 효과 제거
+                    disabled // 체크박스를 읽기 전용으로 설정
+                    sx={{
+                      padding: '0',
+                      color: 'var(--color-gray-50)',
+                      filter: 'drop-shadow(0px 0px 10px var(--primary-light-red, #ffd7d7))',
+                      width: '10px',
+                      '&.Mui-checked': {
                         color: 'var(--color-gray-50)',
-                        filter: 'drop-shadow(0px 0px 10px var(--primary-light-red, #ffd7d7))',
-
-                        '&.Mui-checked': {
-                          color: 'var(--color-gray-50)',
-                        },
-                        '&.Mui-disabled': {
-                          opacity: 1, // disabled 상태에서도 가시성을 유지
-                          color: 'var(--color-gray-50)',
-                        },
-                      }}
-                    />
-                  </SText.Text>
+                      },
+                      '&.Mui-disabled': {
+                        opacity: 1, // disabled 상태에서도 가시성을 유지
+                        color: 'var(--color-gray-50)',
+                      },
+                    }}
+                  />
                 </SpoWrap>
               </EditContents>
               <CardContent>{content}</CardContent>
@@ -278,12 +278,14 @@ const Wrap = styled.div`
   display: flex;
   ${media.medium`
   flex-direction: column;
+  gap : 10px;
 `}
   justify-content: space-between;
 `
 
 const LeftWrap = styled.div`
   flex: 1;
+  padding-right: 10px;
 `
 const CardHeader = styled.div`
   display: flex;
@@ -324,10 +326,14 @@ const CardFooter = styled.div`
 const RightWrap = styled.div``
 
 const Photocard = styled.img`
-  width: 100%;
-  height: 240px;
+  width: 250px;
+  height: 100%;
   border-radius: 5px;
   object-fit: cover;
+  ${media.medium`
+  width: 100%;
+  height: 240px;
+`}
 `
 const CardCommentWrap = styled.div`
   width: 100%;
@@ -398,6 +404,7 @@ const EditInput = styled.textarea`
   outline: none;
   background-color: transparent;
   border: none;
+  border-radius: 5px;
   color: var(--gray-400, #a1a1aa);
   font-family: Pretendard;
   font-size: 16px;
@@ -413,6 +420,7 @@ const EditInput = styled.textarea`
   border: 1px solid rgba(255, 255, 255, 0.6);
   backdrop-filter: blur(10px);
   box-shadow: 0 0 15px 5px rgba(255, 255, 255, 0.3);
+  padding: 10px;
 `
 
 const EditWrap = styled.div`
@@ -420,10 +428,8 @@ const EditWrap = styled.div`
   flex-direction: column;
   gap: 10px;
   width: 100%;
-  height: 205px;
-  ${media.medium`
-  height:86px;
-`}
+  height: 85%;
+  gap: 10px;
 `
 const EditContents = styled.div`
   display: flex;
@@ -436,4 +442,8 @@ const SpoWrap = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: 10px;
+`
+const IconWrap = styled.div`
+  margin-bottom: 4px;
 `

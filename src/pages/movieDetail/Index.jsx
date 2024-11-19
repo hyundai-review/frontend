@@ -33,7 +33,8 @@ function MovieDetailPage() {
         setData(data.data)
 
         setCurrentMovieId(movieId)
-        setBackgroundImg(`/tmdb-images${data.data.poster.filePath}`)
+        // setBackgroundImg(`/tmdb-images${data.data.poster.filePath}`)
+        setBackgroundImg(`https://image.tmdb.org/t/p/w500${data.data.poster.filePath}`)
       } catch (err) {
         console.error('영화 정보를 가져오는 중 오류가 발생했습니다:', err)
       }
@@ -51,15 +52,15 @@ function MovieDetailPage() {
             </Header>
             <ContentsWrap>
               {screenSize === 'medium' || screenSize === 'large' ? (
-                <MovieSummaryLarge data={data} />
+                <MovieSummaryLarge data={data} loading={loading} />
               ) : (
                 <>
-                  <MovieSummary data={data} />
-                  <MovieOverview data={data} />
+                  <MovieSummary data={data} loading={loading} />
+                  <MovieOverview data={data} loading={loading} />
                 </>
               )}
-              <ActorCard data={data} />
-              <MovieReview />
+              <ActorCard data={data} loading={loading} />
+              <MovieReview loading={loading} />
             </ContentsWrap>
           </Container>
         </BlurOverlay>
@@ -90,9 +91,9 @@ const BlurOverlay = styled.div`
 const Container = styled.div`
   max-width: 1440px;
   margin: 0 auto;
-  padding: 25px;
-  @media (min-width: 1440px) {
-    padding: 0; /* 1440px 이상일 때 패딩 제거 */
+  padding: 70px 30px;
+  @media (min-width: 1441px) {
+    padding: 0 20px;
   }
   ${media.small`
     padding: 20px;
