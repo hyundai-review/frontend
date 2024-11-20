@@ -110,8 +110,8 @@ function PostUploadReview() {
                 response.data.photocard,
                 response.data.reviewId,
               )
-              navigate(`/movie/${movieId}/detail`)
             })
+            navigate(`/movie/${movieId}/detail`)
           }
         } catch (err) {
           if (err.response?.status === 409) {
